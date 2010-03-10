@@ -1,4 +1,4 @@
-mindisc <- function(K, N.R,
+mdisc <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   method = c("minimum", "hypblc1", "hypblc2"), m = 1){
   # Minimum discrepancy estimation
