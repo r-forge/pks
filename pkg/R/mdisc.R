@@ -1,5 +1,6 @@
 mdisc <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+  guessing = TRUE,
   method = c("minimum", "hypblc1", "hypblc2"), m = 1){
   # Minimum discrepancy estimation
   # Last mod: Mar/10/2010, FW
@@ -9,21 +10,20 @@ mdisc <- function(K, N.R,
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  ## Assignment of state to response (change here for no guessing?)
+  ## Assigning state K given response R (change here for no guessing?)
   d.RK  <- t(apply(R, 1, function(r) apply(K, 1, function(q) sum(xor(q, r)))))
-  min.d <- apply(d.RK, 1, min)
+  d.min <- apply(d.RK, 1, min)                         # minimum discrepancy
 
   method <- match.arg(method)
   i.RK   <- switch(method,
-              minimum = d.RK == min.d,
-              hypblc1 = 1/(1 + d.RK - min.d)^m,
+              minimum = d.RK == d.min,
+              hypblc1 = 1/(1 + d.RK - d.min)^m,
               hypblc2 = 1/(1 + d.RK)^m)
-  m.R    <- rowSums(i.RK)                             # sum_K i(R, K)
-  f.KR   <- i.RK/m.R * as.integer(N.R)                # P(K|R) * N(R)
+  f.KR   <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
 
-  ## Discrepancy index
-  disc.tab <- xtabs(N.R ~ min.d)
-  discrep  <- as.numeric(names(disc.tab)) %*% disc.tab / N
+  ## Minimum discrepancy distribution 
+  disc.tab <- xtabs(N.R ~ d.min)
+  disc     <- as.numeric(names(disc.tab)) %*% disc.tab / N
 
   ## Distribution of knowledge states
   P.K <- colSums(f.KR)/N
@@ -41,7 +41,7 @@ mdisc <- function(K, N.R,
     eta[j]  <- sum(f.KR[which(R[,j] == 1), which(K[,j] == 0)]) /
                sum(f.KR[,which(K[,j] == 0)])
   }
-  z = list(discrepancy=c(discrep), P.K=P.K, beta=beta, eta=eta,
+  z = list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N)
   class(z) <- "mdisc"
   z
@@ -54,14 +54,16 @@ print.mdisc <- function(obj, digits=max(3, getOption("digits") - 2), ...){
   cat("\nNumber of response patterns:", obj$npatterns)
   cat("\nNumber of respondents:", obj$ntotal)
   cat("\n\n")
-  cat("Distribution of discrepancies\n")
-  print(obj$disc.tab)
-  cat("Minimum discrepancy:", round(obj$discrepancy, digits=digits))
-  cat("\n\n")
+  cat("Minimum discrepancy distribution (Mean = ",
+    round(obj$discrepancy, digits=digits), ")\n", sep="")
+  disc.tab <- obj$disc.tab
+  names(dimnames(disc.tab)) <- NULL
+  print(disc.tab)
+  cat("\n")
   cat("Distribution of knowledge states\n")
   printCoefmat(cbind("Pr(K)"=obj$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
   cat("\n")
-  cat("Careless error and lucky guess parameters\n")
+  cat("Error and guessing parameters\n")
   printCoefmat(cbind(beta=obj$beta, eta=obj$eta), digits=digits, cs.ind=1:2,
     tst.ind=NULL)
   cat("\n")
@@ -72,4 +74,5 @@ print.mdisc <- function(obj, digits=max(3, getOption("digits") - 2), ...){
 # summary.mdisc()
 # print.summary.mdisc()
 # plot.mdisc()
+# simulate.mdisc()
 
