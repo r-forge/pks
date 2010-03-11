@@ -1,10 +1,10 @@
 Package: pks
-Type: Package
-Title: Probabilistic Kowledge Structures
 Version: 0.0-1
-Date: 2010-03-10
-Author: Florian Wickelmaier, Pasquale Anselmi and Juergen Heller
+Date: 2010-03-11
+Title: Probabilistic Kowledge Structures
+Author: Florian Wickelmaier, Pasquale Anselmi, Jürgen Heller
 Maintainer: Florian Wickelmaier <wickelmaier@web.de>
 Description: Parameter estimation in probabilistic konwledge structures using
-  the minimum-discrepancy method.
-License: GPL2 or newer
+  the minimum discrepancy method.
+License: GPL2 (>= 2)
+URL: http://pks.r-forge.r-project.org
