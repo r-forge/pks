@@ -4,41 +4,54 @@
 
 \title{Minimum Discrepancy Estimation}
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+  Minimum discrepancy estimation in probabilistic knowledge structures.
 }
 \usage{
-mdisc()
+mdisc(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+  type = c("both", "error", "guessing"),
+  method = c("minimum", "hypblc1", "hypblc2"), m = 1)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
-  \item{x}{ ~~Describe \code{x} here~~ }
+  \item{K}{ ~~Describe \code{x} here~~ }
+  \item{N.R}{ ~~Describe \code{x} here~~ }
+  \item{R}{ ~~Describe \code{x} here~~ }
+  \item{type}{ ~~Describe \code{x} here~~ }
+  \item{method}{ ~~Describe \code{x} here~~ }
+  \item{m}{ ~~Describe \code{x} here~~ }
 }
+
 \details{
   ~~ If necessary, more details than the description above ~~
 }
+
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+  An object of class \code{"mdisc"} having the following components:
+  \item{discrepancy}{Description of 'comp1'}
+  \item{P.K}{Description of 'comp2'}
+  \item{beta}{Description of 'comp2'}
+  \item{eta}{Description of 'comp2'}
+  \item{disc.tab}{Description of 'comp2'}
+  \item{nstates}{Description of 'comp2'}
+  \item{npatterns}{Description of 'comp2'}
+  \item{ntotal}{Description of 'comp2'}
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
 
- ~Make other sections like Warning with \section{Warning }{....} ~
+\references{
+  Heller, J. & Wickelmaier, F. (2004). Parameter estimation in probabilistic
+  knowledge structures: the minimum-discrepancy method. Presented at the 35th
+  European Mathematical Psychology Group (EMPG) Meeting, September 2-4, Ghent,
+  Belgium. 
 }
+
 \seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function(x) x^2
+\examples{
+data(DoignonFalmagne7)
+K   <- DoignonFalmagne7$K    # knowledge structure
+N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
+
+mdisc(K, N.R)                # minimum discrepancy estimation
+mdisc(K, N.R, type="error")  # no guessing parameters
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{models}
