@@ -11,8 +11,7 @@ mdisc <- function(K, N.R,
   nstat  <- nrow(K)
 
   ## Assigning state K given response R  ## FIX ME!!
-  method <- match.arg(type)
-  d.RK   <- switch(type,
+  d.RK   <- switch(match.arg(type),
               both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                        sum(xor(q, r))))),
              error = t(apply(R, 1, function(r) apply(K, 1, function(q)
@@ -21,8 +20,7 @@ mdisc <- function(K, N.R,
                        if(any(r - q < 0)) NA else sum(r - q)))))
   d.min  <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
-  method <- match.arg(method)
-  i.RK   <- switch(method,
+  i.RK   <- switch(match.arg(method),
               minimum = (d.RK == d.min) & !is.na(d.RK),
               hypblc1 = 1/(1 + d.RK - d.min)^m,
               hypblc2 = 1/(1 + d.RK)^m)
