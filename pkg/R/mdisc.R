@@ -53,27 +53,27 @@ mdisc <- function(K, N.R,
   z
 }
 
-print.mdisc <- function(obj, digits=max(3, getOption("digits") - 2), ...){
+print.mdisc <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   cat("Minimum discrepancy estimation in probabilistic knowledge structures")
-  cat("\n\nNumber of knowledge states:", obj$nstates)
-  cat("\nNumber of response patterns:", obj$npatterns)
-  cat("\nNumber of respondents:", obj$ntotal)
+  cat("\n\nNumber of knowledge states:", x$nstates)
+  cat("\nNumber of response patterns:", x$npatterns)
+  cat("\nNumber of respondents:", x$ntotal)
   cat("\n\n")
   cat("Minimum discrepancy distribution (Mean = ",
-    round(obj$discrepancy, digits=digits), ")\n", sep="")
-  disc.tab <- obj$disc.tab
+    round(x$discrepancy, digits=digits), ")\n", sep="")
+  disc.tab <- x$disc.tab
   names(dimnames(disc.tab)) <- NULL
   print(disc.tab)
   cat("\n")
   cat("Distribution of knowledge states\n")
-  printCoefmat(cbind("Pr(K)"=obj$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
+  printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
   cat("\n")
   cat("Error and guessing parameters\n")
-  printCoefmat(cbind(beta=obj$beta, eta=obj$eta), digits=digits, cs.ind=1:2,
+  printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
     tst.ind=NULL)
   cat("\n")
-  invisible(obj)
+  invisible(x)
 }
 
 ## TO DO
