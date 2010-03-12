@@ -1,16 +1,15 @@
+## Minimum discrepancy estimation
 mdisc <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   type = c("both", "error", "guessing"),
   method = c("minimum", "hypblc1", "hypblc2"), m = 1){
-  # Minimum discrepancy estimation
-  # Last mod: Mar/10/2010, FW
 
   N      <- sum(N.R)
   nitems <- ncol(K)
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  ## Assigning state K given response R  ## FIX ME!!
+  ## Assigning state K given response R
   d.RK   <- switch(match.arg(type),
               both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                        sum(xor(q, r))))),
@@ -37,8 +36,10 @@ mdisc <- function(K, N.R,
 
   ## Careless error and guessing parameters
   beta <- eta <- numeric(nitems)
-  names(beta) <- names(eta) <-         # FIX ME: names for nitems > 26
-    if(is.null(colnames(K))) letters[1:nitems] else colnames(K)
+  names(beta) <- names(eta) <-
+    if(is.null(colnames(K))){
+      make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
+    }else colnames(K)
   for(j in 1:nitems){
     beta[j] <- sum(f.KR[which(R[,j] == 0), which(K[,j] == 1)]) /
                sum(f.KR[,which(K[,j] == 1)])
