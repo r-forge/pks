@@ -10,20 +10,20 @@ mdisc <- function(K, N.R,
   nstat  <- nrow(K)
 
   ## Assigning state K given response R
-  d.RK   <- switch(match.arg(type),
-              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                       sum(xor(q, r))))),
-             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                       if(any(q - r < 0)) NA else sum(q - r)))),
-          guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                       if(any(r - q < 0)) NA else sum(r - q)))))
-  d.min  <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
+  d.RK  <- switch(match.arg(type),
+             both = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                      sum(xor(q, r))))),
+            error = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                      if(any(q - r < 0)) NA else sum(q - r)))),
+         guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                      if(any(r - q < 0)) NA else sum(r - q)))))
+  d.min <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
-  i.RK   <- switch(match.arg(method),
-              minimum = (d.RK == d.min) &              !is.na(d.RK),
-              hypblc1 = replace(1/(1 + d.RK - d.min)^m, is.na(d.RK), 0),
-              hypblc2 = replace(1/(1 + d.RK)^m,         is.na(d.RK), 0))
-  f.KR   <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
+  i.RK  <- switch(match.arg(method),
+             minimum = (d.RK == d.min) &              !is.na(d.RK),
+             hypblc1 = replace(1/(1 + d.RK - d.min)^m, is.na(d.RK), 0),
+             hypblc2 = replace(1/(1 + d.RK)^m,         is.na(d.RK), 0))
+  f.KR  <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
 
   ## Minimum discrepancy distribution 
   disc.tab <- xtabs(N.R ~ d.min)
