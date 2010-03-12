@@ -1,6 +1,6 @@
 mdisc <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
-  guessing = TRUE,
+  type = c("both", "error", "guessing"),
   method = c("minimum", "hypblc1", "hypblc2"), m = 1){
   # Minimum discrepancy estimation
   # Last mod: Mar/10/2010, FW
@@ -10,13 +10,20 @@ mdisc <- function(K, N.R,
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  ## Assigning state K given response R (change here for no guessing?)
-  d.RK  <- t(apply(R, 1, function(r) apply(K, 1, function(q) sum(xor(q, r)))))
-  d.min <- apply(d.RK, 1, min)                         # minimum discrepancy
+  ## Assigning state K given response R  ## FIX ME!!
+  method <- match.arg(type)
+  d.RK   <- switch(type,
+              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                       sum(xor(q, r))))),
+             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                       if(any(q - r < 0)) NA else sum(q - r)))),
+          guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                       if(any(r - q < 0)) NA else sum(r - q)))))
+  d.min  <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
   method <- match.arg(method)
   i.RK   <- switch(method,
-              minimum = d.RK == d.min,
+              minimum = (d.RK == d.min) & !is.na(d.RK),
               hypblc1 = 1/(1 + d.RK - d.min)^m,
               hypblc2 = 1/(1 + d.RK)^m)
   f.KR   <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)

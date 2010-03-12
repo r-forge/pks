@@ -10,7 +10,7 @@ cK <- scan(con1 <- textConnection("
   11110
   11101
   11111
-"), what=""); close(con1); rm(con1)
+"), what="", quiet=TRUE); close(con1); rm(con1)
 K  <- t(sapply(strsplit(cK, ""), as.numeric))
 colnames(K) <- letters[1:ncol(K)]
 rownames(K) <- apply(K, 1, paste, collapse="")
