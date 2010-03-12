@@ -20,9 +20,9 @@ mdisc <- function(K, N.R,
   d.min  <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
   i.RK   <- switch(match.arg(method),
-              minimum = (d.RK == d.min) & !is.na(d.RK),
-              hypblc1 = 1/(1 + d.RK - d.min)^m,
-              hypblc2 = 1/(1 + d.RK)^m)
+              minimum = (d.RK == d.min) &              !is.na(d.RK),
+              hypblc1 = replace(1/(1 + d.RK - d.min)^m, is.na(d.RK), 0),
+              hypblc2 = replace(1/(1 + d.RK)^m,         is.na(d.RK), 0))
   f.KR   <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
 
   ## Minimum discrepancy distribution 
