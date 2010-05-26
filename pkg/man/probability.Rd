@@ -2,19 +2,27 @@
 \alias{probability}
 \title{Problems in Elementary Probability Theory}
 \description{
-  This data set contains
-  responses to problems in elementary probability theory observed
-  before and after some instructions (the so-called learing object) were
-  given. Data were collected both in the lab and via an online
-  questionnaire. Of the 1127 participants eligible in the online study,
-  478 were excluded because they did not complete the first set of
-  problems (p101, ..., p112) or they responded too quickly or too slowly.
-  Based on similar cirteria, further participants were exlcuded for the
-  second set of problems, indicated by missing values in the variables
-  b201, ..., b212. Problems were presented in random order. Participants
-  were randomized to two conditions: an enhanced learning object
-  including instructions with examples and a basic learning object
-  without examples.
+  This data set contains responses to problems in elementary probability
+  theory observed before and after some instructions (the so-called learning
+  object) were given. Data were collected both in the lab and via an online
+  questionnaire. Of the 1127 participants eligible in the online study, 649
+  were excluded because they did not complete the first set of problems
+  (p101, ..., p112) or they responded too quickly or too slowly. Based on
+  similar criteria, further participants were excluded for the second set of
+  problems, indicated by missing values in the variables b201, ..., b212.
+  Problems were presented in random order. Participants were randomized to
+  two conditions: an enhanced learning object including instructions with
+  examples and a basic learning object without examples.
+
+  The questionnaire was organized as follows:
+  \describe{
+    \item{Page 1}{Welcome page.}
+    \item{Page 2}{Demographic data.}
+    \item{Page 3}{First set of problems.}
+    \item{Page 4 to 8}{Instructions (learning object).}
+    \item{Page 9}{Second set of problems.}
+    \item{Page 10}{Feedback about number of correctly solved problems.}
+  }
 }
 \usage{data(probability)}
 \format{
@@ -24,31 +32,37 @@
       the fist digit denoting lab or online branch of the study, the last
       four digits being the case number.}
     \item{\code{lastpage}}{Which page of the questionnaire was reached
-      before quitting?}
-    \item{\code{mode}}{A factor; lab or online branch of study.}
+      before quitting? The questionnaire consisted of ten pages.}
+    \item{\code{mode}}{A factor; \code{lab} or \code{online} branch of
+      study.}
     \item{\code{started}}{A timestamp of class POSIXlt. When did participant
       start working on the questionnaire?}
     \item{\code{sex}}{A factor coding sex of participant.}
     \item{\code{age}}{Age of participant.}
     \item{\code{educat}}{Education as a factor with three levels:
-      1 secondary school or below, 2 higher education entrance qualification,
-      3 university degree.}
+      \code{1} secondary school or below; \code{2} higher education entrance
+      qualification; \code{3} university degree.}
     \item{\code{fos}}{Field of study. Factor with eight levels:
-      ecla econimics, business, law; else miscellaneous; hipo history,
-      politics; lang languages; mabi mathematics, physics, biology;
-      medi medical science; phth philosophy, theology; psco psychology,
+      \code{ecla} economics, business, law; \code{else} miscellaneous;
+      \code{hipo} history, politics; \code{lang} languages; \code{mabi}
+      mathematics, physics, biology; \code{medi} medical science;
+      \code{phth} philosophy, theology; \code{psco} psychology,
       computer science, cognitive science.}
     \item{\code{semester}}{Ordered factor. What semester are you in?}
-    \item{\code{learnobj}}{A factor with two levels: enhan learning object
-      enhanced with examples; basic learning object without examples.}
+    \item{\code{learnobj}}{A factor with two levels:
+      \code{enhan} learning object enhanced with examples;
+      \code{basic} learning object without examples.}
+  }
+  The twelve problems of the first part (before the learning object):
+  \describe{
     \item{\code{p101}}{A box contains 30 marbles in the following colors:
       8 red, 10 black, 12 yellow. What is the probability that a randomly
       drawn marble is yellow? (Correct: 0.40)}
     \item{\code{p102}}{A bag contains 5-cent, 10-cent, and 20-cent coins.
       The probability of drawing a 5-cent coin is 0.35, that of drawing a
       10-cent coin is 0.25, and that of drawing a 20-cent coin is 0.40. What
-      is the probability that the coin randomly drawn is not a 5-cent coin?
-      (0.65)}
+      is the probability that the coin randomly drawn is not a 5-cent
+      coin? (0.65)}
     \item{\code{p103}}{A bag contains 5-cent, 10-cent, and 20-cent coins.
       The probability of drawing a 5-cent coin is 0.20, that of drawing a
       10-cent coin is 0.45, and that of drawing a 20-cent coin is 0.35. What
@@ -75,8 +89,8 @@
       or large. The probability of drawing a red marble is 0.70 (lab: 0.30),
       the probability of drawing a small marble is 0.40. Suppose that the
       color of the marbles is independent of their size. What is the
-      probability of randomly drawing a small marble that is not red?
-      (0.12, lab: 0.28)}
+      probability of randomly drawing a small marble that is not red? (0.12,
+      lab: 0.28)}
     \item{\code{p111}}{In a garage there are 50 cars. 20 are black and 10 are
       diesel powered. Suppose that the color of the cars is independent of
       the kind of fuel. What is the probability that a randomly selected car
@@ -84,16 +98,19 @@
     \item{\code{p112}}{A box contains 20 marbles. 10 marbles are red, 6 are
       yellow and 4 are black. 12 marbles are small and 8 are large. Suppose
       that the color of the marbles is independent of their size. What is the
-      probability of randomly drawing a small marble that is yellow or red?
-      (0.48)}
+      probability of randomly drawing a small marble that is yellow or
+      red? (0.48)}
+  }
+  The twelve problems of the second part (after the learning object):
+  \describe{
     \item{\code{p201}}{A box contains 30 marbles in the following colors:
       10 red, 14 yellow, 6 green. What is the probability that a randomly
       drawn marble is green? (0.20)}
     \item{\code{p202}}{A bag contains 5-cent, 10-cent, and 20-cent coins.
       The probability of drawing a 5-cent coin is 0.25, that of drawing a
       10-cent coin is 0.60, and that of drawing a 20-cent coin is 0.15. What
-      is the probability that the coin randomly drawn is not a 5-cent coin?
-      (0.75)}
+      is the probability that the coin randomly drawn is not a 5-cent
+      coin? (0.75)}
     \item{\code{p203}}{A bag contains 5-cent, 10-cent, and 20-cent coins.
       The probability of drawing a 5-cent coin is 0.35, that of drawing a
       10-cent coin is 0.20, and that of drawing a 20-cent coin is 0.45. What
@@ -120,8 +137,8 @@
       or small The probability of drawing a green marble is 0.40,
       the probability of drawing a large marble is 0.20. Suppose that the
       color of the marbles is independent of their size. What is the
-      probability of randomly drawing a large marble that is not green?
-      (0.12)}
+      probability of randomly drawing a large marble that is not
+      green? (0.12)}
     \item{\code{p211}}{In a garage there are 50 cars. 15 are white and 20 are
       diesel powered. Suppose that the color of the cars is independent of
       the kind of fuel. What is the probability that a randomly selected car
@@ -129,19 +146,22 @@
     \item{\code{p212}}{A box contains 20 marbles. 8 marbles are white, 4 are
       green and 8 are red. 15 marbles are small and 5 are large. Suppose
       that the color of the marbles is independent of their size. What is the
-      probability of randomly drawing a large marble that is white or green?
-      (0.15)}
+      probability of randomly drawing a large marble that is white or
+      green? (0.15)}
+  }
+  Further variables:
+  \describe{
     \item{\code{time01}, ..., \code{time10}}{The time (in s) spent on each
-      page of the questionnaire. In the lab study, participants started
-      directly on Page 2.}
-    \item{\code{b101}, ..., \code{b112}}{The 12 problems of the first part
-      coded as correct (1) or error (0).}
-    \item{\code{b201}, ..., \code{b212}}{The 12 problems of the second part
-      coded as correct (1) or error (0).}
+      page of the questionnaire. In the lab branch of the study, participants
+      started directly on Page 2.}
+    \item{\code{b101}, ..., \code{b112}}{The twelve problems of the first
+      part coded as correct (1) or error (0).}
+    \item{\code{b201}, ..., \code{b212}}{The twelve problems of the second
+      part coded as correct (1) or error (0).}
   }
 }
 \source{
-  Date were collected by Pasquale Anselmi and Florian Wickelmaier in
+  Data were collected by Pasquale Anselmi and Florian Wickelmaier in
   February and March 2010.
 }
 \examples{
