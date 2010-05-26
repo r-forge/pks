@@ -7,7 +7,7 @@
   Minimum discrepancy estimation in probabilistic knowledge structures.
 }
 \usage{
-rEM((K, N.R,
+rEM(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   pi = NULL, beta = NULL, eta = NULL, 
   type = c("both", "error", "guessing"), equal = FALSE, radius = 0,
