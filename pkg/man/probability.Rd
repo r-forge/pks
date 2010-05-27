@@ -81,10 +81,10 @@
       2 yellow, 5 blue, 3 red. What is the probability that a randomly
       drawn marble is yellow or blue? (0.70)}
     \item{\code{p108}}{What is the probability of obtaining an even number
-      by throwing a dice? (0.5)}
+      by throwing a dice? (0.50)}
     \item{\code{p109}}{Given a standard deck containing 32 different cards,
-      what is the probability of drawing a 4 in a black suit? (Everything
-      that rounds to 0.06 was considered correct.)}
+      what is the probability of drawing a 4 in a black suit? (Responses
+      that round to 0.06 were considered correct.)}
     \item{\code{p110}}{A box contains marbles that are red or yellow, small
       or large. The probability of drawing a red marble is 0.70 (lab: 0.30),
       the probability of drawing a small marble is 0.40. Suppose that the
@@ -129,10 +129,10 @@
       5 blue, 3 red, 2 green. What is the probability that a randomly
       drawn marble is blue or red? (0.80)}
     \item{\code{p208}}{What is the probability of obtaining an odd number
-      by throwing a dice? (0.5)}
+      by throwing a dice? (0.50)}
     \item{\code{p209}}{Given a standard deck containing 32 different cards,
-      what is the probability of drawing a 10 in a red suit? (Everything
-      that rounds to 0.06 was considered correct.)}
+      what is the probability of drawing a 10 in a red suit? (Responses
+      that round to 0.06 were considered correct.)}
     \item{\code{p210}}{A box contains marbles that are green or red, large
       or small The probability of drawing a green marble is 0.40,
       the probability of drawing a large marble is 0.20. Suppose that the
@@ -161,8 +161,9 @@
   }
 }
 \source{
-  Data were collected by Pasquale Anselmi and Florian Wickelmaier in
-  February and March 2010.
+  Data were collected by Pasquale Anselmi and Florian Wickelmaier at the
+  Department of Psychology, University of Tuebingen, in February and March
+  2010.
 }
 \examples{
 data(probability)
