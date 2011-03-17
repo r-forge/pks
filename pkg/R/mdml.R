@@ -1,9 +1,10 @@
-## restricted EM-Algorithm
-rEM <- function(K, N.R,
+## MDML Estimation
+
+mdml <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   pi = NULL, beta = NULL, eta = NULL, 
-  type = c("both", "error", "guessing"), equal = FALSE, radius = 0,
-  md = 1, em = 1, tol=0.0000001, maxiter = 5000){
+  errtype = c("both", "error", "guessing"), equal = FALSE, radius.inc = 0,
+  method = c("MD", "ML", "MDML"), tol=0.0000001, maxiter = 5000) {
 
   N      <- sum(N.R)
   nitems <- ncol(K)
@@ -11,17 +12,19 @@ rEM <- function(K, N.R,
   nstat  <- nrow(K)
   if (is.null(beta)) beta=rep(0.1, nitems)
   if (is.null(eta)) eta=rep(0.1, nitems)
-  names(beta) <- names(eta) <-
-  if(is.null(colnames(K))) {
-      make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
-  } else 
-   colnames(K)
+  names(beta) <- names(eta) <- 
+    if(is.null(colnames(K))) {
+        make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
+    } else 
+        colnames(K)
   if (is.null(pi)) pi=rep(1/nstat, nstat)
   names(pi) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
-  d.RK  <- switch(match.arg(type),
+  em  <- switch(match.arg(method), MD = 0, ML = 1, MDML = 1)
+  md  <- switch(match.arg(method), MD = 1, ML = 0, MDML = 1)
+  d.RK  <- switch(match.arg(errtype),
              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                       sum(xor(q, r))))),
             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
@@ -30,7 +33,7 @@ rEM <- function(K, N.R,
                       if(any(r - q < 0)) NA else sum(r - q)))))
   d.min <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
-  i.RK  <- (d.RK <= (d.min + radius)) & !is.na(d.RK)
+  i.RK  <- (d.RK <= (d.min + radius.inc)) & !is.na(d.RK)
 
   ## Minimum discrepancy distribution 
   disc.tab <- xtabs(N.R ~ d.min)
@@ -43,8 +46,13 @@ rEM <- function(K, N.R,
    beta.old <- beta
    eta.old <- eta
    
-   P.R.K  <- t(apply(R, 1, function(r) apply(K, 1, function(q)
-      prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q))))))
+   P.R.K  <- switch(match.arg(errtype),
+             both = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
+            error = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
+         guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
    P.R <- as.numeric(P.R.K %*% pi)
    P.K.R <- P.R.K * outer(1/P.R,pi)      # prediction of P(K|R)
    mat.RK <- i.RK^md * P.K.R^em
@@ -74,16 +82,20 @@ rEM <- function(K, N.R,
     beta <- rep(sum(beta * P.Kq) / sum(P.Kq), nitems)
     eta <- rep(sum(eta * (1 - P.Kq)) / (nitems - sum(P.Kq)), nitems)
   } 
-  z = list(discrepancy=c(disc), pi=pi, beta=beta, eta=eta, nerror=nerror,
-    disc.tab=disc.tab, P.Kq=P.Kq, mat.RK=mat.RK, d.RK=d.RK, R=R, nstates=nstat, npatterns=npat, ntotal=N,
-    iter=iter, loglike=loglike)
-  class(z) <- "rEM"
+  z = list(errtype=errtype, method=method, discrepancy=c(disc), pi=pi, beta=beta, eta=eta, nerror=nerror,
+    R=R, nstates=nstat, npatterns=npat, ntotal=N, disc.tab=disc.tab, iter=iter, loglike=loglike)
+  class(z) <- "mdml"
   z
 }
 
-print.rEM <- function(x, digits=max(3, getOption("digits") - 2), ...){
+print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
-  cat("Modified ML estimation in probabilistic knowledge structures")
+  cat("Parameter estimation in probabilistic knowledge structures")
+  method  <- switch(x$method,
+             MD = "Minimum discrepancy",
+             ML = "Maximum likelihood",
+           MDML = "Minimum discrepancy maximum likelihood")
+  cat("\nMethod:", method)
   cat("\n\nNumber of knowledge states:", x$nstates)
   cat("\nNumber of response patterns:", x$npatterns)
   cat("\nNumber of respondents:", x$ntotal)
