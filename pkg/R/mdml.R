@@ -83,8 +83,9 @@ mdml <- function(K, N.R,
     beta <- rep(sum(beta * P.Kq) / sum(P.Kq), nitems)
     eta <- rep(sum(eta * (1 - P.Kq)) / (nitems - sum(P.Kq)), nitems)
   } 
-  z = list(errtype=errtype, method=method, discrepancy=c(disc), pi=pi, beta=beta, eta=eta, nerror=nerror,
-    R=R, nstates=nstat, npatterns=npat, ntotal=N, disc.tab=disc.tab, iter=iter, loglike=loglike)
+  z <- list(errtype=errtype, method=method, discrepancy=c(disc), pi=pi,
+    beta=beta, eta=eta, nerror=nerror, R=R, nstates=nstat, npatterns=npat,
+    ntotal=N, disc.tab=disc.tab, iter=iter, loglike=loglike)
   class(z) <- "mdml"
   z
 }
@@ -92,10 +93,10 @@ mdml <- function(K, N.R,
 print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   cat("Parameter estimation in probabilistic knowledge structures")
-  method  <- switch(x$method,
-             MD = "Minimum discrepancy",
-             ML = "Maximum likelihood",
-           MDML = "Minimum discrepancy maximum likelihood")
+  method <- switch(x$method,
+            MD = "Minimum discrepancy",
+            ML = "Maximum likelihood",
+          MDML = "Minimum discrepancy maximum likelihood")
   cat("\nMethod:", method)
   cat("\n\nNumber of knowledge states:", x$nstates)
   cat("\nNumber of response patterns:", x$npatterns)
