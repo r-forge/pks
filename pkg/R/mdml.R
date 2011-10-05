@@ -4,7 +4,7 @@ mdml <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   pi = NULL, beta = NULL, eta = NULL, 
   errtype = c("both", "error", "guessing"), equal = FALSE, radius.inc = 0,
-  method = c("MD", "ML", "MDML"), tol=0.0000001, maxiter = 5000) {
+  method = c("MD", "ML", "MDML"), tol=0.0000001, maxiter = 10000) {
 
   N      <- sum(N.R)
   nitems <- ncol(K)
@@ -41,40 +41,41 @@ mdml <- function(K, N.R,
   
   iter <- 0
   maxdiff <- 2 * tol
-  while ((maxdiff > tol) && (iter < maxiter) && ((md*(1-em) != 1) || (iter == 0))) {
-   pi.old <- pi
-   beta.old <- beta
-   eta.old <- eta
-   
-   P.R.K  <- switch(match.arg(errtype),
-             both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
-            error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
-         guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
-   P.R <- as.numeric(P.R.K %*% pi)
-   P.K.R <- P.R.K * outer(1/P.R,pi)      # prediction of P(K|R)
-   mat.RK <- i.RK^md * P.K.R^em
-   m.RK  <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)       # m.RK = E(M.RK) = P(K|R) * N(R)
-   loglike <- sum(log(P.R) * as.integer(N.R))
-   ## Distribution of knowledge states
-   pi <- colSums(m.RK) / N
 
-   ## Careless error and guessing parameters
-   ce <- lg <- 0
-   P.Kq <- numeric(nitems)
-   for(j in 1:nitems) {
-     beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
-               sum(m.RK[,which(K[,j] == 1)])
-     eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
-               sum(m.RK[,which(K[,j] == 0)])
-     P.Kq[j] <- sum(as.numeric(pi[which(K[,j] == 1)]))
-     ce <- ce + as.numeric(beta[j]) * P.Kq[j]
-     lg <- lg + as.numeric(eta[j]) * (1 - P.Kq[j])
-   }
-   maxdiff <- max(abs(c(pi, beta, eta) - c(pi.old, beta.old, eta.old)))
-   iter <- iter + 1
+  while ((maxdiff > tol) && (iter < maxiter) && ((md*(1-em) != 1) || (iter == 0))) {
+    pi.old <- pi
+    beta.old <- beta
+    eta.old <- eta
+    
+    P.R.K  <- switch(match.arg(errtype),
+              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                 prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
+             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                 prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
+          guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
+                 prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
+    P.R <- as.numeric(P.R.K %*% pi)
+    P.K.R <- P.R.K * outer(1/P.R,pi)      # prediction of P(K|R)
+    mat.RK <- i.RK^md * P.K.R^em
+    m.RK  <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)       # m.RK = E(M.RK) = P(K|R) * N(R)
+    loglike <- sum(log(P.R) * as.integer(N.R))
+    ## Distribution of knowledge states
+    pi <- colSums(m.RK) / N
+
+    ## Careless error and guessing parameters
+    ce <- lg <- 0
+    P.Kq <- numeric(nitems)
+    for(j in 1:nitems) {
+      beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
+                sum(m.RK[,which(K[,j] == 1)])
+      eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
+                sum(m.RK[,which(K[,j] == 0)])
+      P.Kq[j] <- sum(as.numeric(pi[which(K[,j] == 1)]))
+      ce <- ce + as.numeric(beta[j]) * P.Kq[j]
+      lg <- lg + as.numeric(eta[j]) * (1 - P.Kq[j])
+    }
+    maxdiff <- max(abs(c(pi, beta, eta) - c(pi.old, beta.old, eta.old)))
+    iter <- iter + 1
   }
   nerror <- c(ce, lg)
   names(nerror) <- c("careless error", "lucky guess")
