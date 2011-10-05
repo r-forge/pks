@@ -8,8 +8,7 @@
   structures.
 }
 \usage{
-mdml <- function(K, N.R,
-  R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   pi = NULL, beta = NULL, eta = NULL, 
   errtype = c("both", "error", "guessing"), equal = FALSE, radius.inc = 0,
   method = c("MD", "ML", "MDML"), tol=1e-7, maxiter = 10000)
@@ -25,15 +24,15 @@ mdml <- function(K, N.R,
     careless error}
   \item{eta}{vector of initial parameter values for probabilities eta of a
     lucky guess}
-  \item{errtype}{type of response errors that can occur: 'error' for careless
-    errors only, 'guessing' for lucky guesses only , and 'both' for both
-    error types}
+  \item{errtype}{type of response errors that can occur: \code{error} for
+    careless errors only, \code{guessing} for lucky guesses only, and
+    \code{both} for both error types}
   \item{equal}{logical, if TRUE then items have identical error rates}
   \item{radius.inc}{include knowledge states of distance from the minimum
-    discrepant states less than or equal to 'radius.inc' }
-  \item{method}{'ML' for maximum likelihood estimation, 'MD' for minimum
-    discrepancy estimation, 'MDML' for minimum discrepancy maximum likelihood
-    estimation}
+    discrepant states less than or equal to \code{radius.inc}}
+  \item{method}{\code{ML} for maximum likelihood estimation, \code{MD} for
+    minimum discrepancy estimation, \code{MDML} for minimum discrepancy
+    maximum likelihood estimation}
   \item{tol}{tolerance, stopping criterion for iteration}
   \item{maxiter}{maximum number of iterations}
 }
@@ -42,7 +41,7 @@ mdml <- function(K, N.R,
 
 \value{
   An object of class \code{mdml} having the following components:
-  \item{mean discrepancy}{discrepancy}
+  \item{discrepancy}{mean discrepancy}
   \item{pi}{vector of estimated parameter values for probabilities pi of
     knowledge states}
   \item{beta}{vector of estimated parameter values for probabilities beta of
