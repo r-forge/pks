@@ -15,9 +15,10 @@ mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 }
 
 \arguments{
-  \item{K}{knowledge structure}
-  \item{N.R}{vector of absolute frequencies of response patterns}
-  \item{R}{response patterns}
+  \item{K}{knowledge structure, a (named) matrix of zeroes and ones}
+  \item{N.R}{(named) vector of absolute frequencies of response patterns}
+  \item{R}{response patterns, a matrix of zeros and ones.  Per default
+    inferred from the names of \code{N.R}}
   \item{pi}{vector of initial parameter values for probabilities pi of
     knowledge states}
   \item{beta}{vector of initial parameter values for probabilities beta of a
@@ -27,7 +28,7 @@ mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   \item{errtype}{type of response errors that can occur: \code{error} for
     careless errors only, \code{guessing} for lucky guesses only, and
     \code{both} for both error types}
-  \item{equal}{logical, if TRUE then items have identical error rates}
+  \item{equal}{logical, if \code{TRUE} then items have identical error rates}
   \item{radius.inc}{include knowledge states of distance from the minimum
     discrepant states less than or equal to \code{radius.inc}}
   \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
