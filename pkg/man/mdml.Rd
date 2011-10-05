@@ -74,6 +74,6 @@ N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 
 mdml(K, N.R, method="MD")    # minimum discrepancy estimation
 mdml(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
-mdml(K, N.R  method="MDML")  # MDML estimation
+mdml(K, N.R, method="MDML")  # MDML estimation
 }
 \keyword{models}
