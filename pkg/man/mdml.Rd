@@ -30,8 +30,8 @@ mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   \item{equal}{logical, if TRUE then items have identical error rates}
   \item{radius.inc}{include knowledge states of distance from the minimum
     discrepant states less than or equal to \code{radius.inc}}
-  \item{method}{\code{ML} for maximum likelihood estimation, \code{MD} for
-    minimum discrepancy estimation, \code{MDML} for minimum discrepancy
+  \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
+    maximum likelihood estimation, \code{MDML} for minimum discrepancy
     maximum likelihood estimation}
   \item{tol}{tolerance, stopping criterion for iteration}
   \item{maxiter}{maximum number of iterations}
@@ -72,8 +72,8 @@ data(DoignonFalmagne7)
 K   <- DoignonFalmagne7$K    # knowledge structure
 N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 
-mdml(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
 mdml(K, N.R, method="MD")    # minimum discrepancy estimation
-mdml(K, N.R)                 # MDML estimation
+mdml(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
+mdml(K, N.R  method="MDML")  # MDML estimation
 }
 \keyword{models}
