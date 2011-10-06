@@ -1,8 +1,8 @@
 ## Minimum discrepancy estimation
 md <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
-  type = c("both", "error", "guessing"),
-  method = c("minimum", "hypblc1", "hypblc2"), m = 1){
+  errtype = c("both", "error", "guessing"),
+  incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
 
   N      <- sum(N.R)
   nitems <- ncol(K)
