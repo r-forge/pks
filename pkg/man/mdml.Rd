@@ -62,12 +62,14 @@ mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 
 \references{
   Heller, J., & Wickelmaier, F. (2004). Parameter estimation in probabilistic
-  knowledge structures: the minimum-discrepancy method. Presented at the 35th
-  European Mathematical Psychology Group (EMPG) Meeting, September 2-4, Ghent,
-  Belgium. 
+  knowledge structures: the minimum-discrepancy method. Presented at the
+  \emph{35th European Mathematical Psychology Group (EMPG) Meeting}, September
+  2-4, Ghent, Belgium. 
 }
 
-\seealso{}
+\seealso{
+  \code{\link{md}}.
+}
 
 \examples{
 data(DoignonFalmagne7)
