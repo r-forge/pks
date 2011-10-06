@@ -13,13 +13,13 @@ md(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 }
 
 \arguments{
-  \item{K}{knowledge structure, a (named) matrix of zeroes and ones}
-  \item{N.R}{(named) vector of absolute frequencies of response patterns}
+  \item{K}{knowledge structure, a (named) matrix of zeroes and ones.}
+  \item{N.R}{(named) vector of absolute frequencies of response patterns.}
   \item{R}{response patterns, a matrix of zeros and ones.  Per default
-    inferred from the names of \code{N.R}}
+    inferred from the names of \code{N.R}.}
   \item{errtype}{type of response errors that can occur: \code{error} for
     careless errors only, \code{guessing} for lucky guesses only, and
-    \code{both} for both error types}
+    \code{both} for both error types.}
   \item{incrule}{inclusion rule for knowledge states.  (See Details.)}
   \item{m}{exponent for hyperbolic inclusion rules.}
 }
