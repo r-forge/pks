@@ -1,5 +1,5 @@
 ## Minimum discrepancy estimation
-mdisc <- function(K, N.R,
+md <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   type = c("both", "error", "guessing"),
   method = c("minimum", "hypblc1", "hypblc2"), m = 1){
@@ -47,13 +47,13 @@ mdisc <- function(K, N.R,
     eta[j]  <- sum(f.KR[which(R[,j] == 1), which(K[,j] == 0)]) /
                sum(f.KR[,which(K[,j] == 0)])
   }
-  z = list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
+  z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N)
-  class(z) <- "mdisc"
+  class(z) <- "md"
   z
 }
 
-print.mdisc <- function(x, digits=max(3, getOption("digits") - 2), ...){
+print.md <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   cat("Minimum discrepancy estimation in probabilistic knowledge structures")
   cat("\n\nNumber of knowledge states:", x$nstates)
@@ -77,7 +77,8 @@ print.mdisc <- function(x, digits=max(3, getOption("digits") - 2), ...){
 }
 
 ## TO DO
-# summary.mdisc()
-# print.summary.mdisc()
-# plot.mdisc()
-# simulate.mdisc()
+# summary.md()
+# print.summary.md()
+# plot.md()
+# simulate.md()
+
