@@ -26,8 +26,7 @@ md(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 
 \details{
   Most functionality of \code{md} is also provided by \code{mdml}, apart from
-  the hyperbolic inclusion rules.  So, \code{md} may be removed in the long
-  run.
+  the hyperbolic inclusion rules.  So, \code{md} may be removed in the future.
 
   FIX ME: explain hypblc inclusion rules.
 }
