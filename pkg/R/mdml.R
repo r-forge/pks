@@ -85,9 +85,9 @@ mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
     eta  <- rep(sum(eta * (1 - P.Kq)) / (nitems - sum(P.Kq)), nitems)
   }
 
-  z <- list(errtype=errtype, method=method, discrepancy=c(disc), P.K=P.K,
-    beta=beta, eta=eta, nerror=nerror, R=R, nstates=nstat, npatterns=npat,
-    ntotal=N, disc.tab=disc.tab, iter=iter, loglike=loglike)
+  z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
+    disc.tab=disc.tab, R=R, nstates=nstat, npatterns=npat, ntotal=N,
+    nerror=nerror, errtype=errtype, method=method, iter=iter, loglike=loglike)
   class(z) <- "mdml"
   z
 }
@@ -116,7 +116,7 @@ print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\nMean number or errors (total = ",
     round(sum(x$nerror), digits=digits), ")\n", sep="")
   print(x$nerror)
-  cat("\nlog-Likelikood:", x$loglike)
+  cat("\nlog-likelikood:", x$loglike)
   cat("\n\n")
   cat("Distribution of knowledge states\n")
   printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
