@@ -8,33 +8,34 @@
   structures.
 }
 \usage{
-mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
-  pi = NULL, beta = NULL, eta = NULL, 
-  errtype = c("both", "error", "guessing"), errequal = FALSE, radius.inc = 0,
-  method = c("MD", "ML", "MDML"), tol=1e-7, maxiter = 10000)
+mdml(K, N.R, method = c("MD", "ML", "MDML"),
+  R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
+  errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
+  tol=1e-7, maxiter = 10000)
 }
 
 \arguments{
   \item{K}{knowledge structure, a (named) matrix of zeroes and ones}
   \item{N.R}{(named) vector of absolute frequencies of response patterns}
+  \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
+    maximum likelihood estimation, \code{MDML} for minimum discrepancy
+    maximum likelihood estimation}
   \item{R}{response patterns, a matrix of zeros and ones.  Per default
     inferred from the names of \code{N.R}}
-  \item{pi}{vector of initial parameter values for probabilities pi of
+  \item{P.K}{vector of initial parameter values for probabilities of
     knowledge states}
-  \item{beta}{vector of initial parameter values for probabilities beta of a
+  \item{beta}{vector of initial parameter values for probabilities of a
     careless error}
-  \item{eta}{vector of initial parameter values for probabilities eta of a
+  \item{eta}{vector of initial parameter values for probabilities of a
     lucky guess}
   \item{errtype}{type of response errors that can occur: \code{error} for
     careless errors only, \code{guessing} for lucky guesses only, and
     \code{both} for both error types}
   \item{errequal}{logical, if \code{TRUE} then items have identical error
     rates}
-  \item{radius.inc}{include knowledge states of distance from the minimum
-    discrepant states less than or equal to \code{radius.inc}}
-  \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
-    maximum likelihood estimation, \code{MDML} for minimum discrepancy
-    maximum likelihood estimation}
+  \item{incradius}{include knowledge states of distance from the minimum
+    discrepant states less than or equal to \code{incradius}}
   \item{tol}{tolerance, stopping criterion for iteration}
   \item{maxiter}{maximum number of iterations}
 }
@@ -44,11 +45,11 @@ mdml(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 \value{
   An object of class \code{mdml} having the following components:
   \item{discrepancy}{mean discrepancy}
-  \item{pi}{vector of estimated parameter values for probabilities pi of
+  \item{P.K}{vector of estimated parameter values for probabilities of
     knowledge states}
-  \item{beta}{vector of estimated parameter values for probabilities beta of
+  \item{beta}{vector of estimated parameter values for probabilities of
     a careless error}
-  \item{eta}{vector of estimated parameter values for probabilities eta of a
+  \item{eta}{vector of estimated parameter values for probabilities of a
     lucky guess}
   \item{disc.tab}{matrix of symmetric set distances}
   \item{R}{matrix of response patterns}

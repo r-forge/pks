@@ -1,24 +1,21 @@
-## MDML Estimation
-
-mdml <- function(K, N.R,
+## MDML estimation
+mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
-  pi = NULL, beta = NULL, eta = NULL, 
-  errtype = c("both", "error", "guessing"), errequal = FALSE, radius.inc = 0,
-  method = c("MD", "ML", "MDML"), tol=0.0000001, maxiter = 10000) {
+  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
+  errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
+  tol=0.0000001, maxiter = 10000) {
 
   N      <- sum(N.R)
   nitems <- ncol(K)
   npat   <- nrow(R)
   nstat  <- nrow(K)
-  if (is.null(beta)) beta=rep(0.1, nitems)
-  if (is.null(eta)) eta=rep(0.1, nitems)
-  names(beta) <- names(eta) <- 
+
+  names(beta) <- names(eta) <-
     if(is.null(colnames(K))) {
         make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
-    } else 
+    } else
         colnames(K)
-  if (is.null(pi)) pi=rep(1/nstat, nstat)
-  names(pi) <-
+  names(P.K) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
@@ -33,17 +30,18 @@ mdml <- function(K, N.R,
                       if(any(r - q < 0)) NA else sum(r - q)))))
   d.min <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
-  i.RK  <- (d.RK <= (d.min + radius.inc)) & !is.na(d.RK)
+  i.RK  <- (d.RK <= (d.min + incradius)) & !is.na(d.RK)
 
   ## Minimum discrepancy distribution 
   disc.tab <- xtabs(N.R ~ d.min)
   disc     <- as.numeric(names(disc.tab)) %*% disc.tab / N
   
-  iter <- 0
-  maxdiff <- 2 * tol
+  iter     <- 0
+  maxdiff  <- 2 * tol
 
-  while ((maxdiff > tol) && (iter < maxiter) && ((md*(1-em) != 1) || (iter == 0))) {
-    pi.old   <- pi
+  while ((maxdiff > tol) && (iter < maxiter) &&
+         ((md*(1 - em) != 1) || (iter == 0))) {
+    pi.old   <- P.K
     beta.old <- beta
     eta.old  <- eta
     
@@ -54,29 +52,29 @@ mdml <- function(K, N.R,
                  prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
           guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
                  prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
-    P.R     <- as.numeric(P.R.K %*% pi)
-    P.K.R   <- P.R.K * outer(1/P.R, pi)                      # prediction of P(K|R)
+    P.R     <- as.numeric(P.R.K %*% P.K)
+    P.K.R   <- P.R.K * outer(1/P.R, P.K)                      # prediction of P(K|R)
     mat.RK  <- i.RK^md * P.K.R^em
     m.RK    <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)  # m.RK = E(M.RK) = P(K|R) * N(R)
     loglike <- sum(log(P.R) * as.integer(N.R))
 
     ## Distribution of knowledge states
-    pi <- colSums(m.RK) / N
+    P.K <- colSums(m.RK) / N
 
     ## Careless error and guessing parameters
     ce <- lg <- 0
     P.Kq <- numeric(nitems)
-    for(j in 1:nitems) {
+    for(j in seq_len(nitems)) {
       beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
                  sum(m.RK[,which(K[,j] == 1)])
       eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
                  sum(m.RK[,which(K[,j] == 0)])
-      P.Kq[j] <- sum(as.numeric(pi[which(K[,j] == 1)]))
+      P.Kq[j] <- sum(as.numeric(P.K[which(K[,j] == 1)]))
       ce <- ce + as.numeric(beta[j]) * P.Kq[j]
       lg <- lg + as.numeric(eta[j]) * (1 - P.Kq[j])
     }
 
-    maxdiff <- max(abs(c(pi, beta, eta) - c(pi.old, beta.old, eta.old)))
+    maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
     iter <- iter + 1
   }
 
@@ -87,12 +85,13 @@ mdml <- function(K, N.R,
     eta  <- rep(sum(eta * (1 - P.Kq)) / (nitems - sum(P.Kq)), nitems)
   }
 
-  z <- list(errtype=errtype, method=method, discrepancy=c(disc), pi=pi,
+  z <- list(errtype=errtype, method=method, discrepancy=c(disc), P.K=P.K,
     beta=beta, eta=eta, nerror=nerror, R=R, nstates=nstat, npatterns=npat,
     ntotal=N, disc.tab=disc.tab, iter=iter, loglike=loglike)
   class(z) <- "mdml"
   z
 }
+
 
 print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
@@ -120,7 +119,7 @@ print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\nlog-Likelikood:", x$loglike)
   cat("\n\n")
   cat("Distribution of knowledge states\n")
-  printCoefmat(cbind("pi"=x$pi), digits=digits, cs.ind=1, tst.ind=NULL)
+  printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
   cat("\n")
   cat("Error and guessing parameters\n")
   printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
