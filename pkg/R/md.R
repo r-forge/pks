@@ -23,14 +23,14 @@ md <- function(K, N.R,
              minimum = (d.RK == d.min) &              !is.na(d.RK),
              hypblc1 = replace(1/(1 + d.RK - d.min)^m, is.na(d.RK), 0),
              hypblc2 = replace(1/(1 + d.RK)^m,         is.na(d.RK), 0))
-  f.KR  <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
+  m.RK  <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
 
   ## Minimum discrepancy distribution 
   disc.tab <- xtabs(N.R ~ d.min)
   disc     <- as.numeric(names(disc.tab)) %*% disc.tab / N
 
   ## Distribution of knowledge states
-  P.K <- colSums(f.KR)/N
+  P.K <- colSums(m.RK)/N
   names(P.K) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
@@ -40,18 +40,19 @@ md <- function(K, N.R,
     if(is.null(colnames(K))){
       make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
     }else colnames(K)
-  for(j in 1:nitems){
-    beta[j] <- sum(f.KR[which(R[,j] == 0), which(K[,j] == 1)]) /
-               sum(f.KR[,which(K[,j] == 1)])
+  for(j in seq_len(nitems)){
+    beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
+               sum(m.RK[,which(K[,j] == 1)])
 
-    eta[j]  <- sum(f.KR[which(R[,j] == 1), which(K[,j] == 0)]) /
-               sum(f.KR[,which(K[,j] == 0)])
+    eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
+               sum(m.RK[,which(K[,j] == 0)])
   }
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N)
   class(z) <- "md"
   z
 }
+
 
 print.md <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
@@ -75,6 +76,7 @@ print.md <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   invisible(x)
 }
+
 
 ## TO DO
 # summary.md()
