@@ -22,9 +22,9 @@ mdml <- function(K, N.R,
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
-  em  <- switch(match.arg(method), MD = 0, ML = 1, MDML = 1)
-  md  <- switch(match.arg(method), MD = 1, ML = 0, MDML = 1)
-  d.RK  <- switch(match.arg(errtype),
+  em  <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
+  md  <- switch(method, MD = 1, ML = 0, MDML = 1)
+  d.RK  <- switch(errtype <- match.arg(errtype),
              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                       sum(xor(q, r))))),
             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
@@ -47,7 +47,7 @@ mdml <- function(K, N.R,
     beta.old <- beta
     eta.old  <- eta
     
-    P.R.K  <- switch(match.arg(errtype),
+    P.R.K  <- switch(errtype,
               both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                  prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
              error = t(apply(R, 1, function(r) apply(K, 1, function(q)
