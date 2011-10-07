@@ -1,10 +1,11 @@
 Package: pks
 Version: 0.0-3
-Date: 2011-10-05
-Title: Probabilistic Kowledge Structures
-Author: Florian Wickelmaier, Pasquale Anselmi, Juergen Heller
+Date: 2011-10-07
+Title: Probabilistic Knowledge Structures
+Author: Florian Wickelmaier [cre, aut], Juergen Heller [aut],
+  Pasquale Anselmi [ctb]
 Maintainer: Florian Wickelmaier <wickelmaier@web.de>
 Description: Parameter estimation in probabilistic knowledge structures using
   the minimum discrepancy maximum likelihood (MDML) method.
 License: GPL (>= 2)
-URL: http://pks.r-forge.r-project.org
+URL: http://homepages.uni-tuebingen.de/florian.wickelmaier
