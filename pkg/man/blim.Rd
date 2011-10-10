@@ -40,7 +40,11 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
   \item{maxiter}{maximum number of iterations.}
 }
 
-\details{}
+\details{
+  See Doignon and Falmagne (1999) for details on the basic local independence
+  model (BLIM), and Heller and Wickelmaier (2004) for details on the parameter
+  estimation methods.
+}
 
 \value{
   An object of class \code{blim} having the following components:
@@ -66,6 +70,9 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 \references{
+  Doignon, J.-P. & Falmagne, J.-C. (1999). Knowledge spaces. Berlin:
+  Springer.
+
   Heller, J., & Wickelmaier, F. (2004). Parameter estimation in probabilistic
   knowledge structures: the minimum-discrepancy method. Presented at the
   \emph{35th European Mathematical Psychology Group (EMPG) Meeting}, September
@@ -73,7 +80,7 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 \seealso{
-  \code{\link{md}}.
+  \code{\link{md}}, \code{\link{simulate.blim}}.
 }
 
 \examples{
