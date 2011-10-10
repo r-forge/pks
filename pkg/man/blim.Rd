@@ -2,10 +2,9 @@
 \alias{blim}
 \alias{print.blim}
 
-\title{Minimum Discrepancy Maximum Likelihood Estimation}
-\description{
-  Minimum discrepancy maximum likelihood estimation in probabilistic knowledge
-  structures.
+\title{Basic Local Independence Models (BLIMs)}
+\description{Fits a basic local independence model for probabilistic knowledge
+  structures by minimum discrepancy maximum likelihood estimation.
 }
 \usage{
 blim(K, N.R, method = c("MD", "ML", "MDML"),
@@ -42,8 +41,8 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 
 \details{
   See Doignon and Falmagne (1999) for details on the basic local independence
-  model (BLIM), and Heller and Wickelmaier (2004) for details on the parameter
-  estimation methods.
+  model (BLIM) for probabilistic knowledge structures.  See Heller and
+  Wickelmaier (2004) for details on the parameter estimation methods.
 }
 
 \value{
