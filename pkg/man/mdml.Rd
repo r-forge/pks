@@ -52,7 +52,9 @@ mdml(K, N.R, method = c("MD", "ML", "MDML"),
   \item{eta}{vector of estimated parameter values for probabilities of a
     lucky guess.}
   \item{disc.tab}{matrix of symmetric set distances.}
-  \item{R}{matrix of response patterns.}
+  \item{K}{the knowledge structure.}
+  \item{N.R}{the vector of frequencies of response patterns.}
+  \item{nitems}{the number of items.}
   \item{nstates}{number of knowledge states.}
   \item{npatterns}{number of response patterns.}
   \item{ntotal}{number of respondents.}

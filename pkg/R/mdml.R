@@ -86,8 +86,9 @@ mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
   }
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
-    disc.tab=disc.tab, R=R, nstates=nstat, npatterns=npat, ntotal=N,
-    nerror=nerror, errtype=errtype, method=method, iter=iter, loglike=loglike)
+    disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstat,
+    npatterns=npat, ntotal=N, nerror=nerror, errtype=errtype, method=method,
+    iter=iter, loglike=loglike)
   class(z) <- "mdml"
   z
 }
