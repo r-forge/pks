@@ -1,5 +1,5 @@
-## MDML estimation
-mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
+## MDML estimation of the basic local independence model (BLIM)
+blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
@@ -19,8 +19,8 @@ mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
-  em  <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
-  md  <- switch(method, MD = 1, ML = 0, MDML = 1)
+  em    <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
+  md    <- switch(method, MD = 1, ML = 0, MDML = 1)
   d.RK  <- switch(errtype <- match.arg(errtype),
              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
                       sum(xor(q, r))))),
@@ -89,12 +89,12 @@ mdml <- function(K, N.R, method = c("MD", "ML", "MDML"),
     disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstat,
     npatterns=npat, ntotal=N, nerror=nerror, errtype=errtype, method=method,
     iter=iter, loglike=loglike)
-  class(z) <- "mdml"
+  class(z) <- "blim"
   z
 }
 
 
-print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
+print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   cat("Parameter estimation in probabilistic knowledge structures")
   method <- switch(x$method,

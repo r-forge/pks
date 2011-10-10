@@ -1,6 +1,6 @@
-\name{mdml}
-\alias{mdml}
-\alias{print.mdml}
+\name{blim}
+\alias{blim}
+\alias{print.blim}
 
 \title{Minimum Discrepancy Maximum Likelihood Estimation}
 \description{
@@ -8,7 +8,7 @@
   structures.
 }
 \usage{
-mdml(K, N.R, method = c("MD", "ML", "MDML"),
+blim(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
@@ -43,7 +43,7 @@ mdml(K, N.R, method = c("MD", "ML", "MDML"),
 \details{}
 
 \value{
-  An object of class \code{mdml} having the following components:
+  An object of class \code{blim} having the following components:
   \item{discrepancy}{mean discrepancy.}
   \item{P.K}{vector of estimated parameter values for probabilities of
     knowledge states.}
@@ -81,8 +81,8 @@ data(DoignonFalmagne7)
 K   <- DoignonFalmagne7$K    # knowledge structure
 N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 
-mdml(K, N.R, method="MD")    # minimum discrepancy estimation
-mdml(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
-mdml(K, N.R, method="MDML")  # MDML estimation
+blim(K, N.R, method="MD")    # minimum discrepancy estimation
+blim(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
+blim(K, N.R, method="MDML")  # MDML estimation
 }
 \keyword{models}
