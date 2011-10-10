@@ -25,7 +25,7 @@ md(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 }
 
 \details{
-  Most functionality of \code{md} is also provided by \code{mdml}, apart from
+  Most functionality of \code{md} is also provided by \code{blim}, apart from
   the hyperbolic inclusion rules.  So, \code{md} may be removed in the future.
 
   FIX ME: explain hypblc inclusion rules.
@@ -53,7 +53,7 @@ md(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   2-4, Ghent, Belgium. 
 }
 
-\seealso{\code{\link{mdml}}}
+\seealso{\code{\link{blim}}}
 
 \examples{
 data(DoignonFalmagne7)
