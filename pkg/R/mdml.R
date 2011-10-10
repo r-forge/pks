@@ -128,3 +128,24 @@ print.mdml <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
   invisible(x)
 }
+
+
+## Simulate responses from BLIM
+simulate.blim <- function(object, nsim = 1, seed = NULL, ...){
+     P.K <- object$P.K
+    beta <- object$beta
+     eta <- object$eta
+       K <- object$K
+  nitems <- object$nitems
+       N <- object$ntotal
+
+  states <- sample(rownames(K), N, replace=TRUE, prob=P.K)  # draw states
+
+  P.1.K <- K*(1 - beta) + (1 - K)*eta              # Pr(resp = 1 | K)
+  R     <- matrix(numeric(N * nitems), N, nitems)  # response matrix
+  for(i in seq_along(states))
+    R[i,] <- rbinom(nitems, 1, P.1.K[states[i],])  # draw a response
+
+  table(apply(R, 1, paste, collapse=""))
+}
+
