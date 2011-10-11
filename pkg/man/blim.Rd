@@ -18,17 +18,17 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
   \item{K}{a state-by-problem indicator matrix representing the knowledge
     structure.  An element is one if the problem is contained in the state,
     and else zero.}
-  \item{N.R}{(named) vector of absolute frequencies of response patterns.}
+  \item{N.R}{a (named) vector of absolute frequencies of response patterns.}
   \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
     maximum likelihood estimation, \code{MDML} for minimum discrepancy
-    maximum likelihood estimation}
-  \item{R}{response patterns, a matrix of zeros and ones.  Per default
-    inferred from the names of \code{N.R}.}
-  \item{P.K}{vector of initial parameter values for probabilities of
+    maximum likelihood estimation.}
+  \item{R}{a person-by-problem indicator matrix of response patterns.  Per
+    default inferred from the names of \code{N.R}.}
+  \item{P.K}{the vector of initial parameter values for probabilities of
     knowledge states.}
-  \item{beta}{vector of initial parameter values for probabilities of a
+  \item{beta}{the vector of initial parameter values for probabilities of a
     careless error.}
-  \item{eta}{vector of initial parameter values for probabilities of a
+  \item{eta}{the vector of initial parameter values for probabilities of a
     lucky guess.}
   \item{errtype}{type of response errors that can occur: \code{error} for
     careless errors only, \code{guessing} for lucky guesses only, and
@@ -38,7 +38,7 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
   \item{incradius}{include knowledge states of distance from the minimum
     discrepant states less than or equal to \code{incradius}.}
   \item{tol}{tolerance, stopping criterion for iteration.}
-  \item{maxiter}{maximum number of iterations.}
+  \item{maxiter}{the maximum number of iterations.}
 }
 
 \details{
@@ -49,25 +49,25 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 
 \value{
   An object of class \code{blim} having the following components:
-  \item{discrepancy}{mean discrepancy.}
-  \item{P.K}{vector of estimated parameter values for probabilities of
+  \item{discrepancy}{the mean discrepancy.}
+  \item{P.K}{the vector of estimated parameter values for probabilities of
     knowledge states.}
-  \item{beta}{vector of estimated parameter values for probabilities of
+  \item{beta}{the vector of estimated parameter values for probabilities of
     a careless error.}
-  \item{eta}{vector of estimated parameter values for probabilities of a
+  \item{eta}{the vector of estimated parameter values for probabilities of a
     lucky guess.}
-  \item{disc.tab}{matrix of symmetric set distances.}
+  \item{disc.tab}{the matrix of symmetric set distances.}
   \item{K}{the knowledge structure.}
   \item{N.R}{the vector of frequencies of response patterns.}
   \item{nitems}{the number of items.}
-  \item{nstates}{number of knowledge states.}
-  \item{npatterns}{number of response patterns.}
-  \item{ntotal}{number of respondents.}
-  \item{nerror}{number of response errors.}
-  \item{errtype}{type of response errors.}
-  \item{method}{estimation method.}
-  \item{iter}{number of iterations needed.}
-  \item{loglike}{log-likelihood.}
+  \item{nstates}{the number of knowledge states.}
+  \item{npatterns}{the number of response patterns.}
+  \item{ntotal}{the number of respondents.}
+  \item{nerror}{the number of response errors.}
+  \item{errtype}{the type of response errors.}
+  \item{method}{the parameter estimation method.}
+  \item{iter}{the number of iterations needed.}
+  \item{loglike}{the log-likelihood.}
 }
 
 \references{

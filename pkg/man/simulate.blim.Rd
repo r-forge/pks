@@ -1,6 +1,6 @@
 \name{simulate.blim}
 \alias{simulate.blim}
-\title{Simulate Responses from Basic Local Independence (BLIM) Models}
+\title{Simulate Responses from Basic Local Independence Models (BLIMs)}
 \description{
   Simulates responses from the distribution corresponding to a fitted
   \code{blim} model object.
@@ -10,9 +10,9 @@
 }
 \arguments{
   \item{object}{an object of class \code{blim}, typically the result of a
-    call to \code{\link{blim}}}
-  \item{nsim}{currently not used}
-  \item{seed}{currently not used}
+    call to \code{\link{blim}}.}
+  \item{nsim}{currently not used.}
+  \item{seed}{currently not used.}
   \item{\dots}{further arguments passed to or from other methods.
     None are used in this method.}
 }
@@ -23,7 +23,7 @@
   object's \code{beta} and \code{eta} components.
 }
 \value{
-  A named vector of freqencies of responses.
+  A named vector of freqencies of response patterns.
 }
 \seealso{
   \code{\link{blim}}.

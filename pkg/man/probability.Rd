@@ -28,28 +28,28 @@
 \format{
   A data frame with 504 cases and 68 variables:
   \itemize{
-    \item{\code{case} A factor giving the case id, a five-digits code
+    \item{\code{case} a factor giving the case id, a five-digits code
       the fist digit denoting lab or online branch of the study, the last
       four digits being the case number.}
     \item{\code{lastpage} Which page of the questionnaire was reached
       before quitting?  The questionnaire consisted of ten pages.}
-    \item{\code{mode} A factor; \code{lab} or \code{online} branch of
+    \item{\code{mode} a factor; \code{lab} or \code{online} branch of
       study.}
-    \item{\code{started} A timestamp of class POSIXlt.  When did participant
+    \item{\code{started} a timestamp of class POSIXlt.  When did participant
       start working on the questionnaire?}
-    \item{\code{sex} A factor coding sex of participant.}
-    \item{\code{age} Age of participant.}
-    \item{\code{educat} Education as a factor with three levels:
+    \item{\code{sex} a factor coding sex of participant.}
+    \item{\code{age} age of participant.}
+    \item{\code{educat} education as a factor with three levels:
       \code{1} secondary school or below; \code{2} higher education entrance
       qualification; \code{3} university degree.}
-    \item{\code{fos} Field of study.  Factor with eight levels:
+    \item{\code{fos} field of study.  Factor with eight levels:
       \code{ecla} economics, business, law; \code{else} miscellaneous;
       \code{hipo} history, politics; \code{lang} languages; \code{mabi}
       mathematics, physics, biology; \code{medi} medical science;
       \code{phth} philosophy, theology; \code{psco} psychology,
       computer science, cognitive science.}
-    \item{\code{semester} Ordered factor.  What semester are you in?}
-    \item{\code{learnobj} A factor with two levels:
+    \item{\code{semester} ordered factor.  What semester are you in?}
+    \item{\code{learnobj} a factor with two levels:
       \code{enhan} learning object enhanced with examples;
       \code{basic} learning object without examples.}
   }
@@ -151,12 +151,12 @@
   }
   Further variables:
   \itemize{
-    \item{\code{time01}, ..., \code{time10} The time (in s) spent on each
+    \item{\code{time01}, ..., \code{time10} the time (in s) spent on each
       page of the questionnaire.  In the lab branch of the study, participants
       started directly on Page 2.}
-    \item{\code{b101}, ..., \code{b112} The twelve problems of the first
+    \item{\code{b101}, ..., \code{b112} the twelve problems of the first
       part coded as correct (1) or error (0).}
-    \item{\code{b201}, ..., \code{b212} The twelve problems of the second
+    \item{\code{b201}, ..., \code{b212} the twelve problems of the second
       part coded as correct (1) or error (0).}
   }
 }

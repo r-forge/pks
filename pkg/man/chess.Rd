@@ -4,18 +4,17 @@
 \description{
   Held, Schrepp and Fries (1995) derive several knowledge structures for the
   representation of 92 responses to 16 chess problems.  See Schrepp, Held and
-  Albert (1999) for a detailed description of theses problems.
+  Albert (1999) for a detailed description of these problems.
 }
 \usage{data(chess)}
 \format{
   A list consisting of four components:
   \describe{
     \item{\code{dst1}}{a state-by-problem indicator matrix representing the
-      knowledge structure DST1.  An element is one if the problem
-      is contained in the state, and else zero.}
+      knowledge structure DST1.}
     \item{\code{dst3}}{the knowledge structure DST3.}
     \item{\code{dst4}}{the knowledge structure DST4.}
-    \item{\code{N.R}}{A named numeric vector.  The names denote responses
+    \item{\code{N.R}}{a named numeric vector.  The names denote responses
       patterns, the values denote their frequencies.}
   }
 }
