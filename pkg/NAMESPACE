@@ -1,0 +1,13 @@
+import(
+  "stats"
+)
+
+export(
+  "blim",
+  "blimMD"
+)
+
+S3method("print", "blim")
+S3method("logLik", "blim")
+S3method("simulate", "blim")
+
