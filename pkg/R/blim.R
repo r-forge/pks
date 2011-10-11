@@ -96,7 +96,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
 
 print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\n")
-  cat("Parameter estimation in probabilistic knowledge structures")
+  cat("Basic local independence models (BLIMs)")
   method <- switch(x$method,
             MD = "Minimum discrepancy",
             ML = "Maximum likelihood",

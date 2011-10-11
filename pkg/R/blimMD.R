@@ -1,5 +1,5 @@
-## Minimum discrepancy estimation
-md <- function(K, N.R,
+## Fitting BLIM by minimum discrepancy
+blimMD <- function(K, N.R,
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   errtype = c("both", "error", "guessing"),
   incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
@@ -48,39 +48,9 @@ md <- function(K, N.R,
                sum(m.RK[,which(K[,j] == 0)])
   }
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
-    disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N)
-  class(z) <- "md"
+    disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N,
+    nerror=NA, method="MD", iter=NA, loglike=NA)
+  class(z) <- "blim"
   z
 }
-
-
-print.md <- function(x, digits=max(3, getOption("digits") - 2), ...){
-  cat("\n")
-  cat("Minimum discrepancy estimation in probabilistic knowledge structures")
-  cat("\n\nNumber of knowledge states:", x$nstates)
-  cat("\nNumber of response patterns:", x$npatterns)
-  cat("\nNumber of respondents:", x$ntotal)
-  cat("\n\n")
-  cat("Minimum discrepancy distribution (Mean = ",
-    round(x$discrepancy, digits=digits), ")\n", sep="")
-  disc.tab <- x$disc.tab
-  names(dimnames(disc.tab)) <- NULL
-  print(disc.tab)
-  cat("\n")
-  cat("Distribution of knowledge states\n")
-  printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
-  cat("\n")
-  cat("Error and guessing parameters\n")
-  printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
-    tst.ind=NULL)
-  cat("\n")
-  invisible(x)
-}
-
-
-## TO DO
-# summary.md()
-# print.summary.md()
-# plot.md()
-# simulate.md()
 

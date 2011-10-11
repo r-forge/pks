@@ -1,5 +1,6 @@
 \name{blim}
 \alias{blim}
+\alias{blimMD}
 \alias{print.blim}
 
 \title{Basic Local Independence Models (BLIMs)}
@@ -12,6 +13,10 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
   tol=1e-7, maxiter = 10000)
+
+blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+  errtype = c("both", "error", "guessing"),
+  incrule = c("minimum", "hypblc1", "hypblc2"), m = 1)
 }
 
 \arguments{
@@ -39,12 +44,18 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
     discrepant states less than or equal to \code{incradius}.}
   \item{tol}{tolerance, stopping criterion for iteration.}
   \item{maxiter}{the maximum number of iterations.}
+  \item{incrule}{inclusion rule for knowledge states.  (See Details.)}
+  \item{m}{exponent for hyperbolic inclusion rules.}
 }
 
 \details{
   See Doignon and Falmagne (1999) for details on the basic local independence
   model (BLIM) for probabilistic knowledge structures.  See Heller and
   Wickelmaier (2004) for details on the parameter estimation methods.
+
+  \code{blimMD} uses minimum discrepancy estimation only.  Most its
+  functionality is also provided by \code{blim}, apart from the hyperbolic
+  inclusion rules.  So, \code{blimMD} may be removed in the future.
 }
 
 \value{
@@ -83,7 +94,7 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 \seealso{
-  \code{\link{md}}, \code{\link{simulate.blim}}.
+  \code{\link{simulate.blim}}.
 }
 
 \examples{
