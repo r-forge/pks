@@ -15,7 +15,9 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 \arguments{
-  \item{K}{knowledge structure, a (named) matrix of zeroes and ones.}
+  \item{K}{a state-by-problem indicator matrix representing the knowledge
+    structure.  An element is one if the problem is contained in the state,
+    and else zero.}
   \item{N.R}{(named) vector of absolute frequencies of response patterns.}
   \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
     maximum likelihood estimation, \code{MDML} for minimum discrepancy
@@ -69,11 +71,13 @@ blim(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 \references{
-  Doignon, J.-P. & Falmagne, J.-C. (1999). Knowledge spaces. Berlin:
-  Springer.
+  Doignon, J.-P., & Falmagne, J.-C. (1999).
+  \emph{Knowledge spaces}. Berlin: Springer.
 
-  Heller, J., & Wickelmaier, F. (2004). Parameter estimation in probabilistic
-  knowledge structures: the minimum-discrepancy method. Presented at the
+  Heller, J., & Wickelmaier, F. (2004).
+  Parameter estimation in probabilistic knowledge structures: the
+  minimum-discrepancy method.
+  Presented at the
   \emph{35th European Mathematical Psychology Group (EMPG) Meeting}, September
   2-4, Ghent, Belgium. 
 }
