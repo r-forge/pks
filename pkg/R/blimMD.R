@@ -38,7 +38,8 @@ blimMD <- function(K, N.R,
   beta <- eta <- numeric(nitems)
   names(beta) <- names(eta) <-
     if(is.null(colnames(K))){
-      make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
+      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+        sep="")
     }else colnames(K)
   for(j in seq_len(nitems)){
     beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /

@@ -2,6 +2,7 @@
 \alias{blim}
 \alias{blimMD}
 \alias{print.blim}
+\alias{logLik.blim}
 
 \title{Basic Local Independence Models (BLIMs)}
 \description{Fits a basic local independence model for probabilistic knowledge
@@ -75,10 +76,11 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   \item{npatterns}{the number of response patterns.}
   \item{ntotal}{the number of respondents.}
   \item{nerror}{the number of response errors.}
+  \item{npar}{the number of parameters.}
   \item{errtype}{the type of response errors.}
   \item{method}{the parameter estimation method.}
   \item{iter}{the number of iterations needed.}
-  \item{loglike}{the log-likelihood.}
+  \item{loglik}{the log-likelihood.}
 }
 
 \references{

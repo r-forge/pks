@@ -10,11 +10,6 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  names(beta) <- names(eta) <-
-    if(is.null(colnames(K))) {
-        make.unique(c("a", letters[(1:nitems %% 26) + 1])[-(nitems + 1)], sep="")
-    } else
-        colnames(K)
   names(P.K) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
@@ -46,49 +41,62 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
     eta.old  <- eta
     
     P.R.K  <- switch(errtype,
-              both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                 prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
-             error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                 prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
-          guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                 prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
-    P.R     <- as.numeric(P.R.K %*% P.K)
-    P.K.R   <- P.R.K * outer(1/P.R, P.K)                      # prediction of P(K|R)
-    mat.RK  <- i.RK^md * P.K.R^em
-    m.RK    <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)  # m.RK = E(M.RK) = P(K|R) * N(R)
-    loglike <- sum(log(P.R) * as.integer(N.R))
+           both = t(apply(R, 1, function(r) apply(K, 1, function(q)
+              prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
+          error = t(apply(R, 1, function(r) apply(K, 1, function(q)
+              prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
+       guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
+              prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
+    P.R    <- as.numeric(P.R.K %*% P.K)
+    P.K.R  <- P.R.K * outer(1/P.R, P.K)                     # prediction of P(K|R)
+    mat.RK <- i.RK^md * P.K.R^em
+    m.RK   <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)  # m.RK = E(M.RK) = P(K|R) * N(R)
+    loglik <- sum(log(P.R) * N.R)
 
     ## Distribution of knowledge states
     P.K <- colSums(m.RK) / N
 
     ## Careless error and guessing parameters
-    ce <- lg <- 0
-    P.Kq <- numeric(nitems)
     for(j in seq_len(nitems)) {
       beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
                  sum(m.RK[,which(K[,j] == 1)])
+
       eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
                  sum(m.RK[,which(K[,j] == 0)])
-      P.Kq[j] <- sum(as.numeric(P.K[which(K[,j] == 1)]))
-      ce <- ce + as.numeric(beta[j]) * P.Kq[j]
-      lg <- lg + as.numeric(eta[j]) * (1 - P.Kq[j])
     }
 
     maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
     iter <- iter + 1
   }
 
-  nerror <- c(ce, lg)
-  names(nerror) <- c("careless error", "lucky guess")
+  ## Mean number of errors
+  P.Kq <- numeric(nitems)
+  for(j in seq_len(nitems))
+    P.Kq[j] <- sum(P.K[which(K[,j] == 1)])
+  nerror <- c("careless error" = sum(beta * P.Kq),
+                 "lucky guess" = sum( eta * (1 - P.Kq)))
+
+  ## Global beta and eta parameters
   if (errequal) {
-    beta <- rep(sum(beta * P.Kq) / sum(P.Kq), nitems)
-    eta  <- rep(sum(eta * (1 - P.Kq)) / (nitems - sum(P.Kq)), nitems)
+    beta <- rep(nerror[1] / sum(P.Kq),            nitems)
+     eta <- rep(nerror[2] / (nitems - sum(P.Kq)), nitems)
   }
+
+  names(beta) <- names(eta) <-
+    if(is.null(colnames(K))) {
+      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+        sep="")
+    } else
+      colnames(K)
+
+  ## Number of parameters
+  npar <- length(P.K) - 1 +
+    (if(errtype == "both") 2 else 1) * (if(errequal) 1 else nitems)
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstat,
-    npatterns=npat, ntotal=N, nerror=nerror, errtype=errtype, method=method,
-    iter=iter, loglike=loglike)
+    npatterns=npat, ntotal=N, nerror=nerror, npar=npar, errtype=errtype,
+    method=method, iter=iter, loglik=loglik)
   class(z) <- "blim"
   z
 }
@@ -117,7 +125,7 @@ print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\nMean number or errors (total = ",
     round(sum(x$nerror), digits=digits), ")\n", sep="")
   print(x$nerror)
-  cat("\nlog-likelikood:", x$loglike)
+  cat("\nlog-likelikood:", x$loglik)
   cat("\n\n")
   cat("Distribution of knowledge states\n")
   printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
@@ -127,6 +135,18 @@ print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
     tst.ind=NULL)
   cat("\n")
   invisible(x)
+}
+
+
+## Log-likelihood for blim objects
+logLik.blim <- function(object, ...){
+  if(length(list(...)))
+      warning("extra arguments discarded")
+  p <- object$npar
+  val <- object$loglik
+  attr(val, "df") <- p
+  class(val) <- "logLik"
+  val
 }
 
 
