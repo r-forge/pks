@@ -1,26 +1,35 @@
 \name{chess}
 \alias{chess}
-\title{Artificial Responses from Doignon and Falmagne (1999)}
+\title{Responses to Chess Problems and Knowledge Structures}
 \description{
-  Fictitious data set from Doignon and Falmagne (1999, chap. 7).
-  Response patterns of 1000 respondents to five problems. Each
-  respondent is assumed to be in one of nine possible states of
-  the knowledge structure \code{K}.
+  Held, Schrepp and Fries (1995) derive several knowledge structures for the
+  representation of 92 responses to 16 chess problems.  See Schrepp, Held and
+  Albert (1999) for a detailed description of theses problems.
 }
 \usage{data(chess)}
 \format{
-  A list consisting of two components:
+  A list consisting of four components:
   \describe{
-    \item{\code{K}}{A state-by-problem indicator matrix representing the
-      hypothetical knowledge structure. An element is one if the problem
+    \item{\code{dst1}}{a state-by-problem indicator matrix representing the
+      knowledge structure DST1.  An element is one if the problem
       is contained in the state, and else zero.}
-    \item{\code{N.R}}{A named vector of type integer. The names denote
-      responses patterns, the values denote their frequencies.}
+    \item{\code{dst3}}{the knowledge structure DST3.}
+    \item{\code{dst4}}{the knowledge structure DST4.}
+    \item{\code{N.R}}{A named numeric vector.  The names denote responses
+      patterns, the values denote their frequencies.}
   }
 }
 \source{
-  Doignon, J.-P. & Falmagne, J.-C. (1999). Knowledge spaces. Berlin:
-  Springer.
+  Held, T., Schrepp, M., & Fries, S. (1995).
+  Methoden zur Bestimmung von Wissensstrukturen -- eine Vergleichsstudie.
+  \emph{Zeitschrift fuer Experimentelle Psychologie}, \bold{42}, 205--236.
+}
+\references{
+  Schrepp, M., Held, T., & Albert, D. (1999).
+  Component-based construction of surmise relations for chess problems.
+  In D. Albert & J. Lukas (Eds.),
+  \emph{Knowledge spaces: Theories, empirical research, and applications}
+  (pp. 41--66).  Mahwah, NJ: Erlbaum.
 }
 \examples{
 data(chess)
