@@ -4,6 +4,7 @@ blimMD <- function(K, N.R,
   errtype = c("both", "error", "guessing"),
   incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
 
+  K      <- as.matrix(K)
   N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
   N      <- sum(N.R)
   nitems <- ncol(K)

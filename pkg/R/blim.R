@@ -5,13 +5,14 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
   tol=0.0000001, maxiter = 10000) {
 
+  K      <- as.matrix(K)
   N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
   N      <- sum(N.R)
   nitems <- ncol(K)
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  names(P.K) <-
+  names(P.K) <- rownames(K) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
@@ -158,18 +159,18 @@ simulate.blim <- function(object, nsim = 1, seed = NULL, ...){
      P.K <- object$P.K
     beta <- object$beta
      eta <- object$eta
-       K <- object$K
+       K <- as.matrix(object$K)
   nitems <- object$nitems
        N <- object$ntotal
 
-  states <- sample(rownames(K), N, replace=TRUE, prob=P.K)  # draw states
+  state.id <- sample(seq_along(P.K), N, replace=TRUE, prob=P.K)  # draw states
 
-  P.1.K <- K*(1 - beta) + (1 - K)*eta              # Pr(resp = 1 | K)
-  R     <- matrix(numeric(N * nitems), N, nitems)  # response matrix
-  for(i in seq_along(states))
-    R[i,] <- rbinom(nitems, 1, P.1.K[states[i],])  # draw a response
+  P.1.K <- K*(1 - beta) + (1 - K)*eta                # P(resp = 1 | K)
+  R     <- matrix(N * nitems, N, nitems)             # response matrix
+  for(i in seq_len(N))
+    R[i,] <- rbinom(nitems, 1, P.1.K[state.id[i],])  # draw a response
 
   N.R <- table(apply(R, 1, paste, collapse=""))
-  setNames(as.integer(N.R), names(N.R))            # convert to named int
+  setNames(as.integer(N.R), names(N.R))              # convert to named int
 }
 
