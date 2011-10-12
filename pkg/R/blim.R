@@ -12,7 +12,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  names(P.K) <- rownames(K) <-
+  names(P.K) <-
     if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
 
   ## Assigning state K given response R
