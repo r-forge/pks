@@ -5,6 +5,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
   tol=0.0000001, maxiter = 10000) {
 
+  N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
   N      <- sum(N.R)
   nitems <- ncol(K)
   npat   <- nrow(R)
@@ -48,9 +49,9 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
        guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
               prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
     P.R    <- as.numeric(P.R.K %*% P.K)
-    P.K.R  <- P.R.K * outer(1/P.R, P.K)                     # prediction of P(K|R)
+    P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
     mat.RK <- i.RK^md * P.K.R^em
-    m.RK   <- (mat.RK / rowSums(mat.RK)) * as.integer(N.R)  # m.RK = E(M.RK) = P(K|R) * N(R)
+    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R) * N(R)
     loglik <- sum(log(P.R) * N.R)
 
     ## Distribution of knowledge states
@@ -166,6 +167,7 @@ simulate.blim <- function(object, nsim = 1, seed = NULL, ...){
   for(i in seq_along(states))
     R[i,] <- rbinom(nitems, 1, P.1.K[states[i],])  # draw a response
 
-  table(apply(R, 1, paste, collapse=""))
+  N.R <- table(apply(R, 1, paste, collapse=""))
+  setNames(as.integer(N.R), names(N.R))            # convert to named int
 }
 
