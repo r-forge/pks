@@ -4,6 +4,7 @@ blimMD <- function(K, N.R,
   errtype = c("both", "error", "guessing"),
   incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
 
+  N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
   N      <- sum(N.R)
   nitems <- ncol(K)
   npat   <- nrow(R)
@@ -23,7 +24,7 @@ blimMD <- function(K, N.R,
              minimum = (d.RK == d.min) &              !is.na(d.RK),
              hypblc1 = replace(1/(1 + d.RK - d.min)^m, is.na(d.RK), 0),
              hypblc2 = replace(1/(1 + d.RK)^m,         is.na(d.RK), 0))
-  m.RK  <- i.RK/rowSums(i.RK) * as.integer(N.R)       # P(K|R) * N(R)
+  m.RK  <- i.RK/rowSums(i.RK) * N.R                   # P(K|R) * N(R)
 
   ## Minimum discrepancy distribution 
   disc.tab <- xtabs(N.R ~ d.min)
