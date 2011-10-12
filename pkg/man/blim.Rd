@@ -1,7 +1,6 @@
 \name{blim}
 \alias{blim}
 \alias{blimMD}
-\alias{print.blim}
 \alias{logLik.blim}
 
 \title{Basic Local Independence Models (BLIMs)}
