@@ -1,4 +1,4 @@
-## Fitting the basic local independence model (BLIM) MDML
+## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
@@ -97,7 +97,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
     (if(errtype == "both") 2 else 1) * (if(errequal) 1 else nitems)
 
   ## Goodness of fit
-  fitted <- N*P.R
+  fitted <- setNames(N*P.R, names(N.R))
   G2     <- 2*sum(N.R*log(N.R/fitted), na.rm=TRUE)
   df     <- (2^nitems - 1) - npar
   gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
@@ -163,6 +163,41 @@ logLik.blim <- function(object, ...){
   attr(val, "df") <- p
   class(val) <- "logLik"
   val
+}
+
+
+## Residuals for BLIMs
+residuals.blim <- function(object, type=c("deviance", "pearson"), ...){
+
+  dev.resids <- function(y, mu, wt)
+    2 * wt * (y * log(ifelse(y == 0, 1, y/mu)) - (y - mu))
+
+  type <- match.arg(type)
+  wts <- object$ntotal
+  y <- object$N.R / wts
+  mu <- object$fitted.values/wts
+  res <- switch(type,
+    deviance = if(object$goodness['df'] > 0){
+        d.res <- sqrt(pmax(dev.resids(y, mu, wts), 0))
+        ifelse(y > mu, d.res, -d.res)  # sign
+      }
+      else rep.int(0, length(mu)),
+    pearson = (y - mu) * sqrt(wts)/sqrt(mu)
+  )
+  if(!is.null(object$na.action)) res <- naresid(object$na.action, res)
+  res
+}
+
+
+## Diagnostic plot for BLIMs
+plot.blim <- function(x,
+  xlab="Predicted response probabilities", ylab="Deviance residuals", ...){
+
+  xres <- resid(x)
+  mu   <- x$fitted.values/x$ntotal
+  plot(mu, xres, xlab = xlab, ylab = ylab, type="n", ...)
+  abline(h = 0, lty = 2)
+  panel.smooth(mu, xres)
 }
 
 
