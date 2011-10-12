@@ -80,6 +80,10 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   \item{method}{the parameter estimation method.}
   \item{iter}{the number of iterations needed.}
   \item{loglik}{the log-likelihood.}
+  \item{fitted.values}{the fitted response frequencies.}
+  \item{goodness.of.fit}{the goodness of fit statistic including the
+    likelihood ratio fitted vs. saturated model (G2), the degrees of
+    freedom, and the p-value of the corresponding chi-square distribution.}
 }
 
 \references{

@@ -1,4 +1,4 @@
-## MDML estimation of the basic local independence model (BLIM)
+## Fitting the basic local independence model (BLIM) MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
@@ -96,10 +96,17 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   npar <- length(P.K) - 1 +
     (if(errtype == "both") 2 else 1) * (if(errequal) 1 else nitems)
 
+  ## Goodness of fit
+  fitted <- N*P.R
+  G2     <- 2*sum(N.R*log(N.R/fitted), na.rm=TRUE)
+  df     <- (2^nitems - 1) - npar
+  gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
+
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstat,
     npatterns=npat, ntotal=N, nerror=nerror, npar=npar, errtype=errtype,
-    method=method, iter=iter, loglik=loglik)
+    method=method, iter=iter, loglik=loglik, fitted.values=fitted,
+    goodness.of.fit=gof)
   class(z) <- "blim"
   z
 }
@@ -116,11 +123,16 @@ print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,
             MD = "Minimum discrepancy",
             ML = "Maximum likelihood",
           MDML = "Minimum discrepancy maximum likelihood")
-  cat("\n\nMethod: ", method, ", ", sep="")
-  print(logLik(x))
-  cat("Number of iterations:", x$iter)
+  cat("\n\nMethod:", method)
+  cat("\nNumber of iterations:", x$iter)
+  G2   <- x$goodness.of.fit[1]
+  df   <- x$goodness.of.fit[2]
+  pval <- x$goodness.of.fit[3]
+  cat("\nGoodness of fit (2 log likelihood ratio):\n")
+  cat("\tG2(", df, ") = ", format(G2, digits=digits), ", p = ",
+      format(pval, digits=digits), "\n", sep="")
 
-  cat("\n\nMinimum discrepancy distribution (mean = ",
+  cat("\nMinimum discrepancy distribution (mean = ",
     round(x$discrepancy, digits=digits), ")\n", sep="")
   disc.tab <- x$disc.tab
   names(dimnames(disc.tab)) <- NULL
