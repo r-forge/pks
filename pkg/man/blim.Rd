@@ -5,8 +5,8 @@
 \alias{logLik.blim}
 
 \title{Basic Local Independence Models (BLIMs)}
-\description{Fits a basic local independence model for probabilistic knowledge
-  structures by minimum discrepancy maximum likelihood estimation.
+\description{Fits a basic local independence model (BLIM) for probabilistic
+  knowledge structures by minimum discrepancy maximum likelihood estimation.
 }
 \usage{
 blim(K, N.R, method = c("MD", "ML", "MDML"),
@@ -54,7 +54,7 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   model (BLIM) for probabilistic knowledge structures.  See Heller and
   Wickelmaier (2004) for details on the parameter estimation methods.
 
-  \code{blimMD} uses minimum discrepancy estimation only.  Most its
+  \code{blimMD} uses minimum discrepancy estimation only.  Most of its
   functionality is also provided by \code{blim}, apart from the hyperbolic
   inclusion rules.  So, \code{blimMD} may be removed in the future.
 }
