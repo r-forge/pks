@@ -23,7 +23,7 @@
   object's \code{beta} and \code{eta} components.
 }
 \value{
-  A named vector of freqencies of response patterns.
+  A named vector of frequencies of response patterns.
 }
 \seealso{
   \code{\link{blim}}.
