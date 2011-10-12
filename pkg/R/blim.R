@@ -69,6 +69,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
     maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
     iter <- iter + 1
   }
+  if(iter >= maxiter) warning("iteration maximum has been exceeded")
 
   ## Mean number of errors
   P.Kq <- numeric(nitems)
@@ -115,7 +116,7 @@ print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
   cat("\nNumber of response patterns:", x$npatterns)
   cat("\nNumber of respondents:", x$ntotal)
   cat("\n\n")
-  cat("Minimum discrepancy distribution (Mean = ",
+  cat("Minimum discrepancy distribution (mean = ",
     round(x$discrepancy, digits=digits), ")\n", sep="")
   disc.tab <- x$disc.tab
   names(dimnames(disc.tab)) <- NULL
