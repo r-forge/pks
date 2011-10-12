@@ -9,5 +9,7 @@ export(
 
 S3method("print", "blim")
 S3method("logLik", "blim")
+S3method("residuals", "blim")
+S3method("plot", "blim")
 S3method("simulate", "blim")
 

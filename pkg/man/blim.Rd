@@ -99,7 +99,8 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 }
 
 \seealso{
-  \code{\link{simulate.blim}}.
+  \code{\link{simulate.blim}}, \code{\link{plot.blim}},
+  \code{\link{residuals.blim}}, \code{\link{logLik.blim}}.
 }
 
 \examples{
@@ -107,6 +108,7 @@ data(DoignonFalmagne7)
 K   <- DoignonFalmagne7$K    # knowledge structure
 N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 
+## Fit basic local independence model (BLIM) by different methods
 blim(K, N.R, method="MD")    # minimum discrepancy estimation
 blim(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
 blim(K, N.R, method="MDML")  # MDML estimation
