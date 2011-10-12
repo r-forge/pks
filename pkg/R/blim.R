@@ -104,37 +104,38 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
 }
 
 
-print.blim <- function(x, digits=max(3, getOption("digits") - 2), ...){
-  cat("\n")
-  cat("Basic local independence models (BLIMs)")
+print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,
+  digits=max(3, getOption("digits") - 2), ...){
+  cat("\nBasic local independence models (BLIMs)\n")
+  cat("\nNumber of knowledge states:", x$nstates)
+  cat("\nNumber of response patterns:", x$npatterns)
+  cat("\nNumber of respondents:", x$ntotal)
+
   method <- switch(x$method,
             MD = "Minimum discrepancy",
             ML = "Maximum likelihood",
           MDML = "Minimum discrepancy maximum likelihood")
-  cat("\nMethod:", method)
-  cat("\n\nNumber of knowledge states:", x$nstates)
-  cat("\nNumber of response patterns:", x$npatterns)
-  cat("\nNumber of respondents:", x$ntotal)
-  cat("\n\n")
-  cat("Minimum discrepancy distribution (mean = ",
+  cat("\n\nMethod: ", method, ", ", sep="")
+  print(logLik(x))
+  cat("Number of iterations:", x$iter)
+
+  cat("\n\nMinimum discrepancy distribution (mean = ",
     round(x$discrepancy, digits=digits), ")\n", sep="")
   disc.tab <- x$disc.tab
   names(dimnames(disc.tab)) <- NULL
   print(disc.tab)
-  cat("\n")
-  cat("Number of iterations:", x$iter)
-  cat("\n")
   cat("\nMean number or errors (total = ",
     round(sum(x$nerror), digits=digits), ")\n", sep="")
   print(x$nerror)
-  cat("\nlog-likelikood:", x$loglik)
-  cat("\n\n")
-  cat("Distribution of knowledge states\n")
-  printCoefmat(cbind("Pr(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
-  cat("\n")
-  cat("Error and guessing parameters\n")
-  printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
-    tst.ind=NULL)
+  if(P.Kshow){
+    cat("\nDistribution of knowledge states\n")
+    printCoefmat(cbind("P(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
+  }
+  if(errshow){
+    cat("\nError and guessing parameters\n")
+    printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
+      tst.ind=NULL)
+  }
   cat("\n")
   invisible(x)
 }
