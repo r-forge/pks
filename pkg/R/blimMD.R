@@ -1,6 +1,5 @@
 ## Fitting BLIM by minimum discrepancy
-blimMD <- function(K, N.R,
-  R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+blimMD <- function(K, N.R, R = as.binmat(N.R),
   errtype = c("both", "error", "guessing"),
   incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
 
@@ -33,8 +32,7 @@ blimMD <- function(K, N.R,
 
   ## Distribution of knowledge states
   P.K <- colSums(m.RK)/N
-  names(P.K) <-
-    if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
+  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
 
   ## Careless error and guessing parameters
   beta <- eta <- numeric(nitems)
