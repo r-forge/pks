@@ -6,7 +6,8 @@ Author: Florian Wickelmaier [cre, aut], Juergen Heller [aut],
   Pasquale Anselmi [ctb]
 Maintainer: Florian Wickelmaier <wickelmaier@web.de>
 Depends: R (>= 2.0.0), stats
-Description: Parameter estimation in probabilistic knowledge structures using
-  the minimum discrepancy maximum likelihood (MDML) method.
+Description: Fitting and testing probabilistic knowledge structures,
+  especially the basic local independence model (BLIM, Doignon & Flamagne,
+  1999), using the minimum discrepancy maximum likelihood (MDML) method.
 License: GPL (>= 2)
 URL: http://homepages.uni-tuebingen.de/florian.wickelmaier
