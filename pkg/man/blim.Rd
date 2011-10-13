@@ -2,6 +2,7 @@
 \alias{blim}
 \alias{blimMD}
 \alias{logLik.blim}
+\alias{nobs.blim}
 
 \title{Basic Local Independence Models (BLIMs)}
 \description{Fits a basic local independence model (BLIM) for probabilistic

@@ -157,13 +157,18 @@ print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,
 ## Log-likelihood for blim objects
 logLik.blim <- function(object, ...){
   if(length(list(...)))
-      warning("extra arguments discarded")
+    warning("extra arguments discarded")
   p <- object$npar
   val <- object$loglik
   attr(val, "df") <- p
+  attr(val, "nobs") <- object$npatterns
   class(val) <- "logLik"
   val
 }
+
+
+## Number of obsevations
+nobs.blim <- function(object, ...) object$npatterns
 
 
 ## Residuals for BLIMs
