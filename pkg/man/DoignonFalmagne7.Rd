@@ -14,7 +14,7 @@
     \item{\code{K}}{a state-by-problem indicator matrix representing the
       hypothetical knowledge structure.  An element is one if the problem
       is contained in the state, and else zero.}
-    \item{\code{N.R}}{a named numeric vector.  The names denote responses
+    \item{\code{N.R}}{a named numeric vector.  The names denote response
       patterns, the values denote their frequencies.}
   }
 }

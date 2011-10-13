@@ -11,9 +11,9 @@
 \usage{
 blim(K, N.R, method = c("MD", "ML", "MDML"),
   R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
-  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
-  errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
-  tol=1e-7, maxiter = 10000)
+  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems),
+  eta = rep(0.1, nitems), errtype = c("both", "error", "guessing"),
+  errequal = FALSE, incradius = 0, tol=1e-7, maxiter = 10000)
 
 blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   errtype = c("both", "error", "guessing"),

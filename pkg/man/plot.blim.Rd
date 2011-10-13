@@ -5,9 +5,8 @@
   Plots BLIM residuals against fitted values.
 }
 \usage{
-\method{plot}{blim}(x,
-  xlab = "Predicted response probabilities", ylab = "Deviance residuals",
-  \dots)
+\method{plot}{blim}(x, xlab = "Predicted response probabilities",
+  ylab = "Deviance residuals", \dots)
 }
 \arguments{
   \item{x}{an object of class \code{blim}, typically the result of a
