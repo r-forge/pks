@@ -6,4 +6,5 @@ Changes in 0.1-0
     inheritance): simulate(), print(), logLik(), nobs(), resid(), fitted(),
     plot(), AIC(), BIC()
   * Conversion functions as.pattern() and as.binmat()
+  * Data sets: DoignonFalmagne7, chess, probability
 
