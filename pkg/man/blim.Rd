@@ -51,12 +51,18 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
 
 \details{
   See Doignon and Falmagne (1999) for details on the basic local independence
-  model (BLIM) for probabilistic knowledge structures.  See Heller and
-  Wickelmaier (2004) for details on the parameter estimation methods.
+  model (BLIM) for probabilistic knowledge structures.
 
-  \code{blimMD} uses minimum discrepancy estimation only.  Most of its
-  functionality is also provided by \code{blim}, apart from the hyperbolic
-  inclusion rules.  So, \code{blimMD} may be removed in the future.
+  Minimum discrepancy (MD) minimizes the number of expected response errors
+  (careless errors or lucky guesses). Maximum likelihood maximizes the
+  likelihood, possibly at the expense of inflating the error and guessing
+  parameters.  Minimum discrepancy maximum likelihood (MDML) maximizes the
+  likelihood subject to the constraint of minimum response errors.  See Heller
+  and Wickelmaier (2004) for details on the parameter estimation methods.
+
+  \code{blimMD} uses minimum discrepancy estimation only.  Apart from the
+  hyperbolic inclusion rules, all of its functionality is also provided by
+  \code{blim}.  It may be removed in the future.
 }
 
 \value{
