@@ -1,6 +1,5 @@
 ## Fitting the basic local independence model (BLIM) by MDML
-blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
-  R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
   errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
   tol=0.0000001, maxiter = 10000) {
@@ -12,8 +11,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"),
   npat   <- nrow(R)
   nstat  <- nrow(K)
 
-  names(P.K) <-
-    if(is.null(rownames(K))) apply(K, 1, paste, collapse="") else rownames(K)
+  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
 
   ## Assigning state K given response R
   em    <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
@@ -222,7 +220,35 @@ simulate.blim <- function(object, nsim = 1, seed = NULL, ...){
   for(i in seq_len(N))
     R[i,] <- rbinom(nitems, 1, P.1.K[state.id[i],])  # draw a response
 
-  N.R <- table(apply(R, 1, paste, collapse=""))
-  setNames(as.integer(N.R), names(N.R))              # convert to named int
+  as.pattern(R, freq = TRUE)
+}
+
+
+## Binary matrix to pattern
+as.pattern <- function(R, freq = FALSE){
+  if(freq){
+    N.R <- table(apply(R, 1, paste, collapse=""))
+    setNames(as.integer(N.R), names(N.R))          # convert to named int
+  }else
+    unname(apply(R, 1, paste, collapse=""))
+}
+
+
+## Pattern to named binary matrix
+as.binmat <- function(N.R, uniq = TRUE, col.names = NULL){
+  pat <- if(is.null(names(N.R))) N.R else names(N.R)
+  R   <- if(uniq) strsplit(pat, "") else strsplit(rep(pat, N.R), "")
+  R   <- do.call(rbind, R)
+  storage.mode(R) <- "numeric"
+
+  colnames(R) <- 
+    if(is.null(col.names)){
+      nitems <- ncol(R)
+      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+        sep="")
+    }else
+      col.names
+
+  R
 }
 

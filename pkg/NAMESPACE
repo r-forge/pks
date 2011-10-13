@@ -4,7 +4,9 @@ import(
 
 export(
   "blim",
-  "blimMD"
+  "blimMD",
+  "as.pattern",
+  "as.binmat"
 )
 
 S3method("print", "blim")

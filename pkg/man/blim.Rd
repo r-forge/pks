@@ -9,8 +9,7 @@
   knowledge structures by minimum discrepancy maximum likelihood estimation.
 }
 \usage{
-blim(K, N.R, method = c("MD", "ML", "MDML"),
-  R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
+blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems),
   eta = rep(0.1, nitems), errtype = c("both", "error", "guessing"),
   errequal = FALSE, incradius = 0, tol=1e-7, maxiter = 10000)
@@ -28,8 +27,8 @@ blimMD(K, N.R, R = t(sapply(strsplit(names(N.R), ""), as.numeric)),
   \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
     maximum likelihood estimation, \code{MDML} for minimum discrepancy
     maximum likelihood estimation.}
-  \item{R}{a person-by-problem indicator matrix of response patterns.  Per
-    default inferred from the names of \code{N.R}.}
+  \item{R}{a person-by-problem indicator matrix of unique response patterns.
+    Per default inferred from the names of \code{N.R}.}
   \item{P.K}{the vector of initial parameter values for probabilities of
     knowledge states.}
   \item{beta}{the vector of initial parameter values for probabilities of a
