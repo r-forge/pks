@@ -3,12 +3,12 @@ blimMD <- function(K, N.R, R = as.binmat(N.R),
   errtype = c("both", "error", "guessing"),
   incrule = c("minimum", "hypblc1", "hypblc2"), m = 1){
 
-  K      <- as.matrix(K)
-  N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
-  N      <- sum(N.R)
-  nitems <- ncol(K)
-  npat   <- nrow(R)
-  nstat  <- nrow(K)
+  K       <- as.matrix(K)
+  N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
+  N       <- sum(N.R)
+  nitems  <- ncol(K)
+  npat    <- nrow(R)
+  nstates <- nrow(K)
 
   ## Assigning state K given response R
   d.RK  <- switch(match.arg(errtype),
@@ -49,7 +49,7 @@ blimMD <- function(K, N.R, R = as.binmat(N.R),
                sum(m.RK[,which(K[,j] == 0)])
   }
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
-    disc.tab=disc.tab, nstates=nstat, npatterns=npat, ntotal=N,
+    disc.tab=disc.tab, nstates=nstates, npatterns=npat, ntotal=N,
     nerror=NA, method="MD", iter=NA, loglike=NA)
   class(z) <- "blim"
   z

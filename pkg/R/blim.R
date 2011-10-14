@@ -1,15 +1,15 @@
 ## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
-  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems), eta = rep(0.1, nitems),
-  errtype = c("both", "error", "guessing"), errequal = FALSE, incradius = 0,
-  tol=0.0000001, maxiter = 10000) {
+  P.K = rep(1/nstates, nstates), beta = rep(0.1, nitems),
+  eta = rep(0.1, nitems), errtype = c("both", "error", "guessing"),
+  errequal = FALSE, incradius = 0, tol=0.0000001, maxiter = 10000) {
 
-  K      <- as.matrix(K)
-  N.R    <- setNames(as.integer(N.R), names(N.R))  # convert to named int
-  N      <- sum(N.R)
-  nitems <- ncol(K)
-  npat   <- nrow(R)
-  nstat  <- nrow(K)
+  K       <- as.matrix(K)
+  N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
+  N       <- sum(N.R)
+  nitems  <- ncol(K)
+  npat    <- nrow(R)
+  nstates <- nrow(K)
 
   names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
 
@@ -101,7 +101,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
-    disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstat,
+    disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstates,
     npatterns=npat, ntotal=N, nerror=nerror, npar=npar, errtype=errtype,
     method=method, iter=iter, loglik=loglik, fitted.values=fitted,
     goodness.of.fit=gof)

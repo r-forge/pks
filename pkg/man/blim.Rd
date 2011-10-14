@@ -10,7 +10,7 @@
 }
 \usage{
 blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
-  P.K = rep(1/nstat, nstat), beta = rep(0.1, nitems),
+  P.K = rep(1/nstates, nstates), beta = rep(0.1, nitems),
   eta = rep(0.1, nitems), errtype = c("both", "error", "guessing"),
   errequal = FALSE, incradius = 0, tol=1e-7, maxiter = 10000)
 
