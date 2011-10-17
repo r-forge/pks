@@ -1,3 +1,7 @@
+Changes in 0.1-2
+
+  * BUG FIX: likelihood and fitted values reported by blim() were incorrect.
+
 Changes in 0.1-0
 
   * initial release on CRAN
