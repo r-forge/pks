@@ -50,7 +50,7 @@ blimMD <- function(K, N.R, R = as.binmat(N.R),
   }
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, nstates=nstates, npatterns=npat, ntotal=N,
-    nerror=NA, method="MD", iter=NA, loglike=NA)
+    nerror=NA, method="MD", iter=NA, loglik=NA)
   class(z) <- "blim"
   z
 }
