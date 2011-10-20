@@ -84,6 +84,8 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                    sum(m.RK[,which(K[,j] == 0)])
       }
     }
+    beta[is.na(beta)] <- 0
+     eta[is.na( eta)] <- 0
 
     maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
     iter <- iter + 1
