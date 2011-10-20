@@ -109,8 +109,8 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   loglik <- sum(log(P.R) * N.R)
 
   ## Number of parameters
-  npar <- length(P.K) - 1 +
-    (if(errtype == "both") 2 else 1) * (if(errequal) 1 else nitems)
+  npar <- nstates - 1 +
+    (if(errtype == "both") 2 else 1) * length(beta)
 
   ## Goodness of fit
   fitted <- setNames(N*P.R, names(N.R))
