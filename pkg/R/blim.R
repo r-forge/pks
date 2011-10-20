@@ -1,7 +1,9 @@
 ## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
-  P.K = rep(1/nstates, nstates), beta = rep(0.1, nitems),
-  eta = rep(0.1, nitems), errtype = c("both", "error", "guessing"),
+  P.K = rep(1/nstates, nstates),
+  beta = if(errequal) 0.1 else rep(0.1, nitems),
+   eta = if(errequal) 0.1 else rep(0.1, nitems),
+  errtype = c("both", "error", "guessing"),
   errequal = FALSE, incradius = 0, tol = 1e-7, maxiter = 10000) {
 
   K       <- as.matrix(K)
@@ -12,6 +14,20 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   nstates <- nrow(K)
 
   names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
+
+  if(!errequal)
+    names(beta) <- names(eta) <-
+    if(is.null(colnames(K))) {
+      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+        sep="")
+    } else
+      colnames(K)
+
+  if(errequal) {  # |K \ R|, |R \ K|, |K|
+    KwoR <- sapply(seq_len(nstates), function(i) colSums(K[i,] - t(R) == 1))
+    RwoK <- sapply(seq_len(nstates), function(i) colSums(t(R) - K[i,] == 1))
+    cardK <- rowSums(K)
+  }
 
   ## Assigning state K given response R
   em    <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
@@ -56,12 +72,17 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     P.K <- colSums(m.RK) / N
 
     ## Careless error and guessing parameters
-    for(j in seq_len(nitems)) {
-      beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
-                 sum(m.RK[,which(K[,j] == 1)])
+    if(errequal) {  # global
+      beta <- sum(m.RK * KwoR) / sum(t(m.RK) * cardK)
+       eta <- sum(m.RK * RwoK) / sum(t(m.RK) * (nitems - cardK))
+    } else {        # item specific
+      for(j in seq_len(nitems)) {
+        beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
+                   sum(m.RK[,which(K[,j] == 1)])
 
-      eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
-                 sum(m.RK[,which(K[,j] == 0)])
+        eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
+                   sum(m.RK[,which(K[,j] == 0)])
+      }
     }
 
     maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
@@ -75,19 +96,6 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     P.Kq[j] <- sum(P.K[which(K[,j] == 1)])
   nerror <- c("careless error" = sum(beta * P.Kq),
                  "lucky guess" = sum( eta * (1 - P.Kq)))
-
-  ## Global beta and eta parameters
-  if (errequal) {
-    beta <- rep(nerror[1] / sum(P.Kq),            nitems)
-     eta <- rep(nerror[2] / (nitems - sum(P.Kq)), nitems)
-  }
-
-  names(beta) <- names(eta) <-
-    if(is.null(colnames(K))) {
-      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
-        sep="")
-    } else
-      colnames(K)
 
   ## Recompute predictions and likelihood
   P.R.K  <- switch(errtype,
