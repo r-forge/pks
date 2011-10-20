@@ -1,6 +1,7 @@
 Changes in 0.1-2
 
   * BUG FIX: likelihood and fitted values reported by blim() were incorrect.
+  * blim(): add estimators for errequal = TRUE
 
 Changes in 0.1-0
 
@@ -9,6 +10,6 @@ Changes in 0.1-0
   * Extractor functions for blim objects (some work automatically by
     inheritance): simulate(), print(), logLik(), nobs(), resid(), fitted(),
     plot(), AIC(), BIC()
-  * Conversion functions as.pattern() and as.binmat()
+  * Conversion functions: as.pattern() and as.binmat()
   * Data sets: DoignonFalmagne7, chess, probability
 
