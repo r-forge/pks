@@ -58,16 +58,23 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     eta.old  <- eta
     
     P.R.K  <- switch(errtype,
-           both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-              prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
-          error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-              prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
-       guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-              prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
+          both = sapply(seq_len(nstates), function(q) apply(
+               beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
+                eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
+               2, prod)),
+         error = sapply(seq_len(nstates), function(q) apply(
+               beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
+                  0^(t(R)*(1 - K[q,])) * 1^((1 - t(R))*(1 - K[q,])),
+               2, prod)),
+      guessing = sapply(seq_len(nstates), function(q) apply(
+                  0^((1 - t(R))*K[q,]) * 1^(t(R)*K[q,]) *
+                eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
+               2, prod))
+    )
     P.R    <- as.numeric(P.R.K %*% P.K)
     P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
     mat.RK <- i.RK^md * P.K.R^em
-    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R) * N(R)
+    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R)*N(R)
 
     ## Distribution of knowledge states
     P.K <- colSums(m.RK) / N
@@ -102,12 +109,19 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   ## Recompute predictions and likelihood
   P.R.K  <- switch(errtype,
-         both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-            prod(beta^((1-r)*q) * (1-beta)^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))),
-        error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-            prod(beta^((1-r)*q) * (1-beta)^(r*q) * 0^(r*(1-q)) * 1^((1-r)*(1-q)))))),
-     guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-            prod(0^((1-r)*q) * 1^(r*q) * eta^(r*(1-q)) * (1-eta)^((1-r)*(1-q)))))))
+        both = sapply(seq_len(nstates), function(q) apply(
+             beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
+              eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
+             2, prod)),
+       error = sapply(seq_len(nstates), function(q) apply(
+             beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
+                0^(t(R)*(1 - K[q,])) * 1^((1 - t(R))*(1 - K[q,])),
+             2, prod)),
+    guessing = sapply(seq_len(nstates), function(q) apply(
+                0^((1 - t(R))*K[q,]) * 1^(t(R)*K[q,]) *
+              eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
+             2, prod))
+  )
   P.R    <- as.numeric(P.R.K %*% P.K)
   loglik <- sum(log(P.R) * N.R)
 
