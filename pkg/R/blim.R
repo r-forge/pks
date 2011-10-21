@@ -32,7 +32,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   ## Assigning state K given response R
   em    <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
   md    <- switch(method, MD = 1, ML = 0, MDML = 1)
-  d.RK  <- switch(match.arg(errtype),
+  d.RK  <- switch(errtype <- match.arg(errtype),
         both = sapply(seq_len(nstates),
              function(q) colSums(xor(t(R), K[q,]))),
        error = sapply(seq_len(nstates),
