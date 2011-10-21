@@ -1,7 +1,7 @@
 Changes in 0.1-2
 
-  * BUG FIX: likelihood and fitted values reported by blim() were incorrect.
-  * blim(): add estimators for errequal = TRUE
+  * BUG FIX: likelihood and fitted values reported by blim() were incorrect
+  * blim(): add estimators for errequal = TRUE, speed up some computations
 
 Changes in 0.1-0
 
