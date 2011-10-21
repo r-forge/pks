@@ -32,13 +32,14 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   ## Assigning state K given response R
   em    <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
   md    <- switch(method, MD = 1, ML = 0, MDML = 1)
-  d.RK  <- switch(errtype <- match.arg(errtype),
-             both = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                      sum(xor(q, r))))),
-            error = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                      if(any(q - r < 0)) NA else sum(q - r)))),
-         guessing = t(apply(R, 1, function(r) apply(K, 1, function(q)
-                      if(any(r - q < 0)) NA else sum(r - q)))))
+  d.RK  <- switch(match.arg(errtype),
+        both = sapply(seq_len(nstates),
+             function(q) colSums(xor(t(R), K[q,]))),
+       error = sapply(seq_len(nstates),
+             function(q) colSums(ifelse(K[q,] - t(R) < 0, NA, K[q,] - t(R)))),
+    guessing = sapply(seq_len(nstates),
+             function(q) colSums(ifelse(t(R) - K[q,] < 0, NA, t(R) - K[q,])))
+  )
   d.min <- apply(d.RK, 1, min, na.rm=TRUE)            # minimum discrepancy
 
   i.RK  <- (d.RK <= (d.min + incradius)) & !is.na(d.RK)
