@@ -175,12 +175,13 @@ print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,
   print(x$nerror)
   if(P.Kshow){
     cat("\nDistribution of knowledge states\n")
-    printCoefmat(cbind("P(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL)
+    printCoefmat(cbind("P(K)"=x$P.K), digits=digits, cs.ind=1, tst.ind=NULL,
+      zap.ind=1)
   }
   if(errshow){
     cat("\nError and guessing parameters\n")
     printCoefmat(cbind(beta=x$beta, eta=x$eta), digits=digits, cs.ind=1:2,
-      tst.ind=NULL)
+      tst.ind=NULL, zap.ind=1:2)
   }
   cat("\n")
   invisible(x)
