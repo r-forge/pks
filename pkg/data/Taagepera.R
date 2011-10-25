@@ -1,0 +1,125 @@
+## Examples in Taagepera et al. (1997) Int. J. Sci. Educ. 19(3)
+
+## Density
+
+cK <- scan(con1 <- textConnection("
+  00000
+  10000
+  01000
+  00001
+  10001
+  01001
+  01010
+  10101
+  11001
+  01011
+  10111
+  11011
+  01111
+  11111
+"), what="", quiet=TRUE); close(con1); rm(con1)
+K  <- t(sapply(strsplit(cK, ""), as.numeric))
+colnames(K) <- letters[1:ncol(K)]
+rownames(K) <- apply(K, 1, paste, collapse="")
+
+N.R <- t(read.table(con1 <- textConnection("
+        freq
+  00000   37
+  10000   42
+  01000   28
+  00100    9
+  00010   14
+  00001   78
+  11000    9
+  10100   14
+  10010   18
+  10001  166
+  01100    5
+  01010   14
+  01001   55
+  00110    9
+  00101   46
+  00011   44
+  11100    9
+  11010   14
+  11001   92
+  10110   32
+  10101  115
+  10011  111
+  01110   18
+  01101   23
+  01011   37
+  00111   88
+  11110   23
+  11101   42
+  11011  111
+  10111  351
+  01111   78
+  11111  328
+")))[1,]; close(con1); rm(con1)
+
+density97 <- list(K=K, N.R=N.R)
+rm(cK, K, N.R)
+
+## Matter
+
+cK <- scan(con1 <- textConnection("
+  00000
+  10000
+  00100
+  00010
+  00001
+  10100
+  10010
+  01100
+  00011
+  10110
+  01101
+  10011
+  11101
+  10111
+  11111
+"), what="", quiet=TRUE); close(con1); rm(con1)
+K  <- t(sapply(strsplit(cK, ""), as.numeric))
+colnames(K) <- letters[1:ncol(K)]
+rownames(K) <- apply(K, 1, paste, collapse="")
+
+N.R <- t(read.table(con1 <- textConnection("
+        freq
+  00000   47
+  10000   83
+  01000   19
+  00100   51
+  00010   28
+  00001   24
+  11000   19
+  10100  115
+  10010   88
+  10001   60
+  01100   28
+  01010    1
+  01001   10
+  00110   24
+  00101   28
+  00011   26
+  11100   47
+  11010   15
+  11001   19
+  10110  120
+  10101   97
+  10011   88
+  01110   10
+  01101   28
+  01011    5
+  00111   19
+  11110   51
+  11101   60
+  11011   24
+  10111  261
+  01111   15
+  11111  110
+")))[1,]; close(con1); rm(con1)
+
+matter97 <- list(K=K, N.R=N.R)
+rm(cK, K, N.R)
+
