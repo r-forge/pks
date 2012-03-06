@@ -1,10 +1,11 @@
-Changes in 0.1-2
+Changes in 0.2-0
 
   * BUG FIX: likelihood and fitted values reported by blim() were incorrect
   * blim(): add estimators for errequal = TRUE, speed up some computations
   * New data sets: density97, matter97
   * as.pattern(): add as.letters argument for a letter representation of
     response patterns
+  * CITATION: add reference to Psychoco 2012 talk
 
 Changes in 0.1-0
 
