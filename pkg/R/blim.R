@@ -170,7 +170,7 @@ print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,
   disc.tab <- x$disc.tab
   names(dimnames(disc.tab)) <- NULL
   print(disc.tab)
-  cat("\nMean number or errors (total = ",
+  cat("\nMean number of errors (total = ",
     round(sum(x$nerror), digits=digits), ")\n", sep="")
   print(x$nerror)
   if(P.Kshow){
