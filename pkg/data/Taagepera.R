@@ -18,9 +18,9 @@ cK <- scan(what="", quiet=TRUE, text="
   01111
   11111
 ")
-K  <- t(sapply(strsplit(cK, ""), as.numeric))
-colnames(K) <- letters[1:ncol(K)]
-rownames(K) <- apply(K, 1, paste, collapse="")
+K <- t(sapply(strsplit(cK, ""), as.integer))
+colnames(K) <- letters[seq_len(ncol(K))]
+rownames(K) <- cK
 
 N.R <- t(read.table(text="
         freq
@@ -80,9 +80,9 @@ cK <- scan(what="", quiet=TRUE, text="
   10111
   11111
 ")
-K  <- t(sapply(strsplit(cK, ""), as.numeric))
-colnames(K) <- letters[1:ncol(K)]
-rownames(K) <- apply(K, 1, paste, collapse="")
+K <- t(sapply(strsplit(cK, ""), as.integer))
+colnames(K) <- letters[seq_len(ncol(K))]
+rownames(K) <- cK
 
 N.R <- t(read.table(text="
         freq
