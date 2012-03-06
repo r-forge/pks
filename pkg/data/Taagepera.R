@@ -2,7 +2,7 @@
 
 ## Density
 
-cK <- scan(con1 <- textConnection("
+cK <- scan(what="", quiet=TRUE, text="
   00000
   10000
   01000
@@ -17,12 +17,12 @@ cK <- scan(con1 <- textConnection("
   11011
   01111
   11111
-"), what="", quiet=TRUE); close(con1); rm(con1)
+")
 K  <- t(sapply(strsplit(cK, ""), as.numeric))
 colnames(K) <- letters[1:ncol(K)]
 rownames(K) <- apply(K, 1, paste, collapse="")
 
-N.R <- t(read.table(con1 <- textConnection("
+N.R <- t(read.table(text="
         freq
   00000   37
   10000   42
@@ -56,14 +56,14 @@ N.R <- t(read.table(con1 <- textConnection("
   10111  351
   01111   78
   11111  328
-")))[1,]; close(con1); rm(con1)
+"))[1,]
 
 density97 <- list(K=K, N.R=N.R)
 rm(cK, K, N.R)
 
 ## Matter
 
-cK <- scan(con1 <- textConnection("
+cK <- scan(what="", quiet=TRUE, text="
   00000
   10000
   00100
@@ -79,12 +79,12 @@ cK <- scan(con1 <- textConnection("
   11101
   10111
   11111
-"), what="", quiet=TRUE); close(con1); rm(con1)
+")
 K  <- t(sapply(strsplit(cK, ""), as.numeric))
 colnames(K) <- letters[1:ncol(K)]
 rownames(K) <- apply(K, 1, paste, collapse="")
 
-N.R <- t(read.table(con1 <- textConnection("
+N.R <- t(read.table(text="
         freq
   00000   47
   10000   83
@@ -118,7 +118,7 @@ N.R <- t(read.table(con1 <- textConnection("
   10111  261
   01111   15
   11111  110
-")))[1,]; close(con1); rm(con1)
+"))[1,]
 
 matter97 <- list(K=K, N.R=N.R)
 rm(cK, K, N.R)

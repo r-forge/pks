@@ -1,6 +1,6 @@
 ## Example in Doignon & Falmagne (1999, chap. 7)
 
-cK <- scan(con1 <- textConnection("
+cK <- scan(what="", quiet=TRUE, text="
   00000
   10000
   01000
@@ -10,12 +10,12 @@ cK <- scan(con1 <- textConnection("
   11110
   11101
   11111
-"), what="", quiet=TRUE); close(con1); rm(con1)
+")
 K  <- t(sapply(strsplit(cK, ""), as.numeric))
 colnames(K) <- letters[1:ncol(K)]
 rownames(K) <- apply(K, 1, paste, collapse="")
 
-N.R <- t(read.table(con1 <- textConnection("
+N.R <- t(read.table(text="
         freq
   00000   80
   10000   92
@@ -49,7 +49,7 @@ N.R <- t(read.table(con1 <- textConnection("
   10111   15
   01111   15
   11111   77
-")))[1,]; close(con1); rm(con1)
+"))[1,]
 
 DoignonFalmagne7 <- list(K=K, N.R=N.R)
 rm(cK, K, N.R)
