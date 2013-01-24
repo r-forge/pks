@@ -201,7 +201,7 @@ logLik.blim <- function(object, ...){
 }
 
 
-## Number of obsevations
+## Number of observations
 nobs.blim <- function(object, ...) object$npatterns
 
 
@@ -246,7 +246,7 @@ simulate.blim <- function(object, nsim = 1, seed = NULL, ...){
     beta <- object$beta
      eta <- object$eta
        K <- as.matrix(object$K)
-  nitems <- object$nitems
+  nitems <- object$nitems             ## FIX ME <- ncol(K) ?
        N <- object$ntotal
 
   state.id <- sample(seq_along(P.K), N, replace=TRUE, prob=P.K)  # draw states
