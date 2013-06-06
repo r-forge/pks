@@ -59,7 +59,7 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   likelihood, possibly at the expense of inflating the error and guessing
   parameters.  Minimum discrepancy maximum likelihood (MDML) maximizes the
   likelihood subject to the constraint of minimum response errors.  See Heller
-  and Wickelmaier (2004) for details on the parameter estimation methods.
+  and Wickelmaier (2013) for details on the parameter estimation methods.
 
   \code{blimMD} uses minimum discrepancy estimation only.  Apart from the
   hyperbolic inclusion rules, all of its functionality is also provided by
@@ -98,12 +98,9 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   Doignon, J.-P., & Falmagne, J.-C. (1999).
   \emph{Knowledge spaces}. Berlin: Springer.
 
-  Heller, J., & Wickelmaier, F. (2004).
-  Parameter estimation in probabilistic knowledge structures: the
-  minimum-discrepancy method.
-  Presented at the
-  \emph{35th European Mathematical Psychology Group (EMPG) Meeting}, September
-  2-4, Ghent, Belgium. 
+  Heller, J., & Wickelmaier, F. (2013).
+  Minimum discrepancy estimation in probabilistic knowledge structures.
+  \emph{Electronic Notes in Discrete Mathematics}, \bold{42}, 49--56.
 }
 
 \seealso{
