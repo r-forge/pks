@@ -35,7 +35,7 @@ blim1 <- blim(DoignonFalmagne7$K, DoignonFalmagne7$N.R)
 
 simulate(blim1)
 
-## Perform parametric bootstrap
+## Parametric bootstrap
 disc <- replicate(200, blim(blim1$K, simulate(blim1))$discrepancy)
 
 hist(disc, col="lightgray", border="white", freq=FALSE, breaks=20,
