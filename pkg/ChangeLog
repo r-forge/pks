@@ -1,6 +1,7 @@
 Changes in 0.2-1
 
   * BUG FIX: simulate.blim() made incorrect predictions
+  * New data set: endm
   * CITATION: add reference to ENDM paper
 
 Changes in 0.2-0
