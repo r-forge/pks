@@ -1,3 +1,7 @@
+Changes in 0.3-0
+
+  * as.pattern(): add as.set argument; if TRUE return value is of class "set"
+
 Changes in 0.2-1
 
   * BUG FIX: simulate.blim() made incorrect predictions
