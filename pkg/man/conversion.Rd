@@ -42,8 +42,9 @@ as.pattern(DoignonFalmagne7$K)
 as.pattern(DoignonFalmagne7$K, freq = TRUE)
 as.pattern(DoignonFalmagne7$K, as.letters = TRUE)
 
-\dontrun{as.pattern(DoignonFalmagne7$K, as.set = TRUE)}
+\dontrun{as.pattern(DoignonFalmagne7$K, as.set = TRUE)
 
+}
 dim(as.binmat(DoignonFalmagne7$N.R))
 dim(as.binmat(DoignonFalmagne7$N.R, uniq = FALSE))
 
