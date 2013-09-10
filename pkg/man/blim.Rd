@@ -71,6 +71,10 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   overrides any values given in the \code{P.K}, \code{beta}, and \code{eta}
   arguments.
 
+  The degrees of freedom in the goodness-of-fit test are calculated as number
+  of possible response patterns minus one or number of respondents, whichever
+  is smaller, minus number of parameters.
+
   \code{blimMD} uses minimum discrepancy estimation only.  Apart from the
   hyperbolic inclusion rules, all of its functionality is also provided by
   \code{blim}.  It may be removed in the future.
@@ -101,7 +105,8 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   \item{fitted.values}{the fitted response frequencies.}
   \item{goodness.of.fit}{the goodness of fit statistic including the
     likelihood ratio fitted vs. saturated model (G2), the degrees of
-    freedom, and the p-value of the corresponding chi-square distribution.}
+    freedom, and the p-value of the corresponding chi-square distribution.
+    (See Details.)}
 }
 
 \references{
