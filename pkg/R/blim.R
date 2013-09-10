@@ -1,10 +1,11 @@
 ## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
-  P.K = rep(1/nstates, nstates),
-  beta = if(errequal) 0.1 else rep(0.1, nitems),
-   eta = if(errequal) 0.1 else rep(0.1, nitems),
-  errtype = c("both", "error", "guessing"),
-  errequal = FALSE, incradius = 0, tol = 1e-7, maxiter = 10000) {
+                 P.K = rep(1/nstates, nstates),
+                 beta = if(errequal) 0.1 else rep(0.1, nitems),
+                  eta = if(errequal) 0.1 else rep(0.1, nitems),
+                 errtype = c("both", "error", "guessing"),
+                 errequal = FALSE, randinit = FALSE, incradius = 0,
+                 tol = 1e-7, maxiter = 10000) {
 
   K       <- as.matrix(K)
   N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
@@ -12,6 +13,16 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   nitems  <- ncol(K)
   npat    <- nrow(R)
   nstates <- nrow(K)
+
+  ## Uniformly random initial values
+  if (randinit) {
+      beta <- runif(nitems)                       # constraint: beta + eta < 1
+       eta <- runif(nitems)
+      beta <- ifelse(beta + eta < 1, beta, 1 - beta)
+       eta <- ifelse(beta + eta < 1,  eta, 1 -  eta)
+         x <- c(0, sort(runif(nstates - 1)), 1)
+       P.K <- x[-1] - x[-length(x)]               # constraint: sum(P.K) == 1
+  }
 
   names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
 

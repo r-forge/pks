@@ -1,5 +1,6 @@
 Changes in 0.3-0
 
+  * blim(): add random initial values for randinit = TRUE
   * as.pattern(): add as.set argument; if TRUE return value is of class "set"
 
 Changes in 0.2-1
