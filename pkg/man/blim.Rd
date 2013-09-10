@@ -66,7 +66,7 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
 
   If \code{randinit} is \code{TRUE}, initial parameter values are sampled
   uniformly with the constraint \code{beta + eta < 1} (Weisstein, 2013) for
-  the error parameters, and with \code{sum(P.K) == 0} (Rubin, 1981) for the
+  the error parameters, and with \code{sum(P.K) == 1} (Rubin, 1981) for the
   probabilities of knowledge states. Setting \code{randinit} to \code{TRUE}
   overrides any values given in the \code{P.K}, \code{beta}, and \code{eta}
   arguments.
@@ -112,11 +112,12 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   Minimum discrepancy estimation in probabilistic knowledge structures.
   \emph{Electronic Notes in Discrete Mathematics}, \bold{42}, 49--56.
 
-  Rubin, D.B. (1981). The Bayesian bootstrap. \emph{The Annals of Statistics},
-  \bold{9}, 130--134.
+  Rubin, D.B. (1981). The Bayesian bootstrap.
+  \emph{The Annals of Statistics}, \bold{9}, 130--134.
 
-  Weisstein, E.W. (2013, August 29). Triangle point picking. In
-  \emph{MathWorld - A Wolfram Web Resource}. Retrieved from
+  Weisstein, E.W. (2013, August 29). Triangle point picking.
+  In \emph{MathWorld -- A Wolfram Web Resource}.
+  Retrieved from
   http://mathworld.wolfram.com/TrianglePointPicking.html.
 }
 
