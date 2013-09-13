@@ -6,7 +6,9 @@ export(
   "blim",
   "blimMD",
   "as.pattern",
-  "as.binmat"
+  "as.binmat",
+  "is.forward.graded",
+  "is.backward.graded"
 )
 
 S3method("print", "blim")
