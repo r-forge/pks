@@ -16,7 +16,7 @@ as.binmat(N.R, uniq = TRUE, col.names = NULL)
   \item{R}{an indicator matrix of response patterns or knowledge states.}
   \item{N.R}{either a (named) vector of absolute frequencies of response
     patterns; or a character vector of response patterns or knowledge states;
-    or \code{set} of sets representing the knowledge structure.}
+    or a \code{set} of sets representing the knowledge structure.}
   \item{freq}{logical, should the frequencies of response patterns be
     reported?}
   \item{uniq}{logical, if \code{TRUE}, only the unique response patterns are
