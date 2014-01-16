@@ -15,15 +15,15 @@ as.binmat(N.R, uniq = TRUE, col.names = NULL)
 \arguments{
   \item{R}{an indicator matrix of response patterns or knowledge states.}
   \item{N.R}{either a (named) vector of absolute frequencies of response
-    patterns, or a character vector of response patterns or knowledge states.}
+    patterns; or a character vector of response patterns or knowledge states;
+    or \code{set} of sets representing the knowledge structure.}
   \item{freq}{logical, should the frequencies of response patterns be
     reported?}
   \item{uniq}{logical, if \code{TRUE}, only the unique response patterns are
     returned.}
   \item{as.letters}{logical, return response patterns as combinations of
     letters.}
-  \item{as.set}{logical, return response patterns as family of sets; requires
-    package \code{sets}.}
+  \item{as.set}{logical, return response patterns as set of sets.}
   \item{col.names}{column names for the state or response matrix.}
 }
 \value{
@@ -41,14 +41,13 @@ data(DoignonFalmagne7)
 as.pattern(DoignonFalmagne7$K)
 as.pattern(DoignonFalmagne7$K, freq = TRUE)
 as.pattern(DoignonFalmagne7$K, as.letters = TRUE)
+as.pattern(DoignonFalmagne7$K, as.set = TRUE)
 
-\dontrun{as.pattern(DoignonFalmagne7$K, as.set = TRUE)
-
-}
 dim(as.binmat(DoignonFalmagne7$N.R))
 dim(as.binmat(DoignonFalmagne7$N.R, uniq = FALSE))
 
 ## Knowledge structure as binary matrix
 as.binmat(c("000", "100", "101", "111"))
+as.binmat(set(set(), set("a"), set("a", "c"), set("a", "b", "c")))
 }
 \keyword{models}

@@ -5,6 +5,8 @@ Changes in 0.3-0
   * blim(): recalculate degrees of freedom in goodness-of-fit test
   * New functions: is.forward.graded(), is.backward.graded()
   * as.pattern(): add as.set argument; if TRUE return value is of class "set"
+  * as.binmat(): conversion from class set to matrix 
+  * DESCRIPTION: depend on package sets
 
 Changes in 0.2-1
 

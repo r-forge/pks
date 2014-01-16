@@ -302,19 +302,25 @@ as.pattern <- function(R, freq = FALSE, as.letters = FALSE, as.set = FALSE){
 
 ## Convert vector of response patterns to named binary matrix
 as.binmat <- function(N.R, uniq = TRUE, col.names = NULL){
-  pat <- if(is.null(names(N.R))) N.R else names(N.R)
-  R   <- if(uniq) strsplit(pat, "") else strsplit(rep(pat, N.R), "")
-  R   <- do.call(rbind, R)
+  if (is.set(N.R)) {
+    states <- sapply(N.R, as.character)
+    items <- sort(unique(unlist(states)))
+    R <- matrix(0, length(N.R), length(items), dimnames=list(NULL, items))
+    for (i in seq_len(nrow(R))) R[i, states[[i]]] <- 1
+  } else {
+    pat <- if(is.null(names(N.R))) N.R else names(N.R)
+    R   <- if(uniq) strsplit(pat, "") else strsplit(rep(pat, N.R), "")
+    R   <- do.call(rbind, R)
+
+    colnames(R) <- 
+      if(is.null(col.names)){
+        nitems <- ncol(R)
+        make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+          sep="")
+      }else
+        col.names
+  }
   storage.mode(R) <- "integer"
-
-  colnames(R) <- 
-    if(is.null(col.names)){
-      nitems <- ncol(R)
-      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
-        sep="")
-    }else
-      col.names
-
   R
 }
 
