@@ -1,4 +1,4 @@
-## Delineate knowledge structure based on skill function
+## Delineate knowledge structure by skill function
 delineate <- function(skillfun, itemID = "item") {
   stopifnot(itemID %in% colnames(skillfun))
 

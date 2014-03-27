@@ -1,8 +1,8 @@
 \name{delineate}
 \alias{delineate}
-\title{Delineate a Knowledge Structure Based on a Skill Function}
+\title{Delineate a Knowledge Structure by a Skill Function}
 \description{
-  Delineates a knowledge structure based on the corresponding skill function.
+  Computes the knowledge structure delineated by a skill function.
 }
 \usage{
 delineate(skillfun, itemID = "item")

@@ -1,6 +1,6 @@
 Changes in 0.3-0
 
-  * New function: delineate() delineate knowledge structure based on skill
+  * New function: delineate(), knowledge structure delineated by skill
     function
   * New functions: is.forward.graded(), is.backward.graded()
   * blim(): add random initial values for randinit = TRUE
