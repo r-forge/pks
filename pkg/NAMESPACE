@@ -1,5 +1,6 @@
 import(
-  "stats"
+  "stats",
+  "sets"
 )
 
 export(
@@ -8,7 +9,8 @@ export(
   "as.pattern",
   "as.binmat",
   "is.forward.graded",
-  "is.backward.graded"
+  "is.backward.graded",
+  "delineate"
 )
 
 S3method("print", "blim")
