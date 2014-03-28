@@ -137,8 +137,8 @@ K   <- DoignonFalmagne7$K    # knowledge structure
 N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 
 ## Fit basic local independence model (BLIM) by different methods
-blim(K, N.R, method="MD")    # minimum discrepancy estimation
-blim(K, N.R, method="ML")    # maximum likelihood estimation by EM algorithm
-blim(K, N.R, method="MDML")  # MDML estimation
+blim(K, N.R, method = "MD")    # minimum discrepancy estimation
+blim(K, N.R, method = "ML")    # maximum likelihood estimation by EM algorithm
+blim(K, N.R, method = "MDML")  # MDML estimation
 }
 \keyword{models}

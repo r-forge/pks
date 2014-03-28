@@ -40,7 +40,7 @@ is.backward.graded(K)
 }
 
 \seealso{
-  \code{\link{blim}}, \code{\link{as.pattern}}.
+  \code{\link{blim}}.
 }
 \examples{
 K <- as.binmat(c("0000", "1000", "1100", "1010", "0110", "1110", "1111"))
