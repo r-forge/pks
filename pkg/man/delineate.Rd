@@ -8,15 +8,15 @@
 delineate(skillfun, itemID = "item")
 }
 \arguments{
-  \item{skillfun}{a data frame or matrix representing the skill function. It
-    consists of an item indicator and a problem-by-skill indicator matrix.}
+  \item{skillfun}{a data frame or a matrix representing the skill function.
+    It consists of an item indicator and a problem-by-skill indicator matrix.}
   \item{itemID}{name of the column in \code{skillfun} that holds the item
     indicator.}
 }
 
 \details{
-  The skill function \eqn{(Q, S, mu)} indicates for each item in \eqn{Q} which
-  subsets of skills in \eqn{S} are required to solve the item.  Thus,
+  The skill function \eqn{(Q, S, \mu)} indicates for each item in \eqn{Q}
+  which subsets of skills in \eqn{S} are required to solve the item.  Thus,
   \eqn{\mu(q)} is a set containing sets of skills.  An item may have multiple
   entries in \code{skillfun}, each in a separate row identified by the same
   \code{itemID}.
@@ -41,7 +41,10 @@ delineate(skillfun, itemID = "item")
   \code{\link{blim}}.
 }
 \examples{
-sf <- read.table(header=TRUE, text="
+# Skill function
+# mu(e) = {{s, t}, {s, u}},  mu(f) = {{u}}
+# mu(g) = {{s}, {t}},        mu(h) = {{t}}
+sf <- read.table(header = TRUE, text = "
 item s t u
    e 1 1 0
    e 1 0 1
