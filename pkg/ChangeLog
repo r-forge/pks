@@ -1,3 +1,7 @@
+Changes in 0.3-1
+
+  * New function: jacobian(), Jacobian matrix of a BLIM (draft version)
+
 Changes in 0.3-0
 
   * New function: delineate(), knowledge structure delineated by skill
