@@ -1,6 +1,8 @@
 Changes in 0.3-1
 
   * New function: jacobian(), Jacobian matrix of a BLIM (draft version)
+  * delineate(): each element of classes is now a matrix; itemID is now the
+    index of the column that holds the item indicator
 
 Changes in 0.3-0
 
