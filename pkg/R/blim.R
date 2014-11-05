@@ -140,9 +140,9 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   npar <- nstates - 1 + (if(errtype == "both") 2 else 1) * length(beta)
 
   ## Goodness of fit
-  fitted <- setNames(N*P.R, names(N.R))
+  fitted <- setNames(N*P.R/sum(P.R), names(N.R))  # NB: sum(P.R) != 1
   G2     <- 2*sum(N.R*log(N.R/fitted), na.rm=TRUE)
-  df     <- min(2^nitems - 1, N) - npar       # number patterns or persons
+  df     <- min(2^nitems - 1, N) - npar           # number patterns or persons
   gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
