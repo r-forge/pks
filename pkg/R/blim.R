@@ -122,7 +122,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     R   <- expand.grid(rep(list(0:1), nitems), KEEP.OUT.ATTRS=FALSE)
     N.R <- setNames(integer(nrow(R)), as.pattern(R)) # named int filled w/zeros
     R   <- as.binmat(N.R)                            # named int again
-    N.R[match(names(N.Rincomp), names(N.R))] <- N.Rincomp
+    N.R[names(N.Rincomp)] <- N.Rincomp
   }
 
   ## Recompute predictions and likelihood
@@ -141,16 +141,17 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
              2, prod))
   )
   P.R    <- as.numeric(P.R.K %*% P.K)
-  if (sum(P.R) < 1) P.R <- P.R/sum(P.R)  # if no zero padding: normalize
-  loglik <- sum(log(P.R) * N.R)
+  if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
+  loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
 
   ## Number of parameters
   npar <- nstates - 1 + (if(errtype == "both") 2 else 1) * length(beta)
 
-  ## Goodness of fit
+  ## Goodness of fit, df = number of patterns or persons
   fitted <- setNames(N*P.R, names(N.R))
   G2     <- 2*sum(N.R*log(N.R/fitted), na.rm=TRUE)
-  df     <- min(2^nitems - 1, N) - npar        # number of patterns or persons
+# df     <- min(2^nitems - 1, N) - npar        # number of patterns or persons
+  df     <- min(if(nitems <= zeropad) 2^nitems - 1 else npat, N) - npar
   gof    <- c(G2=G2, df=df, pval = 1 - pchisq(G2, df))
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
