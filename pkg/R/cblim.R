@@ -10,8 +10,8 @@ delineate <- function(skillfun, itemID = 1) {
   delineated.states <- matrix(0, nrow(T), length(item.names),
                               dimnames = list(NULL, item.names))
   for (i in seq_len(nrow(T))) {
-    idx <- skillfun[, itemID][apply(mu * T[i,] == mu, 2, all)]
-    delineated.states[i, idx] <- 1
+    idx <- skillfun[, itemID][apply(mu * T[i, ] == mu, 2, all)]
+    delineated.states[i, as.character(idx)] <- 1
   }
   K <- as.binmat(unique(pat.del.states <- as.pattern(delineated.states)))
   K <- K[order(rowSums(K)), ]
