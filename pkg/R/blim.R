@@ -1,11 +1,13 @@
 ## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                  P.K = rep(1/nstates, nstates),
-                 beta = if(errequal) 0.1 else rep(0.1, nitems),
-                  eta = if(errequal) 0.1 else rep(0.1, nitems),
+                 beta = rep(0.1, nitems),
+                  eta = rep(0.1, nitems),
+                 betafix = rep(NA, nitems), etafix = rep(NA, nitems),
+                 betamat = diag(nitems), etamat = diag(nitems),
                  errtype = c("both", "error", "guessing"),
                  errequal = FALSE, randinit = FALSE, incradius = 0,
-                 tol = 1e-7, maxiter = 10000, zeropad = 12) {
+                 tol = 1e-07, maxiter = 10000, zeropad = 12) {
 
   K       <- as.matrix(K)
   N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
@@ -24,62 +26,50 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
        P.K <- x[-1] - x[-length(x)]               # constraint: sum(P.K) == 1
   }
 
-  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
-
-  if(!errequal)
-    names(beta) <- names(eta) <-
-    if(is.null(colnames(K))) {
-      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
-        sep="")
-    } else
-      colnames(K)
-
-  if(errequal) {  # |K \ R|, |R \ K|, |K|
-    KwoR <- sapply(seq_len(nstates), function(i) colSums(K[i,] - t(R) == 1))
-    RwoK <- sapply(seq_len(nstates), function(i) colSums(t(R) - K[i,] == 1))
-    cardK <- rowSums(K)
+  errtype <- match.arg(errtype)
+  if (errtype == "error")                              # overrides arguments
+    etafix <- rep(0, nitems)
+  if (errtype == "guessing")
+    betafix <- rep(0, nitems)
+  if (errequal) {
+    betamat <- etamat <- matrix(1, nitems, nitems)
   }
+  beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
+   eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
+
+  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
+  names(beta) <- names(eta) <-
+    if (is.null(colnames(K))) {
+      make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
+                  sep = "")
+    } else colnames(K)
+  dimnames(betamat) <- dimnames(etamat) <- list(names(eta), names(eta))
 
   ## Assigning state K given response R
-  d.RK  <- switch(errtype <- match.arg(errtype),
-        both = sapply(seq_len(nstates),
-             function(q) colSums(xor(t(R), K[q,]))),
-       error = sapply(seq_len(nstates),
-             function(q) colSums(ifelse(K[q,] - t(R) < 0, NA, K[q,] - t(R)))),
-    guessing = sapply(seq_len(nstates),
-             function(q) colSums(ifelse(t(R) - K[q,] < 0, NA, t(R) - K[q,])))
-  )
-  d.min <- apply(d.RK, 1, min, na.rm=TRUE)               # minimum discrepancy
+  d.RK  <- sapply(seq_len(nstates),
+                  function(q) colSums(xor(t(R), K[q,])))
+  d.min <- apply(d.RK, 1, min, na.rm = TRUE)               # minimum discrepancy
   i.RK  <- (d.RK <= (d.min + incradius)) & !is.na(d.RK)
 
-  ## Minimum discrepancy distribution 
+  ## Minimum discrepancy distribution
   disc.tab <- xtabs(N.R ~ d.min)
   disc     <- as.numeric(names(disc.tab)) %*% disc.tab / N
-  
+
   iter    <- 0
   maxdiff <- 2 * tol
   em      <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
   md      <- switch(method, MD = 1, ML = 0, MDML = 1)
+  beta.num <- beta.denom <- eta.num <-  eta.denom <- beta
   while ((maxdiff > tol) && (iter < maxiter) &&
          ((md*(1 - em) != 1) || (iter == 0))) {
     pi.old   <- P.K
     beta.old <- beta
     eta.old  <- eta
-    
-    P.R.K  <- switch(errtype,
-          both = sapply(seq_len(nstates), function(q) apply(
-               beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
-                eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
-               2, prod)),
-         error = sapply(seq_len(nstates), function(q) apply(
-               beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
-                  0^(t(R)*(1 - K[q,])) * 1^((1 - t(R))*(1 - K[q,])),
-               2, prod)),
-      guessing = sapply(seq_len(nstates), function(q) apply(
-                  0^((1 - t(R))*K[q,]) * 1^(t(R)*K[q,]) *
-                eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
-               2, prod))
-    )
+
+    P.R.K <- sapply(seq_len(nstates), function(q) apply(
+           beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q, ]) *
+            eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q, ])),
+           2, prod))
     P.R    <- as.numeric(P.R.K %*% P.K)
     P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
     mat.RK <- i.RK^md * P.K.R^em
@@ -89,20 +79,18 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     P.K <- colSums(m.RK) / N
 
     ## Careless error and guessing parameters
-    if(errequal) {  # global
-      beta <- sum(m.RK * KwoR) / sum(t(m.RK) * cardK)
-       eta <- sum(m.RK * RwoK) / sum(t(m.RK) * (nitems - cardK))
-    } else {        # item specific
-      for(j in seq_len(nitems)) {
-        beta[j] <- sum(m.RK[which(R[,j] == 0), which(K[,j] == 1)]) /
-                   sum(m.RK[,which(K[,j] == 1)])
-
-        eta[j]  <- sum(m.RK[which(R[,j] == 1), which(K[,j] == 0)]) /
-                   sum(m.RK[,which(K[,j] == 0)])
-      }
+    for (j in seq_len(nitems)) {
+      beta.num[j]   <- sum(m.RK[which(R[, j] == 0), which(K[, j] == 1)])
+      beta.denom[j] <- sum(m.RK[, which(K[, j] == 1)])
+       eta.num[j]   <- sum(m.RK[which(R[, j] == 1), which(K[, j] == 0)])
+       eta.denom[j] <- sum(m.RK[, which(K[, j] == 0)])
     }
+    beta <- drop(betamat %*% beta.num / betamat %*% beta.denom)
+     eta <- drop( etamat %*%  eta.num /  etamat %*%  eta.denom)
     beta[is.na(beta)] <- 0
      eta[is.na( eta)] <- 0
+    beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
+     eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
 
     maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
     iter <- iter + 1
@@ -126,26 +114,16 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   }
 
   ## Recompute predictions and likelihood
-  P.R.K  <- switch(errtype,
-        both = sapply(seq_len(nstates), function(q) apply(
-             beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
-              eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
-             2, prod)),
-       error = sapply(seq_len(nstates), function(q) apply(
-             beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q,]) *
-                0^(t(R)*(1 - K[q,])) * 1^((1 - t(R))*(1 - K[q,])),
-             2, prod)),
-    guessing = sapply(seq_len(nstates), function(q) apply(
-                0^((1 - t(R))*K[q,]) * 1^(t(R)*K[q,]) *
-              eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q,])),
-             2, prod))
-  )
-  P.R    <- as.numeric(P.R.K %*% P.K)
+  P.R.K <- sapply(seq_len(nstates), function(q) apply(
+         beta^((1 - t(R))*K[q, ]) * (1 - beta)^(t(R)*K[q, ]) *
+          eta^(t(R)*(1 - K[q, ])) * (1 - eta)^((1 - t(R))*(1 - K[q, ])),
+         2, prod))
+  P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
   loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
 
   ## Number of parameters
-  npar <- nstates - 1 + (if(errtype == "both") 2 else 1) * length(beta)
+  npar <- nstates - 1 + sum(is.na(betafix)) + sum(is.na(etafix))
 
   ## Goodness of fit, df = number of patterns or persons
   fitted <- setNames(N*P.R, names(N.R))
@@ -156,7 +134,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   z <- list(discrepancy=c(disc), P.K=P.K, beta=beta, eta=eta,
     disc.tab=disc.tab, K=K, N.R=N.R, nitems=nitems, nstates=nstates,
-    npatterns=npat, ntotal=N, nerror=nerror, npar=npar, errtype=errtype,
+    npatterns=npat, ntotal=N, nerror=nerror, npar=npar,
     method=method, iter=iter, loglik=loglik, fitted.values=fitted,
     goodness.of.fit=gof)
   class(z) <- "blim"
