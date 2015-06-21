@@ -11,11 +11,12 @@
 \usage{
 blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
      P.K = rep(1/nstates, nstates),
-     beta = if(errequal) 0.1 else rep(0.1, nitems),
-     eta = if(errequal) 0.1 else rep(0.1, nitems),
+     beta = rep(0.1, nitems), eta = rep(0.1, nitems),
+     betafix = rep(NA, nitems), etafix = rep(NA, nitems),
+     betaequal = diag(nitems), etaequal = diag(nitems),
      errtype = c("both", "error", "guessing"),
      errequal = FALSE, randinit = FALSE, incradius = 0,
-     tol = 1e-7, maxiter = 10000, zeropad = 12)
+     tol = 1e-07, maxiter = 10000, zeropad = 12)
 
 blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
        "guessing"), incrule = c("minimum", "hypblc1", "hypblc2"),
@@ -34,10 +35,14 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
     Per default inferred from the names of \code{N.R}.}
   \item{P.K}{the vector of initial parameter values for probabilities of
     knowledge states.}
-  \item{beta}{the vector of initial parameter values for probabilities of a
-    careless error.}
-  \item{eta}{the vector of initial parameter values for probabilities of a
-    lucky guess.}
+  \item{beta, eta}{vectors of initial parameter values for probabilities of a
+    careless error and a lucky guess, respectively.}
+  \item{betafix, etafix}{vectors of fixed error and guessing parameter values;
+    \code{NA} indicates a free parameter.}
+  \item{betaequal, etaequal}{item-by-item indicator matrices used for equality
+    restrictions; a one in a cell indicates that the corresponding row and
+    column parameters are constrained to be equal; note: all ones have to be
+    explicitly set, none are inferred by transitivity.  (See Examples.)}
   \item{errtype}{type of response errors that can occur: \code{error} for
     careless errors only, \code{guessing} for lucky guesses only, and
     \code{both} for both error types.}
@@ -142,5 +147,11 @@ N.R <- DoignonFalmagne7$N.R  # frequencies of response patterns
 blim(K, N.R, method = "MD")    # minimum discrepancy estimation
 blim(K, N.R, method = "ML")    # maximum likelihood estimation by EM algorithm
 blim(K, N.R, method = "MDML")  # MDML estimation
+
+## Parameter restrictions: beta_a = beta_b = beta_c, beta_e = beta_f
+##                          eta_a =  eta_b = 0.1
+C1 <- diag(5); C1[1:3, 1:3] <- 1; C1[4:5, 4:5] <- 1
+blim(K, N.R, method = "ML",
+     etafix = c(0.1, 0.1, NA, NA, NA), betaequal = C1)
 }
 \keyword{models}
