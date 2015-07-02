@@ -1,6 +1,7 @@
 Changes in 0.4-0
 
   * blim(): more flexible infrastructure for setting parameter constraints
+  * NAMESPACE: import graphics
 
 Changes in 0.3-1
 

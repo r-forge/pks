@@ -1,11 +1,11 @@
 Package: pks
 Version: 0.4-0
-Date: 2015-06-21
+Date: 2015-07-02
 Title: Probabilistic Knowledge Structures
 Author: Florian Wickelmaier [cre, aut], Juergen Heller [aut],
   Pasquale Anselmi [ctb]
 Maintainer: Florian Wickelmaier <wickelmaier@web.de>
-Depends: R (>= 2.14.0), stats, sets
+Depends: R (>= 2.14.0), stats, graphics, sets
 Description: Fitting and testing probabilistic knowledge structures,
   especially the basic local independence model (BLIM, Doignon & Flamagne,
   1999), using the minimum discrepancy maximum likelihood (MDML) method.

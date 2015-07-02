@@ -1,7 +1,6 @@
-import(
-  "stats",
-  "sets"
-)
+import("stats")
+import("graphics")
+import("sets")
 
 export(
   "blim",
