@@ -13,7 +13,7 @@ blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
      P.K = rep(1/nstates, nstates),
      beta = rep(0.1, nitems), eta = rep(0.1, nitems),
      betafix = rep(NA, nitems), etafix = rep(NA, nitems),
-     betaequal = diag(nitems), etaequal = diag(nitems),
+     betaequal = NULL, etaequal = NULL,
      errtype = c("both", "error", "guessing"),
      errequal = FALSE, randinit = FALSE, incradius = 0,
      tol = 1e-07, maxiter = 10000, zeropad = 12)
@@ -39,15 +39,16 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
     careless error and a lucky guess, respectively.}
   \item{betafix, etafix}{vectors of fixed error and guessing parameter values;
     \code{NA} indicates a free parameter.}
-  \item{betaequal, etaequal}{item-by-item indicator matrices used for equality
-    restrictions; a one in a cell indicates that the corresponding row and
-    column parameters are constrained to be equal; note: all ones have to be
-    explicitly set, none are inferred by transitivity.  (See Examples.)}
-  \item{errtype}{type of response errors that can occur: \code{error} for
-    careless errors only, \code{guessing} for lucky guesses only, and
+  \item{betaequal, etaequal}{lists of vectors of problem indices; each vector
+    represents an equivalence class: it contains the indices of problems for
+    which the error or guessing parameters are constrained to be equal.  (See
+    Examples.)}
+  \item{errtype}{deprecated, use \code{betafix} and \code{etafix}
+    instead; type of response errors that can occur: \code{error} for careless
+    errors only, \code{guessing} for lucky guesses only, and
     \code{both} for both error types.}
-  \item{errequal}{logical, if \code{TRUE} then items have identical error
-    rates.}
+  \item{errequal}{deprecated, use \code{betaequal} and \code{etaequal}
+    instead; logical, if \code{TRUE} then items have identical error rates.}
   \item{randinit}{logical, if \code{TRUE} then initial parameter values are
     sampled uniformly with constraints.  (See Details.)}
   \item{incradius}{include knowledge states of distance from the minimum
@@ -105,7 +106,6 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
   \item{ntotal}{the number of respondents.}
   \item{nerror}{the number of response errors.}
   \item{npar}{the number of parameters.}
-  \item{errtype}{the type of response errors.}
   \item{method}{the parameter estimation method.}
   \item{iter}{the number of iterations needed.}
   \item{loglik}{the log-likelihood.}
@@ -148,10 +148,9 @@ blim(K, N.R, method = "MD")    # minimum discrepancy estimation
 blim(K, N.R, method = "ML")    # maximum likelihood estimation by EM algorithm
 blim(K, N.R, method = "MDML")  # MDML estimation
 
-## Parameter restrictions: beta_a = beta_b = beta_c, beta_e = beta_f
+## Parameter restrictions: beta_a = beta_b = beta_d, beta_c = beta_e
 ##                          eta_a =  eta_b = 0.1
-C1 <- diag(5); C1[1:3, 1:3] <- 1; C1[4:5, 4:5] <- 1
 blim(K, N.R, method = "ML",
-     etafix = c(0.1, 0.1, NA, NA, NA), betaequal = C1)
+     betaequal = list(c(1, 2, 4), c(3, 5)), etafix = c(0.1, 0.1, NA, NA, NA))
 }
 \keyword{models}

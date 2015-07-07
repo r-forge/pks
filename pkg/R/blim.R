@@ -4,7 +4,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                  beta = rep(0.1, nitems),
                   eta = rep(0.1, nitems),
                  betafix = rep(NA, nitems), etafix = rep(NA, nitems),
-                 betaequal = diag(nitems), etaequal = diag(nitems),
+                 betaequal = NULL, etaequal = NULL,
                  errtype = c("both", "error", "guessing"),
                  errequal = FALSE, randinit = FALSE, incradius = 0,
                  tol = 1e-07, maxiter = 10000, zeropad = 12) {
@@ -26,13 +26,18 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
        P.K <- x[-1] - x[-length(x)]               # constraint: sum(P.K) == 1
   }
 
+  ## Equality restrictions
+  betaeq <- etaeq <- diag(nitems)
+  if (!is.null(betaequal)) for (i in betaequal) betaeq[i, i] <- 1
+  if (!is.null( etaequal)) for (i in  etaequal)  etaeq[i, i] <- 1
+
   errtype <- match.arg(errtype)
   if (errtype == "error")                              # overrides arguments
     etafix <- rep(0, nitems)
   if (errtype == "guessing")
     betafix <- rep(0, nitems)
   if (errequal) {
-    betaequal <- etaequal <- matrix(1, nitems, nitems)
+    betaeq <- etaeq <- matrix(1, nitems, nitems)
   }
   beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
    eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
@@ -43,7 +48,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
       make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
                   sep = "")
     } else colnames(K)
-  dimnames(betaequal) <- dimnames(etaequal) <- list(names(eta), names(eta))
+  dimnames(betaeq) <- dimnames(etaeq) <- list(names(eta), names(eta))
 
   ## Assigning state K given response R
   d.RK  <- sapply(seq_len(nstates),
@@ -85,8 +90,8 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
        eta.num[j]   <- sum(m.RK[which(R[, j] == 1), which(K[, j] == 0)])
        eta.denom[j] <- sum(m.RK[, which(K[, j] == 0)])
     }
-    beta <- drop(betaequal %*% beta.num / betaequal %*% beta.denom)
-     eta <- drop( etaequal %*%  eta.num /  etaequal %*%  eta.denom)
+    beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
+     eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
     beta[is.na(beta)] <- 0
      eta[is.na( eta)] <- 0
     beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
@@ -123,8 +128,8 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
 
   ## Number of parameters
-  npar <- nstates - 1 + qr(betaequal)$rank - sum(!is.na(betafix)) +
-                        qr( etaequal)$rank - sum(!is.na( etafix))
+  npar <- nstates - 1 + qr(betaeq)$rank - sum(!is.na(betafix)) +
+                        qr( etaeq)$rank - sum(!is.na( etafix))
 
   ## Goodness of fit, df = number of patterns or persons
   fitted <- setNames(N*P.R, names(N.R))
