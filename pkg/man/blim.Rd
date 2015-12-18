@@ -90,14 +90,15 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
 
 \value{
   An object of class \code{blim} having the following components:
-  \item{discrepancy}{the mean discrepancy.}
+  \item{discrepancy}{the mean minimum discrepancy between response patterns
+    and knowledge states.}
   \item{P.K}{the vector of estimated parameter values for probabilities of
     knowledge states.}
   \item{beta}{the vector of estimated parameter values for probabilities of
     a careless error.}
   \item{eta}{the vector of estimated parameter values for probabilities of a
     lucky guess.}
-  \item{disc.tab}{the matrix of symmetric set distances.}
+  \item{disc.tab}{the minimum discrepancy distribution.}
   \item{K}{the knowledge structure.}
   \item{N.R}{the vector of frequencies of response patterns.}
   \item{nitems}{the number of items.}
