@@ -51,9 +51,20 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   dimnames(betaeq) <- dimnames(etaeq) <- list(names(eta), names(eta))
 
   ## Assigning state K given response R
-  d.RK  <- sapply(seq_len(nstates),
-                  function(q) colSums(xor(t(R), K[q,])))
-  d.min <- apply(d.RK, 1, min, na.rm = TRUE)               # minimum discrepancy
+  d.RK <- if (any(c(betafix, etafix) == 0)) {
+    apply(K, 1, function(k) {
+      RwoK <- t(R) & !k
+      idx <- which(RwoK, arr.ind=TRUE)
+      RwoK[idx[idx[, "row"] %in% which(etafix == 0), ]] <- NA
+    
+      KwoR <- k & !t(R)
+      idx <- which(KwoR, arr.ind=TRUE)
+      KwoR[idx[idx[, "row"] %in% which(betafix == 0), ]] <- NA
+      colSums(RwoK) + colSums(KwoR)
+    })
+  } else
+    apply(K, 1, function(k) colSums(xor(t(R), k)))
+  d.min <- apply(d.RK, 1, min, na.rm = TRUE)             # minimum discrepancy
   i.RK  <- (d.RK <= (d.min + incradius)) & !is.na(d.RK)
 
   ## Minimum discrepancy distribution
