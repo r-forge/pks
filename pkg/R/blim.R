@@ -31,13 +31,18 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   if (!is.null(betaequal)) for (i in betaequal) betaeq[i, i] <- 1
   if (!is.null( etaequal)) for (i in  etaequal)  etaeq[i, i] <- 1
 
-  errtype <- match.arg(errtype)
-  if (errtype == "error")                              # overrides arguments
+  errtype <- match.arg(errtype)                        # overrides arguments
+  if (errtype == "error") {
     etafix <- rep(0, nitems)
-  if (errtype == "guessing")
+    warning("errtype is deprecated, use etafix = rep(0, nitems) instead")
+  }
+  if (errtype == "guessing") {
     betafix <- rep(0, nitems)
+    warning("errtype is deprecated, use betafix = rep(0, nitems) instead")
+  }
   if (errequal) {
     betaeq <- etaeq <- matrix(1, nitems, nitems)
+    warning("errequal is deprecated, use betaequal or etaequal instead")
   }
   beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
    eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
