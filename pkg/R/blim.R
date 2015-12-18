@@ -87,9 +87,9 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     beta.old <- beta
     eta.old  <- eta
 
-    P.R.K <- sapply(seq_len(nstates), function(q) apply(
-           beta^((1 - t(R))*K[q,]) * (1 - beta)^(t(R)*K[q, ]) *
-            eta^(t(R)*(1 - K[q,])) * (1 - eta)^((1 - t(R))*(1 - K[q, ])),
+    P.R.K <- apply(K, 1, function(k) apply(
+           beta^((1 - t(R))*k) * (1 - beta)^(t(R)*k) *
+            eta^(t(R)*(1 - k)) * (1 - eta)^((1 - t(R))*(1 - k)),
            2, prod))
     P.R    <- as.numeric(P.R.K %*% P.K)
     P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
@@ -135,9 +135,9 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   }
 
   ## Recompute predictions and likelihood
-  P.R.K <- sapply(seq_len(nstates), function(q) apply(
-         beta^((1 - t(R))*K[q, ]) * (1 - beta)^(t(R)*K[q, ]) *
-          eta^(t(R)*(1 - K[q, ])) * (1 - eta)^((1 - t(R))*(1 - K[q, ])),
+  P.R.K <- apply(K, 1, function(q) apply(
+         beta^((1 - t(R))*k) * (1 - beta)^(t(R)*k) *
+          eta^(t(R)*(1 - k)) * (1 - eta)^((1 - t(R))*(1 - k)),
          2, prod))
   P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
