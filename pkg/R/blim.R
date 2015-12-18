@@ -51,7 +51,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   dimnames(betaeq) <- dimnames(etaeq) <- list(names(eta), names(eta))
 
   ## Assigning state K given response R
-  d.RK <- if (any(c(betafix, etafix) == 0)) {
+  d.RK <- if (length(which(c(betafix, etafix) == 0)) > 0) {
     apply(K, 1, function(k) {
       RwoK <- t(R) & !k
       idx <- which(RwoK, arr.ind=TRUE)
