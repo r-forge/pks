@@ -135,7 +135,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   }
 
   ## Recompute predictions and likelihood
-  P.R.K <- apply(K, 1, function(q) apply(
+  P.R.K <- apply(K, 1, function(k) apply(
          beta^((1 - t(R))*k) * (1 - beta)^(t(R)*k) *
           eta^(t(R)*(1 - k)) * (1 - eta)^((1 - t(R))*(1 - k)),
          2, prod))
@@ -295,12 +295,13 @@ as.pattern <- function(R, freq = FALSE, as.letters = FALSE, as.set = FALSE){
       lett[lett == ""] <- "0"
 
       if(as.set){
-        # Separate elements in lett by "_", remove leading/trailing "_",
-        # then strsplit along "_"
-        setfam <- as.set(sapply(strsplit(
-          gsub("^_(.+)_$", "\\1", gsub("([0-9]*)", "\\1_", unname(lett))),
+        # Separate elements in lett by "_", remove leading "_",
+        # then strsplit along "_" (trailing "_" are ignored by strsplit)
+        setfam <- as.set(lapply(strsplit(
+          gsub("^_(.+)", "\\1", gsub("([0-9]*)", "\\1_", unname(lett))),
           "_"), as.set))
-        setfam[[set("0")]] <- set()  # proper empty set
+        if (set_contains_element(setfam, set("0")))
+          setfam[[set("0")]] <- set()  # proper empty set
         setfam  # return family of sets, class set
       }else
         lett    # return letters, class character
