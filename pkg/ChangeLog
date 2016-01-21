@@ -3,8 +3,8 @@ Changes in 0.4-0
   * blim(): more flexible infrastructure for setting parameter constraints;
     errequal and errtype arguments are now deprecated in favor of
     betaequal/etaequal and betafix/etafix
-  * as.pattern(..., as.set = TRUE): works in more cases including when R
-    does not contain the empty set
+  * as.pattern(..., as.set = TRUE), as.binmat(): work in more cases including
+    when R or N.R do not contain the empty set
   * NAMESPACE: import graphics
 
 Changes in 0.3-1

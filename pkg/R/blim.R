@@ -313,7 +313,7 @@ as.pattern <- function(R, freq = FALSE, as.letters = FALSE, as.set = FALSE){
 ## Convert vector of response patterns to named binary matrix
 as.binmat <- function(N.R, uniq = TRUE, col.names = NULL){
   if (is.set(N.R)) {
-    states <- sapply(N.R, as.character)
+    states <- lapply(N.R, as.character)
     items <- sort(unique(unlist(states)))
     R <- matrix(0, length(N.R), length(items),
                 dimnames=list(NULL,
