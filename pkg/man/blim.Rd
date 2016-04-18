@@ -146,7 +146,10 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
 
 \seealso{
   \code{\link{simulate.blim}}, \code{\link{plot.blim}},
-  \code{\link{residuals.blim}}, \code{\link{logLik.blim}}.
+  \code{\link{residuals.blim}}, \code{\link{logLik.blim}},
+  \code{\link{simulate.blim}}, \code{\link{delineate}},
+  \code{\link{jacobian}}, \code{\link{endm}}, \code{\link{probability}},
+  \code{\link{chess}}.
 }
 
 \examples{
@@ -166,5 +169,7 @@ m1 <- blim(K, N.R, method = "ML",
               etafix = c(0.1, 0.1, NA, NA, NA))
 m2 <- blim(K, N.R, method = "ML")
 anova(m1, m2)
+
+## See ?endm, ?probability, and ?chess for further examples.
 }
 \keyword{models}
