@@ -336,3 +336,42 @@ as.binmat <- function(N.R, uniq = TRUE, col.names = NULL){
   R
 }
 
+
+anova.blim <- function(object, ..., test = c("Chisq", "none")){
+  ## Adapted form MASS::anova.polr and stats::anova.glmlist
+
+  test <- match.arg(test)
+  dots <- list(...)
+  if (length(dots) == 0)
+      stop('anova is not implemented for a single "blim" object')
+  mlist <- list(object, ...)
+  nmodels <- length(mlist)
+  names(mlist) <- sapply(match.call()[-1],
+      function(s) paste(deparse(s), collapse="\n"))[seq_len(nmodels)]
+
+  if (any(!sapply(mlist, inherits, "blim")))
+      stop('not all objects are of class "blim"')
+
+  ns <- sapply(mlist, function(x) length(x$fitted))
+  if (any(ns != ns[1]))
+      stop("models were not all fitted to the same size of dataset")
+
+  dfs <- sapply(mlist, function(x) x$goodness.of.fit["df"])
+  lls <- sapply(mlist, function(x) x$goodness.of.fit["G2"])
+  df <- c(NA, -diff(dfs))
+  x2 <- c(NA, -diff(lls))
+  pr <- c(NA, pchisq(x2[-1], df[-1], lower.tail = FALSE))
+
+  out <- data.frame(Resid.df = dfs, Deviance = lls, Df = df, Chisq = x2,
+                    Prob = pr)
+  dimnames(out) <- list(1:nmodels, c("Resid. Df", "Resid. Dev", "Df",
+                                     "Deviance", "Pr(>Chi)"))
+  if (test == "none") out <- out[, -ncol(out)]
+
+  structure(out,
+            heading = c("Analysis of Deviance Table\n",
+                        paste0("Model ", format(1L:nmodels), ": ",
+                               names(mlist), collapse = "\n")),
+            class = c("anova", "data.frame"))
+}
+

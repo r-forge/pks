@@ -1,6 +1,7 @@
 \name{blim}
 \alias{blim}
 \alias{blimMD}
+\alias{anova.blim}
 \alias{logLik.blim}
 \alias{nobs.blim}
 
@@ -21,6 +22,8 @@ blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
        "guessing"), incrule = c("minimum", "hypblc1", "hypblc2"),
        m = 1)
+
+\method{anova}{blim}(object, \dots, test = c("Chisq", "none"))
 }
 
 \arguments{
@@ -59,6 +62,11 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
     \code{N.R} vector is completed and padded with zeros.}
   \item{incrule}{inclusion rule for knowledge states.  (See Details.)}
   \item{m}{exponent for hyperbolic inclusion rules.}
+  \item{object}{an object of class \code{blim}, typically the result of a
+    call to \code{blim}.}
+  \item{test}{should the p-values of the chi-square distributions be
+    reported?}
+  \item{\dots}{additional arguments passed to other methods.}
 }
 
 \details{
@@ -151,8 +159,10 @@ blim(K, N.R, method = "MDML")  # MDML estimation
 
 ## Parameter restrictions: beta_a = beta_b = beta_d, beta_c = beta_e
 ##                          eta_a =  eta_b = 0.1
-blim(K, N.R, method = "ML",
-     betaequal = list(c(1, 2, 4), c(3, 5)),
-        etafix = c(0.1, 0.1, NA, NA, NA))
+m1 <- blim(K, N.R, method = "ML",
+           betaequal = list(c(1, 2, 4), c(3, 5)),
+              etafix = c(0.1, 0.1, NA, NA, NA))
+m2 <- blim(K, N.R, method = "ML")
+anova(m1, m2)
 }
 \keyword{models}
