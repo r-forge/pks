@@ -375,3 +375,6 @@ anova.blim <- function(object, ..., test = c("Chisq", "none")){
             class = c("anova", "data.frame"))
 }
 
+
+deviance.blim <- function(object, ...) object$goodness.of.fit["G2"]
+
