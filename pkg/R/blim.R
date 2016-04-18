@@ -378,3 +378,10 @@ anova.blim <- function(object, ..., test = c("Chisq", "none")){
 
 deviance.blim <- function(object, ...) object$goodness.of.fit["G2"]
 
+
+coef.blim <- function(object, ...){
+  c(setNames(object$beta, paste("beta", names(object$beta), sep=".")),
+    setNames(object$eta,  paste( "eta", names(object$eta),  sep=".")),
+    object$P.K)
+}
+

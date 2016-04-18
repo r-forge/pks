@@ -2,6 +2,7 @@
 \alias{blim}
 \alias{blimMD}
 \alias{anova.blim}
+\alias{coef.blim}
 \alias{deviance.blim}
 \alias{logLik.blim}
 \alias{nobs.blim}

@@ -14,6 +14,7 @@ export(
 )
 
 S3method("anova", "blim")
+S3method("coef", "blim")
 S3method("deviance", "blim")
 S3method("logLik", "blim")
 S3method("nobs", "blim")
