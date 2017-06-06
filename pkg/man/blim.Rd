@@ -147,9 +147,8 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
 \seealso{
   \code{\link{simulate.blim}}, \code{\link{plot.blim}},
   \code{\link{residuals.blim}}, \code{\link{logLik.blim}},
-  \code{\link{simulate.blim}}, \code{\link{delineate}},
-  \code{\link{jacobian}}, \code{\link{endm}}, \code{\link{probability}},
-  \code{\link{chess}}.
+  \code{\link{delineate}}, \code{\link{jacobian}}, \code{\link{endm}},
+  \code{\link{probability}}, \code{\link{chess}}.
 }
 
 \examples{
