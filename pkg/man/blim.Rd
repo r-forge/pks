@@ -1,5 +1,6 @@
 \name{blim}
 \alias{blim}
+\alias{blim04}
 \alias{blimMD}
 \alias{anova.blim}
 \alias{coef.blim}

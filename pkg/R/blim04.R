@@ -1,5 +1,5 @@
 ## Fitting the basic local independence model (BLIM) by MDML
-blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
+blim04 <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                  P.K = rep(1/nstates, nstates),
                  beta = rep(0.1, nitems),
                   eta = rep(0.1, nitems),
@@ -31,19 +31,19 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   if (!is.null(betaequal)) for (i in betaequal) betaeq[i, i] <- 1
   if (!is.null( etaequal)) for (i in  etaequal)  etaeq[i, i] <- 1
 
-# errtype <- match.arg(errtype)                        # overrides arguments
-# if (errtype == "error") {
-#   etafix <- rep(0, nitems)
-#   warning("errtype is deprecated, use etafix = rep(0, nitems) instead")
-# }
-# if (errtype == "guessing") {
-#   betafix <- rep(0, nitems)
-#   warning("errtype is deprecated, use betafix = rep(0, nitems) instead")
-# }
-# if (errequal) {
-#   betaeq <- etaeq <- matrix(1, nitems, nitems)
-#   warning("errequal is deprecated, use betaequal or etaequal instead")
-# }
+  errtype <- match.arg(errtype)                        # overrides arguments
+  if (errtype == "error") {
+    etafix <- rep(0, nitems)
+    warning("errtype is deprecated, use etafix = rep(0, nitems) instead")
+  }
+  if (errtype == "guessing") {
+    betafix <- rep(0, nitems)
+    warning("errtype is deprecated, use betafix = rep(0, nitems) instead")
+  }
+  if (errequal) {
+    betaeq <- etaeq <- matrix(1, nitems, nitems)
+    warning("errequal is deprecated, use betaequal or etaequal instead")
+  }
   beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
    eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
 
@@ -76,26 +76,53 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   disc.tab <- xtabs(N.R ~ d.min)
   disc     <- as.numeric(names(disc.tab)) %*% disc.tab / N
 
-  ## Call EM
-  method <- match.arg(method)
-  PRKfun <- if(all(0 < c(beta, eta)) && all(c(beta, eta) < 1)) {
-              getPRK[["matmult"]]
-            } else {
-              getPRK[["apply"]]
-            }
-  opt <- blimEM(P.K = P.K, beta = beta, eta = eta, K = K, R = R, N.R = N.R,
-                N = N, nitems = nitems, i.RK = i.RK, PRKfun = PRKfun,
-                betafix = betafix, etafix = etafix, betaeq = betaeq,
-                etaeq = etaeq, method = method, tol = tol, maxiter = maxiter)
-  P.K  <- opt$P.K
-  beta <- opt$beta
-  eta  <- opt$eta
-  iter <- opt$iter
+  eps     <- 1e-06
+  iter    <- 0
+  maxdiff <- 2 * tol
+  em      <- switch(method <- match.arg(method), MD = 0, ML = 1, MDML = 1)
+  md      <- switch(method, MD = 1, ML = 0, MDML = 1)
+  beta.num <- beta.denom <- eta.num <-  eta.denom <- beta
+  while ((maxdiff > tol) && (iter < maxiter) &&
+         ((md*(1 - em) != 1) || (iter == 0))) {
+    pi.old   <- P.K
+    beta.old <- beta
+    eta.old  <- eta
+
+    P.R.K <- apply(K, 1, function(k) apply(
+           beta^((1 - t(R))*k) * (1 - beta)^(t(R)*k) *
+            eta^(t(R)*(1 - k)) * (1 - eta)^((1 - t(R))*(1 - k)),
+           2, prod))
+    P.R    <- as.numeric(P.R.K %*% P.K)
+    P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
+    mat.RK <- i.RK^md * P.K.R^em
+    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R)*N(R)
+
+    ## Distribution of knowledge states
+    P.K <- colSums(m.RK) / N
+
+    ## Careless error and guessing parameters
+    for (j in seq_len(nitems)) {
+      beta.num[j]   <- sum(m.RK[which(R[, j] == 0), which(K[, j] == 1)])
+      beta.denom[j] <- sum(m.RK[, which(K[, j] == 1)])
+       eta.num[j]   <- sum(m.RK[which(R[, j] == 1), which(K[, j] == 0)])
+       eta.denom[j] <- sum(m.RK[, which(K[, j] == 0)])
+    }
+    beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
+     eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
+    beta[is.na(beta) | beta < eps] <- eps
+     eta[is.na( eta) |  eta < eps] <- eps
+    beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
+     eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
+
+    maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
+    iter <- iter + 1
+  }
+  if(iter >= maxiter) warning("iteration maximum has been exceeded")
 
   ## Mean number of errors
   P.Kq <- numeric(nitems)
   for(j in seq_len(nitems))
-    P.Kq[j] <- sum(P.K[which(K[, j] == 1)])
+    P.Kq[j] <- sum(P.K[which(K[,j] == 1)])
   nerror <- c("careless error" = sum(beta * P.Kq),
                  "lucky guess" = sum( eta * (1 - P.Kq)))
 
@@ -109,7 +136,10 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   }
 
   ## Recompute predictions and likelihood
-  P.R.K <- do.call(PRKfun, list(beta, eta, K, R))
+  P.R.K <- apply(K, 1, function(k) apply(
+         beta^((1 - t(R))*k) * (1 - beta)^(t(R)*k) *
+          eta^(t(R)*(1 - k)) * (1 - eta)^((1 - t(R))*(1 - k)),
+         2, prod))
   P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
   loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
@@ -133,78 +163,6 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   class(z) <- "blim"
   z
 }
-
-
-## EM algorithm
-blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
-                   betafix, etafix, betaeq, etaeq, method, tol, maxiter){
-
-  eps     <- 1e-06
-  iter    <- 0
-  maxdiff <- 2 * tol
-  em      <- switch(method, MD = 0, ML = 1, MDML = 1)
-  md      <- switch(method, MD = 1, ML = 0, MDML = 1)
-  beta.num <- beta.denom <- eta.num <- eta.denom <- beta
-  while ((maxdiff > tol) && (iter < maxiter) &&
-         ((md*(1 - em) != 1) || (iter == 0))) {
-    pi.old   <- P.K
-    beta.old <- beta
-    eta.old  <- eta
-
-    P.R.K  <- do.call(PRKfun, list(beta, eta, K, R))
-    P.R    <- as.numeric(P.R.K %*% P.K)
-    P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
-    mat.RK <- i.RK^md * P.K.R^em
-    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R)*N(R)
-
-    ## Distribution of knowledge states
-    P.K <- colSums(m.RK) / N
-
-    ## Careless error and guessing parameters
-    for (j in seq_len(nitems)) {
-      beta.num[j]   <- sum(m.RK[which(R[, j] == 0), which(K[, j] == 1)])
-      beta.denom[j] <- sum(m.RK[, which(K[, j] == 1)])
-       eta.num[j]   <- sum(m.RK[which(R[, j] == 1), which(K[, j] == 0)])
-       eta.denom[j] <- sum(m.RK[, which(K[, j] == 0)])
-    }
-    beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
-     eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
-    beta[is.na(beta) | beta < eps] <- eps  # force 0 < beta, eta < 1
-     eta[is.na( eta) |  eta < eps] <- eps
-    beta[beta > 1 - eps] <- 1 - eps
-     eta[ eta > 1 - eps] <- 1 - eps
-    beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
-     eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
-
-    maxdiff <- max(abs(c(P.K, beta, eta) - c(pi.old, beta.old, eta.old)))
-    iter <- iter + 1
-  }
-  if(iter >= maxiter) warning("iteration maximum has been exceeded")
-  out <- list(P.K = P.K, beta = beta, eta = eta, iter = iter)
-  out
-}
-
-
-getPRK <- list(
-  ## Slow algorithm
-  apply = function(beta, eta, K, R)
-    apply(K, 1,
-          function(k) apply(
-                    beta ^((1 - t(R)) *      k ) *
-               (1 - beta)^(     t(R)  *      k ) *
-                     eta ^(     t(R)  * (1 - k)) *
-               (1 -  eta)^((1 - t(R)) * (1 - k)),
-            2, prod)
-    ),
-  ## Vectorized algorithm, requires 0 < beta, eta < 1
-  matmult = function(beta, eta, K, R)
-    exp(
-        (1 - R) %*% diag(log(    beta)) %*% t(    K) +
-             R  %*% diag(log(1 - beta)) %*% t(    K) +
-             R  %*% diag(log(     eta)) %*% t(1 - K) +
-        (1 - R) %*% diag(log(1 -  eta)) %*% t(1 - K)
-    )
-)
 
 
 print.blim <- function(x, P.Kshow = FALSE, errshow = TRUE,

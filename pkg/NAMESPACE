@@ -5,6 +5,7 @@ importFrom("graphics", "abline", "panel.smooth", "plot")
 
 export(
   "blim",
+  "blim04",
   "blimMD",
   "as.pattern",
   "as.binmat",

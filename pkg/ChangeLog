@@ -1,3 +1,8 @@
+Changes in 0.5-0
+
+  * blim(): use (if possible) matrix multiplication to compute the joint
+    distribution of states and response patterns
+
 Changes in 0.4-1
 
   * BUG FIX: blim(..., method = "MDML") could fail when (b)eta estimates were
