@@ -1,12 +1,10 @@
 ## Fitting the basic local independence model (BLIM) by MDML
 blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                  P.K = rep(1/nstates, nstates),
-                 beta = rep(0.1, nitems),
-                  eta = rep(0.1, nitems),
+                 beta = rep(0.1, nitems), eta = rep(0.1, nitems),
                  betafix = rep(NA, nitems), etafix = rep(NA, nitems),
                  betaequal = NULL, etaequal = NULL,
-                 errtype = c("both", "error", "guessing"),
-                 errequal = FALSE, randinit = FALSE, incradius = 0,
+                 randinit = FALSE, incradius = 0,
                  tol = 1e-07, maxiter = 10000, zeropad = 12) {
 
   K       <- as.matrix(K)
@@ -26,24 +24,10 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
        P.K <- x[-1] - x[-length(x)]               # constraint: sum(P.K) == 1
   }
 
-  ## Equality restrictions
+  ## Parameter restrictions
   betaeq <- etaeq <- diag(nitems)
   if (!is.null(betaequal)) for (i in betaequal) betaeq[i, i] <- 1
   if (!is.null( etaequal)) for (i in  etaequal)  etaeq[i, i] <- 1
-
-# errtype <- match.arg(errtype)                        # overrides arguments
-# if (errtype == "error") {
-#   etafix <- rep(0, nitems)
-#   warning("errtype is deprecated, use etafix = rep(0, nitems) instead")
-# }
-# if (errtype == "guessing") {
-#   betafix <- rep(0, nitems)
-#   warning("errtype is deprecated, use betafix = rep(0, nitems) instead")
-# }
-# if (errequal) {
-#   betaeq <- etaeq <- matrix(1, nitems, nitems)
-#   warning("errequal is deprecated, use betaequal or etaequal instead")
-# }
   beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
    eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
 
