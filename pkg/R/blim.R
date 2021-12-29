@@ -40,19 +40,22 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   dimnames(betaeq) <- dimnames(etaeq) <- list(names(eta), names(eta))
 
   ## Assigning state K given response R
-  d.RK <- if (length(which(c(betafix, etafix) == 0)) > 0) {
-    apply(K, 1, function(k) {
+  if(length(which(c(betafix, etafix) == 0))) {
+    d.RK <- apply(K, 1, function(k) {
       RwoK <- t(R) & !k
       idx <- which(RwoK, arr.ind=TRUE)
       RwoK[idx[idx[, "row"] %in% which(etafix == 0), ]] <- NA
-    
+      
       KwoR <- k & !t(R)
       idx <- which(KwoR, arr.ind=TRUE)
       KwoR[idx[idx[, "row"] %in% which(betafix == 0), ]] <- NA
       colSums(RwoK) + colSums(KwoR)
     })
-  } else
-    apply(K, 1, function(k) colSums(xor(t(R), k)))
+    PRKfun <- getPRK[["apply"]] 
+  } else {
+    d.RK <- apply(K, 1, function(k) colSums(xor(t(R), k)))
+    PRKfun <- getPRK[["matmult"]] 
+  }
   d.min <- apply(d.RK, 1, min, na.rm = TRUE)             # minimum discrepancy
   i.RK  <- (d.RK <= (d.min + incradius)) & !is.na(d.RK)
 
@@ -62,11 +65,6 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   ## Call EM
   method <- match.arg(method)
-  PRKfun <- if(all(0 < c(beta, eta)) && all(c(beta, eta) < 1)) {
-              getPRK[["matmult"]]
-            } else {
-              getPRK[["apply"]]
-            }
   opt <- blimEM(P.K = P.K, beta = beta, eta = eta, K = K, R = R, N.R = N.R,
                 N = N, nitems = nitems, i.RK = i.RK, PRKfun = PRKfun,
                 betafix = betafix, etafix = etafix, betaeq = betaeq,
@@ -126,8 +124,8 @@ blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
   eps     <- 1e-06
   iter    <- 0
   maxdiff <- 2 * tol
-  em      <- switch(method, MD = 0, ML = 1, MDML = 1)
-  md      <- switch(method, MD = 1, ML = 0, MDML = 1)
+  em      <- c(MD = 0, ML = 1, MDML = 1)[method]
+  md      <- c(MD = 1, ML = 0, MDML = 1)[method]
   beta.num <- beta.denom <- eta.num <- eta.denom <- beta
   while ((maxdiff > tol) && (iter < maxiter) &&
          ((md*(1 - em) != 1) || (iter == 0))) {

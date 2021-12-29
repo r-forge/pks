@@ -21,9 +21,9 @@ blim(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
      randinit = FALSE, incradius = 0,
      tol = 1e-07, maxiter = 10000, zeropad = 12)
 
-blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
-       "guessing"), incrule = c("minimum", "hypblc1", "hypblc2"),
-       m = 1)
+blimMD(K, N.R, R = as.binmat(N.R),
+       betafix = rep(NA, nitems), etafix = rep(NA, nitems),
+       incrule = c("minimum", "hypblc1", "hypblc2"), m = 1)
 
 \method{anova}{blim}(object, \dots, test = c("Chisq", "none"))
 }
@@ -48,9 +48,6 @@ blimMD(K, N.R, R = as.binmat(N.R), errtype = c("both", "error",
     represents an equivalence class: it contains the indices of problems for
     which the error or guessing parameters are constrained to be equal.  (See
     Examples.)}
-  \item{errtype}{type of response errors that can occur: \code{error} for
-    careless errors only, \code{guessing} for lucky guesses only, and
-    \code{both} for both error types.}
   \item{randinit}{logical, if \code{TRUE} then initial parameter values are
     sampled uniformly with constraints.  (See Details.)}
   \item{incradius}{include knowledge states of distance from the minimum
