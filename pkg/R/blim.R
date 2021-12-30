@@ -133,7 +133,7 @@ blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
     beta.old <- beta
     eta.old  <- eta
 
-    P.R.K  <- do.call(PRKfun, list(beta, eta, K, R))
+    P.R.K  <- do.call(PRKfun, list(beta, eta, K, R))  # P(R|K)
     P.R    <- as.numeric(P.R.K %*% P.K)
     P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
     mat.RK <- i.RK^md * P.K.R^em
@@ -167,6 +167,7 @@ blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
 }
 
 
+## Conditional distribution of response patterns given knowledge state P(R|K)
 getPRK <- list(
   ## Slow algorithm
   apply = function(beta, eta, K, R)
