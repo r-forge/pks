@@ -3,6 +3,7 @@ Changes in 0.5-0
   * blim(): use (if possible) matrix multiplication to compute the conditional
     distribution of response patterns given knowledge state; remove deprecated
     errequal and errtype arguments
+  * conversion.R: as.binmat() gains as.logical argument
 
 Changes in 0.4-1
 
