@@ -5,7 +5,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                  betafix = rep(NA, nitems), etafix = rep(NA, nitems),
                  betaequal = NULL, etaequal = NULL,
                  randinit = FALSE, incradius = 0,
-                 tol = 1e-07, maxiter = 10000, zeropad = 12) {
+                 tol = 1e-07, maxiter = 10000, zeropad = 16) {
 
   K       <- as.matrix(K)
   N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
