@@ -7,6 +7,7 @@ Changes in 0.5-0
   * conversion.R: as.binmat() gains as.logical argument
   * chess data: correct mistakes in dst1 and dst4; add raw data and
     replication code
+  * *.Rd: update references
 
 Changes in 0.4-1
 

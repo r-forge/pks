@@ -28,7 +28,8 @@
 \source{
   Held, T., Schrepp, M., & Fries, S. (1995).
   Methoden zur Bestimmung von Wissensstrukturen -- eine Vergleichsstudie.
-  \emph{Zeitschrift fuer Experimentelle Psychologie}, \bold{42}, 205--236.
+  \emph{Zeitschrift fuer Experimentelle Psychologie},
+  \bold{42}(2), 205--236.
 }
 \references{
   Schrepp, M., Held, T., & Albert, D. (1999).

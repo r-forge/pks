@@ -131,13 +131,13 @@ blimMD(K, N.R, R = as.binmat(N.R),
   \doi{10.1016/j.endm.2013.05.145}
 
   Rubin, D.B. (1981). The Bayesian bootstrap.
-  \emph{The Annals of Statistics}, \bold{9}, 130--134.
+  \emph{The Annals of Statistics}, \bold{9}(1), 130--134.
   \doi{10.1214/aos/1176345338}
 
   Weisstein, E.W. (2013, August 29). Triangle point picking.
   In \emph{MathWorld -- A Wolfram Web Resource}.
   Retrieved from
-  \url{http://mathworld.wolfram.com/TrianglePointPicking.html}.
+  \url{https://mathworld.wolfram.com/TrianglePointPicking.html}.
 }
 
 \seealso{

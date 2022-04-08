@@ -42,7 +42,7 @@ jacobian(object, P.K = rep(1/nstates, nstates),
 
   Stefanutti, L., Heller, J., Anselmi, P., & Robusto, E. (2012).
   Assessing the local identifiability of probabilistic knowledge structures.
-  \emph{Behavior Research Methods}, \bold{44}, 1197--1211.
+  \emph{Behavior Research Methods}, \bold{44}(4), 1197--1211.
   \doi{10.3758/s13428-012-0187-z}
 }
 
