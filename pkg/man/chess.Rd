@@ -63,7 +63,8 @@ P <- as.binmat(c("1111011101111001",   # s
                as.logical = TRUE)
 dimnames(P) <- list("<" = colnames(chess$R), ">" = colnames(chess$R))
 K <- rbind(0L, binary_closure(t(P)))
-all(sort(as.pattern(chess$dst1)) == sort(as.pattern(K)))
+identical(sort(as.pattern(K)),
+          sort(as.pattern(chess$dst1)))
 
 blim(chess$dst1, chess$N.R)  # Tab. 1
 }
