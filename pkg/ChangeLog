@@ -1,3 +1,8 @@
+Changes in 0.5-1
+
+  * New data set: fractarithm, Arithmetic Problems with Fractions (Stefanutti
+    and de Chiusole, 2017)
+
 Changes in 0.5-0
 
   * blim(): use (if possible) matrix multiplication to compute the conditional
