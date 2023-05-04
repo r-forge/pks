@@ -77,7 +77,7 @@ blim <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   ## Mean number of errors
   P.Kq <- numeric(nitems)
   for(j in seq_len(nitems))
-    P.Kq[j] <- sum(P.K[which(K[, j] == 1)])
+    P.Kq[j] <- sum(P.K[K[, j] == 1])
   nerror <- c("careless error" = sum(beta * P.Kq),
                  "lucky guess" = sum( eta * (1 - P.Kq)))
 
@@ -144,10 +144,10 @@ blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
 
     ## Careless error and guessing parameters
     for (j in seq_len(nitems)) {
-      beta.num[j]   <- sum(m.RK[which(R[, j] == 0), which(K[, j] == 1)])
-      beta.denom[j] <- sum(m.RK[, which(K[, j] == 1)])
-       eta.num[j]   <- sum(m.RK[which(R[, j] == 1), which(K[, j] == 0)])
-       eta.denom[j] <- sum(m.RK[, which(K[, j] == 0)])
+      beta.num[j]   <- sum(m.RK[R[, j] == 0, K[, j] == 1])
+      beta.denom[j] <- sum(m.RK[           , K[, j] == 1])
+       eta.num[j]   <- sum(m.RK[R[, j] == 1, K[, j] == 0])
+       eta.denom[j] <- sum(m.RK[           , K[, j] == 0])
     }
     beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
      eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
