@@ -6,6 +6,7 @@ importFrom("graphics", "abline", "panel.smooth", "plot")
 export(
   "blim",
   "blimMD",
+  "slm",
   "as.pattern",
   "as.binmat",
   "is.forward.graded",
@@ -24,5 +25,10 @@ S3method("residuals", "blim")
 S3method("plot", "blim")
 S3method("print", "blim")
 S3method("simulate", "blim")
+
+S3method("coef", "slm")
+S3method("simulate", "slm")
+S3method("print", "slm")
+
 S3method("print", "ita")
 
