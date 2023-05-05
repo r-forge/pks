@@ -42,6 +42,22 @@ hist(disc, col = "lightgray", border = "white", freq = FALSE, breaks = 20,
      main = "Parametric bootstrap", xlim = c(.05, .3))
 abline(v = blim1$discrepancy, lty = 2)
 
+## Parameter recovery for the SLM
+m0 <- list( P.K = pks:::getSlmPK(g = rep(.8, 5),
+                    K = DoignonFalmagne7$K,
+                    Kof = pks:::getKOfringe(DoignonFalmagne7$K)),
+           beta = rep(.1, 5),
+            eta = rep(.1, 5),
+              K = DoignonFalmagne7$K,
+        ntotal = 800)
+class(m0) <- c("slm", "blim")
+
+out <- replicate(20,
+         coef(slm(DoignonFalmagne7$K, simulate(m0), method = "ML"))
+)
+boxplot(t(out), horizontal = TRUE, las = 1,
+        main = "SLM parameter recovery")
+
 ## See ?endm for further examples.
 }
 \keyword{models}

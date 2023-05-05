@@ -1,6 +1,5 @@
 ## Fitting the simple learning model (SLM) by MDML
 slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
-                P.K = rep(1/nstates, nstates),
                 beta = rep(0.1, nitems), eta = rep(0.1, nitems),
                 g = rep(0.1, nitems),
                 betafix = rep(NA, nitems), etafix = rep(NA, nitems),
@@ -33,7 +32,6 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   beta[!is.na(betafix)] <- betafix[!is.na(betafix)]    # overrides arguments
    eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
 
-  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
   names(beta) <- names(eta) <-
     if (is.null(colnames(K))) {
       make.unique(c("a", letters[(seq_len(nitems) %% 26) + 1])[-(nitems + 1)],
@@ -89,6 +87,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   ## Recompute predictions and likelihood
   P.R.K <- do.call(PRKfun, list(beta, eta, K, R))
   P.K <- getSlmPK(g, K, Kof)
+  names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
   P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
   loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
@@ -265,25 +264,25 @@ print.slm <- function(x, P.Kshow = FALSE, parshow = TRUE,
 }
 
 
-## Simulate responses from SLM
-simulate.slm <- function(object, nsim = 1, seed = NULL, ...){
-    beta <- object$beta
-     eta <- object$eta
-       g <- object$g
-     P.K <- getSlmPK(g, object$K, getKOfringe(object$K))
-      tK <- t(as.matrix(object$K))
-       N <- object$ntotal
-  nitems <- nrow(tK)
-
-  state.id <- sample(seq_along(P.K), N, replace=TRUE, prob=P.K)  # draw states
-
-  P.1.K <- tK*(1 - beta) + (1 - tK)*eta               # P(resp = 1 | K)
-  R     <- matrix(0, N, nitems)                       # response matrix
-  for(i in seq_len(N))
-    R[i,] <- rbinom(nitems, 1, P.1.K[, state.id[i]])  # draw a response
-
-  as.pattern(R, freq = TRUE)
-}
+# ## Simulate responses from SLM
+# simulate.slm <- function(object, nsim = 1, seed = NULL, ...){
+#     beta <- object$beta
+#      eta <- object$eta
+#        g <- object$g
+#      P.K <- getSlmPK(g, object$K, getKOfringe(object$K))
+#       tK <- t(as.matrix(object$K))
+#        N <- object$ntotal
+#   nitems <- nrow(tK)
+# 
+#   state.id <- sample(seq_along(P.K), N, replace=TRUE, prob=P.K)  # draw states
+# 
+#   P.1.K <- tK*(1 - beta) + (1 - tK)*eta               # P(resp = 1 | K)
+#   R     <- matrix(0, N, nitems)                       # response matrix
+#   for(i in seq_len(N))
+#     R[i,] <- rbinom(nitems, 1, P.1.K[, state.id[i]])  # draw a response
+# 
+#   as.pattern(R, freq = TRUE)
+# }
 
 
 coef.slm <- function(object, ...){

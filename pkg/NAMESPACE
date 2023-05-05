@@ -27,7 +27,6 @@ S3method("print", "blim")
 S3method("simulate", "blim")
 
 S3method("coef", "slm")
-S3method("simulate", "slm")
 S3method("print", "slm")
 
 S3method("print", "ita")
