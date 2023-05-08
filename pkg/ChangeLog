@@ -1,6 +1,7 @@
 Changes in 0.6-0
 
   * New function: slm(), fitting and testing simple learning models
+  * New function: getKOfringe(), outer fringes of a knowledge space
   * New data set: fractarithm, Arithmetic Problems with Fractions (Stefanutti
     and de Chiusole, 2017)
 

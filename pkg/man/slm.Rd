@@ -1,5 +1,6 @@
 \name{slm}
 \alias{slm}
+\alias{getSlmPK}
 \alias{coef.slm}
 \alias{print.slm}
 
@@ -16,13 +17,15 @@ slm(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     randinit = FALSE, incradius = 0,
     tol = 1e-07, maxiter = 10000, zeropad = 16)
 
+getSlmPK(g, K, Ko)
+
 \method{print}{slm}(x, P.Kshow = FALSE, parshow = TRUE,
       digits=max(3, getOption("digits") - 2), \dots)
 }
 
 \arguments{
   \item{K}{a state-by-problem indicator matrix representing the knowledge
-    structure.  An element is one if the problem is contained in the state,
+    space.  An element is one if the problem is contained in the state,
     and else zero.}
   \item{N.R}{a (named) vector of absolute frequencies of response patterns.}
   \item{method}{\code{MD} for minimum discrepancy estimation, \code{ML} for
@@ -46,6 +49,9 @@ slm(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   \item{maxiter}{the maximum number of iterations.}
   \item{zeropad}{the maximum number of items for which an incomplete
     \code{N.R} vector is completed and padded with zeros.}
+  \item{Ko}{a state-by-problem indicator matrix representing the outer fringe
+    for each knowledge state in \code{K}; typically the result of a call to
+    \code{getKOfringe}.}
   \item{x}{an object of class \code{slm}, typically the result of a call to
     \code{slm}.}
   \item{P.Kshow}{logical, should the estimated distribution of knowledge
@@ -59,16 +65,18 @@ slm(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
 \details{
   See Doignon and Falmagne (1999) for details on the simple learning model
-  (SLM) for probabilistic knowledge structures.
+  (SLM) for probabilistic knowledge structures. The model requires a
+  well-graded knowledge space \code{K}.
 
   An \code{slm} object inherits from class \code{blim}.  See \code{blim} for
-  details on the function arguments.
+  details on the function arguments.  The helper function \code{getSlmPK}
+  returns the distribution of knowledge states \code{P.K}.
 }
 
 \value{
   An object of class \code{slm} and \code{blim}.  It contains all components
   of a \code{blim} object.  In addition, it includes:
-  \item{g}{the vector of estimates of the learning parameters parameters.}
+  \item{g}{the vector of estimates of the learning parameters.}
 }
 
 \references{
@@ -77,12 +85,12 @@ slm(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 }
 
 \seealso{
-  \code{\link{blim}}, \code{\link{simulate.blim}}.
+  \code{\link{blim}}, \code{\link{simulate.blim}}, \code{\link{getKOfringe}}
 }
 
 \examples{
 data(DoignonFalmagne7)
-K   <- DoignonFalmagne7$K     # knowledge structure
+K   <- DoignonFalmagne7$K     # well-graded knowledge space
 N.R <- DoignonFalmagne7$N.R   # frequencies of response patterns
 
 ## Fit simple learning model (SLM) by different methods

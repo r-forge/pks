@@ -14,7 +14,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   npat    <- nrow(R)
   nstates <- nrow(K)
 
-  Kof <- getKOfringe(K, nstates, nitems)  # matrix of outer-fringe states
+  Ko <- getKOfringe(K, nstates, nitems)  # matrix of outer-fringe states
 
   ## Uniformly random initial values
   if (randinit) {
@@ -65,7 +65,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   ## Call EM
   method <- match.arg(method)
-  opt <- slmEM(beta = beta, eta = eta, g = g, K = K, Kof = Kof, R = R,
+  opt <- slmEM(beta = beta, eta = eta, g = g, K = K, Ko = Ko, R = R,
                N.R = N.R, N = N, nitems = nitems, i.RK = i.RK,
                PRKfun = PRKfun,
                betafix = betafix, etafix = etafix, betaeq = betaeq,
@@ -86,7 +86,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   ## Recompute predictions and likelihood
   P.R.K <- do.call(PRKfun, list(beta, eta, K, R))
-  P.K <- getSlmPK(g, K, Kof)
+  P.K <- getSlmPK(g, K, Ko)
   names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
   P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
@@ -122,7 +122,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
 
 ## EM algorithm
-slmEM <- function(beta, eta, g, K, Kof, R, N.R, N, nitems, i.RK, PRKfun,
+slmEM <- function(beta, eta, g, K, Ko, R, N.R, N, nitems, i.RK, PRKfun,
                   betafix, etafix, betaeq, etaeq, method, tol, maxiter){
 
   eps     <- 1e-06
@@ -130,7 +130,7 @@ slmEM <- function(beta, eta, g, K, Kof, R, N.R, N, nitems, i.RK, PRKfun,
   maxdiff <- 2 * tol
   em      <- c(MD = 0, ML = 1, MDML = 1)[method]
   md      <- c(MD = 1, ML = 0, MDML = 1)[method]
-  beta.num <- beta.denom <- eta.num <- eta.denom <- g.of <- beta
+  beta.num <- beta.denom <- eta.num <- eta.denom <- g.o <- beta
   while ((maxdiff > tol) && (iter < maxiter) &&
          ((md*(1 - em) != 1) || (iter == 0))) {
     beta.old <- beta
@@ -138,7 +138,7 @@ slmEM <- function(beta, eta, g, K, Kof, R, N.R, N, nitems, i.RK, PRKfun,
     g.old    <- g
 
     P.R.K  <- do.call(PRKfun, list(beta, eta, K, R))  # P(R|K)
-    P.K    <- getSlmPK(g, K, Kof)
+    P.K    <- getSlmPK(g, K, Ko)
     P.R    <- as.numeric(P.R.K %*% P.K)
     P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
     mat.RK <- i.RK^md * P.K.R^em
@@ -146,11 +146,11 @@ slmEM <- function(beta, eta, g, K, Kof, R, N.R, N, nitems, i.RK, PRKfun,
 
     ## Careless error, guessing, and learning parameters
     for(j in seq_len(nitems)) {
-      beta.num[j]   <- sum(m.RK[R[, j] == 0,   K[, j] == 1])
-      beta.denom[j] <- sum(m.RK[           ,   K[, j] == 1])
-       eta.num[j]   <- sum(m.RK[R[, j] == 1,   K[, j] == 0])
-       eta.denom[j] <- sum(m.RK[           ,   K[, j] == 0])
-         g.of[j]    <- sum(m.RK[           , Kof[, j] == 1])
+      beta.num[j]   <- sum(m.RK[R[, j] == 0,  K[, j] == 1])
+      beta.denom[j] <- sum(m.RK[           ,  K[, j] == 1])
+       eta.num[j]   <- sum(m.RK[R[, j] == 1,  K[, j] == 0])
+       eta.denom[j] <- sum(m.RK[           ,  K[, j] == 0])
+         g.o[j]     <- sum(m.RK[           , Ko[, j] == 1])
     }
     beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
      eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
@@ -160,7 +160,7 @@ slmEM <- function(beta, eta, g, K, Kof, R, N.R, N, nitems, i.RK, PRKfun,
      eta[ eta > 1 - eps] <- 1 - eps
     beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
      eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
-       g <- beta.denom / (beta.denom + g.of)
+       g <- beta.denom / (beta.denom + g.o)
 
     maxdiff <- max(abs(c(beta, eta, g) - c(beta.old, eta.old, g.old)))
     iter <- iter + 1
@@ -213,11 +213,11 @@ getKOfringe <- function(K, nstates = nrow(K), nitems = ncol(K)) {
 
 
 ## Compute P(K) from g parameters
-getSlmPK <- function(g, K, Kof) {
+getSlmPK <- function(g, K, Ko) {
   # foreach k in K:
   #   prod(g[q-in-K]) * prod(1 - g[q-in-Ks-Ofringe])
-  apply(K   == TRUE, 1, function(k) prod(g[k])) *    # use K as index
-  apply(Kof == TRUE, 1, function(k) prod(1 - g[k]))
+  apply(K  == TRUE, 1, function(k) prod(g[k])) *    # use K as index
+  apply(Ko == TRUE, 1, function(k) prod(1 - g[k]))
 }
 
 
@@ -262,27 +262,6 @@ print.slm <- function(x, P.Kshow = FALSE, parshow = TRUE,
   cat("\n")
   invisible(x)
 }
-
-
-# ## Simulate responses from SLM
-# simulate.slm <- function(object, nsim = 1, seed = NULL, ...){
-#     beta <- object$beta
-#      eta <- object$eta
-#        g <- object$g
-#      P.K <- getSlmPK(g, object$K, getKOfringe(object$K))
-#       tK <- t(as.matrix(object$K))
-#        N <- object$ntotal
-#   nitems <- nrow(tK)
-# 
-#   state.id <- sample(seq_along(P.K), N, replace=TRUE, prob=P.K)  # draw states
-# 
-#   P.1.K <- tK*(1 - beta) + (1 - tK)*eta               # P(resp = 1 | K)
-#   R     <- matrix(0, N, nitems)                       # response matrix
-#   for(i in seq_len(N))
-#     R[i,] <- rbinom(nitems, 1, P.1.K[, state.id[i]])  # draw a response
-# 
-#   as.pattern(R, freq = TRUE)
-# }
 
 
 coef.slm <- function(object, ...){

@@ -7,13 +7,15 @@ export(
   "blim",
   "blimMD",
   "slm",
+  "getSlmPK",
   "as.pattern",
   "as.binmat",
   "is.forward.graded",
   "is.backward.graded",
   "delineate",
   "jacobian",
-  "ita"
+  "ita",
+  "getKOfringe"
 )
 
 S3method("anova", "blim")
