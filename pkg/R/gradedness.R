@@ -17,3 +17,17 @@ is.backward.graded <- function(K) {
          })
 }
 
+
+## Check for well-gradedness
+
+is.wellgraded <- function(K) {
+  # - the states in K allow for at least one stepwise learning path
+  # - the outer fringe is empty only for a single state (the domain)
+  nitems <- ncol(K)
+  uniqItemsPerK <- unique(rowSums(K))  # must be 0, 1, ..., nitems
+
+  length(uniqItemsPerK) == nitems + 1 &&
+  all(sort(uniqItemsPerK) == c(0, seq_len(nitems))) &&
+  sum(rowSums(getKOfringe(K)) == 0) == 1
+}
+

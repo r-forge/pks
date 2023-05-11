@@ -12,6 +12,7 @@ export(
   "as.binmat",
   "is.forward.graded",
   "is.backward.graded",
+  "is.wellgraded",
   "delineate",
   "jacobian",
   "ita",

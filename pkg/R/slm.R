@@ -14,6 +14,11 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   npat    <- nrow(R)
   nstates <- nrow(K)
 
+  stopifnot(
+    is.knowledgespace(K),
+    is.wellgraded(K)
+  )
+
   Ko <- getKOfringe(K, nstates, nitems)  # matrix of outer-fringe states
 
   ## Uniformly random initial values
@@ -172,7 +177,7 @@ slmEM <- function(beta, eta, g, K, Ko, R, N.R, N, nitems, i.RK, PRKfun,
 
 
 ## Testing for closure under union
-isKnowledgeSpace <- function(K) {
+is.knowledgespace <- function(K) {
   all(
       sort(as.pattern(binary_closure(K == TRUE) + 0)) ==
       sort(as.pattern(K))
@@ -184,17 +189,12 @@ isKnowledgeSpace <- function(K) {
 getKOfringe <- function(K, nstates = nrow(K), nitems = ncol(K)) {
   stopifnot(
      is.numeric(K),
-     is.matrix(K),
-     isKnowledgeSpace(K)
+     is.matrix(K)
   )
 
-  ## Get states K' with |K'| = |K| + 1
-  nItemsPerK <- rowSums(K)
-  if(any(sort(unique(nItemsPerK)) != c(0, seq_len(nitems))))
-    stop("K not wellgraded")
-
-  ## List of matrices containing the K' states
+  ## List of matrices containing the K' states with |K'| = |K| + 1
   Kplus <- vector(mode = "list", length = nstates)
+  nItemsPerK <- rowSums(K)
   for(i in seq_len(nstates)) {
     Kplus[[i]] <- K[nItemsPerK == nItemsPerK[i] + 1, , drop = FALSE]
   }
