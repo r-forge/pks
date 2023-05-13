@@ -159,13 +159,15 @@ slmEM <- function(beta, eta, g, K, Ko, R, N.R, N, nitems, i.RK, PRKfun,
     }
     beta <- drop(betaeq %*% beta.num / betaeq %*% beta.denom)
      eta <- drop( etaeq %*%  eta.num /  etaeq %*%  eta.denom)
-    beta[is.na(beta) | beta < eps] <- eps  # force 0 < beta, eta < 1
+    beta[is.na(beta) | beta < eps] <- eps  # force 0 < beta, eta, g < 1
      eta[is.na( eta) |  eta < eps] <- eps
     beta[beta > 1 - eps] <- 1 - eps
      eta[ eta > 1 - eps] <- 1 - eps
     beta[!is.na(betafix)] <- betafix[!is.na(betafix)]  # reset fixed parameters
      eta[!is.na( etafix)] <-  etafix[!is.na( etafix)]
        g <- beta.denom / (beta.denom + g.o)
+       g[is.na(g) | g < eps] <- eps
+       g[g > 1 - eps] <- 1 - eps
 
     maxdiff <- max(abs(c(beta, eta, g) - c(beta.old, eta.old, g.old)))
     iter <- iter + 1

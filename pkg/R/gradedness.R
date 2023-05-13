@@ -18,7 +18,7 @@ is.backward.graded <- function(K) {
 }
 
 
-## Check for well-gradedness
+## Check for well-gradedness FIXME: this is not enough!
 
 is.wellgraded <- function(K) {
   # - the states in K allow for at least one stepwise learning path
