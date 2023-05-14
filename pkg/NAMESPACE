@@ -16,7 +16,8 @@ export(
   "delineate",
   "jacobian",
   "ita",
-  "getKOfringe"
+  "getKOfringe",
+  "blimit"
 )
 
 S3method("anova", "blim")

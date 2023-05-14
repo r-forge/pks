@@ -3,7 +3,9 @@ Changes in 0.6-0
   * New function: slm(), fitting and testing simple learning models
   * New function: getKOfringe(), outer fringes of a knowledge space
   * New function: is.wellgraded()
-  * New data set: fractarithm, Arithmetic Problems with Fractions (Stefanutti
+  * New function: blimit(), BLIM identification analysis (adapted from
+    Stefanutti et al., 2012)
+  * New data set: fractarithm, arithmetic problems with fractions (Stefanutti
     and de Chiusole, 2017)
 
 Changes in 0.5-0
