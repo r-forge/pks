@@ -5,8 +5,8 @@ Changes in 0.6-0
   * New function: is.wellgraded()
   * New function: blimit(), BLIM identification analysis (adapted from
     Stefanutti et al., 2012)
-  * New data set: fractarithm, arithmetic problems with fractions (Stefanutti
-    and de Chiusole, 2017)
+  * New data sets: fraction17 (Stefanutti and de Chiusole, 2017),
+    subtraction13 (de Chiusole and Stefanutti, 2013)
 
 Changes in 0.5-0
 

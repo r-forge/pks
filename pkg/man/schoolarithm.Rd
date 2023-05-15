@@ -1,19 +1,22 @@
-\name{fractarithm}
-\alias{fractarithm}
-\title{Arithmetic Problems with Fractions}
+\name{schoolarithm}
+\alias{schoolarithm}
+\alias{fraction17}
+\alias{subtraction13}
+\title{Arithmetic Problems for Elementary and Middle School Students}
 \description{
-  Responses of 191 participants presented with 23 arithmetic problems with
-  fractions.  The participants were first-level middle school students (about
-  11 to 12 years old).  A subset of 13 problems is included in Stefanutti and
-  de Chiusole (2017).
+  The 23 fraction problems were presented to 191 first-level middle school
+  students (about 11 to 12 years old).  A subset of 13 problems is included in
+  Stefanutti and de Chiusole (2017).
+
+  The eight subtraction problems were presented to 294 elementary school
+  students and are described in de Chiusole and Stefanutti (2013).
 }
-\usage{data(fractarithm)}
+\usage{data(schoolarithm)}
 \format{
-  A list consisting of a single component:
   \describe{
-    \item{\code{R}}{a person-by-problem indicator matrix representing the
-      responses of 191 persons to 23 problems. The responses are classified as
-      correct (0) or incorrect (1).}
+    \item{\code{fraction17}}{a person-by-problem indicator matrix representing
+      the responses of 191 persons to 23 problems.  The responses are
+      classified as correct (0) or incorrect (1).}
   }
   The 23 problems were:
   \itemize{
@@ -86,12 +89,38 @@
       \frac{9}{7} : \frac{2}{3} = ?}{%
       9/7 : 2/3 = ?}}
   }
+  \code{subtraction13} is a data frame consisting of the following components:
+  \describe{
+    \item{\code{School}}{factor; school id.}
+    \item{\code{Classroom}}{factor; class room id.}
+    \item{\code{Gender}}{factor; participant gender.}
+    \item{\code{Age}}{participant age.}
+    \item{\code{R}}{a person-by-problem indicator matrix representing the
+      responses of 294 persons to eight problems.}
+  }
+  The eight problems were:
+  \itemize{
+    \item{\code{p1} \eqn{73 - 58}}
+    \item{\code{p2} \eqn{317 - 94}}
+    \item{\code{p3} \eqn{784 - 693}}
+    \item{\code{p4} \eqn{507 - 49}}
+    \item{\code{p5} \eqn{253 - 178}}
+    \item{\code{p6} \eqn{2245 - 418}}
+    \item{\code{p7} \eqn{156 - 68}}
+    \item{\code{p8} \eqn{3642 - 753}}
+  }
 }
 \source{
   The data were made available by Debora de Chiusole, Andrea Brancaccio, and
   Luca Stefanutti.
 }
 \references{
+  de Chiusole, D., & Stefanutti, L. (2013).
+  Modeling skill dependence in probabilistic competence structures.
+  \emph{Electronic Notes in Discrete Mathematics},
+  \bold{42}, 41--48.
+  \doi{https://doi.org/10.1016/j.endm.2013.05.144}
+
   Stefanutti, L., & de Chiusole, D. (2017).
   On the assessment of learning in competence based knowledge space theory.
   \emph{Journal of Mathematical Psychology},
@@ -99,15 +128,15 @@
   \doi{10.1016/j.jmp.2017.08.003}
 }
 \examples{
-data(fractarithm)
+data(schoolarithm)
 
-## Subset of problems used in Sefanutti and de Chiusole (2017)
-R <- fractarithm$R[, c(4:8, 10:11, 15:20)]
+## Fraction problems used in Sefanutti and de Chiusole (2017)
+R <- fraction17[, c(4:8, 10:11, 15:20)]
 colnames(R) <- 1:13
 N.R <- as.pattern(R, freq = TRUE)
 
 ## Conjunctive skill function in Table 1
-sf1 <- read.table(header = TRUE, text = "
+sf <- read.table(header = TRUE, text = "
   item  a  b  c  d  e  f  g  h
      1  1  1  1  0  1  1  0  0
      2  1  0  0  0  0  0  1  1
@@ -123,10 +152,29 @@ sf1 <- read.table(header = TRUE, text = "
     12  1  1  0  0  1  0  1  1
     13  0  0  0  0  0  1  0  0
 ")
+K <- delineate(sf)$K  # delineated knowledge structure
+blim(K, N.R)
 
-## Delineated knowledge structure
-K <- delineate(sf1)$K
+## Subtraction problems used in de Chiusole and Stefanutti (2013)
+N.R <- as.pattern(subtraction13$R, freq = TRUE)
 
+# Skill function in Table 1
+# (f) mastering tens and hundreds; (g) mastering thousands; (h1) one borrow;
+# (h2) two borrows; (h3) three borrows; (i) mastering the proximity of
+# borrows; (j) mastering the presence of the zero; (k) mental calculation
+sf <- read.table(header = TRUE, text = "
+  item  f  g h1 h2 h3  i  j  k
+     1  0  0  1  0  0  0  0  0
+     2  1  0  1  0  0  0  0  0
+     3  1  0  1  0  0  1  0  0
+     4  1  0  1  1  1  0  1  0
+     4  0  0  0  0  0  0  0  1
+     5  1  0  1  1  1  1  0  0
+     6  1  1  1  1  0  0  0  0
+     7  1  0  1  1  1  1  0  0
+     8  1  1  1  1  1  0  0  0
+")
+K <- delineate(sf)$K
 blim(K, N.R)
 }
 \keyword{datasets}
