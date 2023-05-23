@@ -45,7 +45,7 @@ abline(v = blim1$discrepancy, lty = 2)
 ## Parameter recovery for the SLM
 m0 <- list( P.K = getSlmPK( g = rep(.8, 5),
                             K = DoignonFalmagne7$K,
-                           Ko = getKOfringe(DoignonFalmagne7$K)),
+                           Ko = getKFringe(DoignonFalmagne7$K)),
            beta = rep(.1, 5),
             eta = rep(.1, 5),
               K = DoignonFalmagne7$K,

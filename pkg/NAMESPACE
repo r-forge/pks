@@ -12,11 +12,11 @@ export(
   "as.binmat",
   "is.forward.graded",
   "is.backward.graded",
-  "is.wellgraded",
+  "is.downgradable",
   "delineate",
   "jacobian",
   "ita",
-  "getKOfringe",
+  "getKFringe",
   "blimit"
 )
 

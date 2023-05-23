@@ -16,10 +16,10 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
 
   stopifnot(
     is.knowledgespace(K),
-    is.wellgraded(K)
+    is.downgradable(K)
   )
 
-  Ko <- getKOfringe(K, nstates, nitems)  # matrix of outer-fringe states
+  Ko <- getKFringe(K, nstates, nitems)  # matrix of outer-fringe states
 
   ## Uniformly random initial values
   if (randinit) {
@@ -187,30 +187,32 @@ is.knowledgespace <- function(K) {
 }
 
 
-## Obtain outer fringe for each state in K
-getKOfringe <- function(K, nstates = nrow(K), nitems = ncol(K)) {
+## Obtain outer/inner fringe for each state in K
+getKFringe <- function(K, nstates = nrow(K), nitems = ncol(K),
+                       outer = TRUE) {
   stopifnot(
      is.numeric(K),
      is.matrix(K)
   )
 
-  ## List of matrices containing the K' states with |K'| = |K| + 1
-  Kplus <- vector(mode = "list", length = nstates)
+  ## List of matrices containing the K' states with |K'| = |K| +/- 1
+  add1 <- if(outer) 1 else -1
+  Kadd1 <- vector(mode = "list", length = nstates)
   nItemsPerK <- rowSums(K)
   for(i in seq_len(nstates)) {
-    Kplus[[i]] <- K[nItemsPerK == nItemsPerK[i] + 1, , drop = FALSE]
+    Kadd1[[i]] <- K[nItemsPerK == nItemsPerK[i] + add1, , drop = FALSE]
   }
 
-  getOfringeItems <- function(k, kplusStates) {
-    x <- xor(k, t(kplusStates))             # symm set diff with the K' states
+  getFringeItems <- function(k, kadd1States) {
+    x <- xor(k, t(kadd1States))             # symm set diff with the K' states
     rowSums(x[, colSums(x) == 1, drop = FALSE])  # keep single-element diffs
   }
-  of <- t(mapply(FUN = getOfringeItems,
-                 split(K, seq_len(nstates)),
-                 Kplus))
-  rownames(of) <- rownames(K)
-  mode(of) <- "integer"
-  of
+  fringe <- t(mapply(FUN = getFringeItems,
+                     split(K, seq_len(nstates)),
+                     Kadd1))
+  rownames(fringe) <- rownames(K)
+  mode(fringe) <- "integer"
+  fringe
 }
 
 

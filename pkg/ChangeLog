@@ -1,8 +1,9 @@
 Changes in 0.6-0
 
   * New function: slm(), fitting and testing simple learning models
-  * New function: getKOfringe(), outer fringes of a knowledge space
-  * New function: is.wellgraded()
+  * New function: getKFringe(), outer and inner fringes of a knowledge
+    structure
+  * New function: is.downgradable()
   * New function: blimit(), BLIM identification analysis (adapted from
     Stefanutti et al., 2012)
   * New data sets: fraction17 (Stefanutti and de Chiusole, 2017),

@@ -2,13 +2,14 @@
 \alias{gradedness}
 \alias{is.forward.graded}
 \alias{is.backward.graded}
-\alias{is.wellgraded}
-\title{Forward-, Backward-, and Well-Gradedness of a Knowledge Structure}
+\alias{is.downgradable}
+\title{Forward-/Backward-Gradedness and Downgradableness of a Knowledge
+       Structure}
 \description{
   Checks if a knowledge structure is
   \itemize{
     \item{forward- or backward-graded in any item;}
-    \item{well-graded.}
+    \item{downgradable.}
   }
 }
 \usage{
@@ -16,7 +17,7 @@ is.forward.graded(K)
 
 is.backward.graded(K)
 
-is.wellgraded(K)
+is.downgradable(K)
 }
 \arguments{
   \item{K}{a state-by-problem indicator matrix representing the knowledge
@@ -31,20 +32,22 @@ is.wellgraded(K)
   \eqn{S - \{q\}} is in \eqn{K} for every state \eqn{S \in K}.
   See Spoto, Stefanutti, and Vidotto (2012).
 
-  A knowledge structure \eqn{K} is well-graded, if its outer fringe is empty
-  only for a single state (the domain).  See Doignon and Falmagne (1999).
+  A knowledge structure \eqn{K} is downgradable, if its inner fringe is empty
+  only for a single state (the empty set).  See Doignon and Falmagne (2015).
 }
 
 \value{
   For forward- and backward-gradedness, a named logical vector with as many
   elements as columns in \code{K}.
 
-  For well-gradedness, a single logical value.
+  For downgradableness, a single logical value.
 }
 
 \references{
-  Doignon, J.-P., & Falmagne, J.-C. (1999).
-  \emph{Knowledge spaces}. Berlin: Springer.
+  Doignon, J.-P., & Falmagne, J.-C. (2015).
+  Knowledge spaces and learning spaces.
+  \emph{arXiv}.
+  \doi{https://doi.org/10.48550/arXiv.1511.06757}
 
   Spoto, A., Stefanutti, L., & Vidotto, G. (2012).
   On the unidentifiability of a certain class of skill multi map based
@@ -54,12 +57,12 @@ is.wellgraded(K)
 }
 
 \seealso{
-  \code{\link{blim}}, \code{\link{jacobian}}, \code{\link{getKOfringe}}.
+  \code{\link{blim}}, \code{\link{jacobian}}, \code{\link{getKFringe}}.
 }
 \examples{
 K <- as.binmat(c("0000", "1000", "1100", "1010", "0110", "1110", "1111"))
 is.forward.graded(K)   # forward-graded in a
 is.backward.graded(K)  # not backward-graded in a
-is.wellgraded(K)       # well-graded
+is.downgradable(K)     # not downgradable
 }
 \keyword{models}

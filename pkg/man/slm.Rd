@@ -51,7 +51,7 @@ getSlmPK(g, K, Ko)
     \code{N.R} vector is completed and padded with zeros.}
   \item{Ko}{a state-by-problem indicator matrix representing the outer fringe
     for each knowledge state in \code{K}; typically the result of a call to
-    \code{getKOfringe}.}
+    \code{getKFringe}.}
   \item{x}{an object of class \code{slm}, typically the result of a call to
     \code{slm}.}
   \item{P.Kshow}{logical, should the estimated distribution of knowledge
@@ -85,7 +85,7 @@ getSlmPK(g, K, Ko)
 }
 
 \seealso{
-  \code{\link{blim}}, \code{\link{simulate.blim}}, \code{\link{getKOfringe}}
+  \code{\link{blim}}, \code{\link{simulate.blim}}, \code{\link{getKFringe}}
 }
 
 \examples{
