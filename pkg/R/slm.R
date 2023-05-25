@@ -96,6 +96,8 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   P.R.K <- do.call(PRKfun, list(beta, eta, K, R))
   P.K <- getSlmPK(g, K, Ko)
   names(P.K) <- if(is.null(rownames(K))) as.pattern(K) else rownames(K)
+  if(!isTRUE(all.equal(sum(P.K), 1)))
+    warning("State probabilities P(K) do not sum to unity")
   P.R <- as.numeric(P.R.K %*% P.K)
   if (sum(P.R) < 1) P.R <- P.R/sum(P.R)      # if no zero padding: normalize
   loglik <- sum(log(P.R) * N.R, na.rm=TRUE)
