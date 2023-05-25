@@ -14,6 +14,9 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   npat    <- nrow(R)
   nstates <- nrow(K)
 
+  # Doignon & Falmagne (2015, p. 8)
+  # Def. 5: "A downgradable, finite knowledge space is called an antimatroid."
+  # Theorem 7: An antimatroid is a well-graded knowledge space.
   stopifnot(
     is.knowledgespace(K),
     is.downgradable(K)

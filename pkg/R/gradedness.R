@@ -18,7 +18,7 @@ is.backward.graded <- function(K) {
 }
 
 
-## Check for downgradableness
+## Check for downgradability
 
 is.downgradable <- function(K) {
   # - the states in K allow for at least one stepwise learning path

@@ -3,7 +3,7 @@
 \alias{is.forward.graded}
 \alias{is.backward.graded}
 \alias{is.downgradable}
-\title{Forward-/Backward-Gradedness and Downgradableness of a Knowledge
+\title{Forward-/Backward-Gradedness and Downgradability of a Knowledge
        Structure}
 \description{
   Checks if a knowledge structure is
@@ -40,7 +40,7 @@ is.downgradable(K)
   For forward- and backward-gradedness, a named logical vector with as many
   elements as columns in \code{K}.
 
-  For downgradableness, a single logical value.
+  For downgradability, a single logical value.
 }
 
 \references{
