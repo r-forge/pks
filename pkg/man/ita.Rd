@@ -34,6 +34,8 @@ ita(R, L = NULL, makeK = FALSE)
   \item{searchL}{has the threshold value been optimized?}
   \item{L}{the selected or requested threshold.}
   \item{P}{the precedence matrix containing the number of violations.}
+  \item{I}{the precedence relation as a logical incidence matrix at threshold
+    \code{L}.}
 }
 
 \references{

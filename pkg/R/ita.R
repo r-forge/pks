@@ -59,7 +59,7 @@ ita <- function(R, L = NULL, makeK = FALSE) {
     disc <- c(disc, total = sum(disc))
   }
   retval <- list(K = K, discrepancy = disc, transitiveL = tL,
-                 searchL = searchL, L = L, P = bb)
+                 searchL = searchL, L = L, P = bb, I = P)
   class(retval) <- "ita"
   retval
 }
