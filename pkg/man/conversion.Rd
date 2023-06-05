@@ -8,7 +8,8 @@
   patterns or knowledge states.
 }
 \usage{
-as.pattern(R, freq = FALSE, as.letters = FALSE, as.set = FALSE)
+as.pattern(R, freq = FALSE, useNames = FALSE, as.set = FALSE,
+           sep = "", emptyset = "{}", as.letters = NULL)
 
 as.binmat(N.R, uniq = TRUE, col.names = NULL, as.logical = FALSE)
 }
@@ -21,9 +22,13 @@ as.binmat(N.R, uniq = TRUE, col.names = NULL, as.logical = FALSE)
     reported?}
   \item{uniq}{logical, if \code{TRUE}, only the unique response patterns are
     returned.}
-  \item{as.letters}{logical, return response patterns as combinations of
-    letters.}
+  \item{useNames}{logical, return response patterns as combinations of
+    item names.}
   \item{as.set}{logical, return response patterns as set of sets.}
+  \item{sep}{character to separate the item names.}
+  \item{emptyset}{string representing the empty set if \code{useNames}
+    is \code{TRUE}.}
+  \item{as.letters}{deprecated, use \code{useNames} instead.}
   \item{col.names}{column names for the state or response matrix.}
   \item{as.logical}{logical, return logical matrix of states.}
 }
@@ -40,9 +45,9 @@ as.binmat(N.R, uniq = TRUE, col.names = NULL, as.logical = FALSE)
 }
 \examples{
 data(DoignonFalmagne7)
-as.pattern(DoignonFalmagne7$K)
 as.pattern(DoignonFalmagne7$K, freq = TRUE)
-as.pattern(DoignonFalmagne7$K, as.letters = TRUE)
+as.pattern(DoignonFalmagne7$K)
+as.pattern(DoignonFalmagne7$K, useNames = TRUE)
 as.pattern(DoignonFalmagne7$K, as.set = TRUE)
 
 dim(as.binmat(DoignonFalmagne7$N.R))

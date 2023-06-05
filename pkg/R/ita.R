@@ -55,6 +55,7 @@ ita <- function(R, L = NULL, makeK = FALSE) {
   K <- disc <- NULL
   if(makeK) {
     K <- getKfromP(P)
+    rownames(K) <- as.pattern(K)
     disc <- getdisc(R, K, total = FALSE)
     disc <- c(disc, total = sum(disc))
   }
