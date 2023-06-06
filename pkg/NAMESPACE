@@ -10,6 +10,7 @@ export(
   "getSlmPK",
   "as.pattern",
   "as.binmat",
+  "is.subset",
   "is.forward.graded",
   "is.backward.graded",
   "is.downgradable",

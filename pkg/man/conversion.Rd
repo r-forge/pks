@@ -2,6 +2,7 @@
 \alias{conversion}
 \alias{as.pattern}
 \alias{as.binmat}
+\alias{is.subset}
 \title{Conversion between Representations of Responses or States}
 \description{
   Converts between binary matrix and pattern representations of response
@@ -12,6 +13,8 @@ as.pattern(R, freq = FALSE, useNames = FALSE, as.set = FALSE,
            sep = "", emptyset = "{}", as.letters = NULL)
 
 as.binmat(N.R, uniq = TRUE, col.names = NULL, as.logical = FALSE)
+
+is.subset(R)
 }
 \arguments{
   \item{R}{an indicator matrix of response patterns or knowledge states.}
@@ -39,6 +42,9 @@ as.binmat(N.R, uniq = TRUE, col.names = NULL, as.logical = FALSE)
 
   \code{as.binmat} returns an indicator matrix. If \code{as.logical} is
   \code{TRUE}, it returns a logical matrix.
+
+  \code{is.subset} returns a logical incidence matrix of the subset relation
+  among states.
 }
 \seealso{
   \code{\link{blim}}, \code{set} in package \code{sets}.
@@ -57,5 +63,8 @@ dim(as.binmat(DoignonFalmagne7$N.R, uniq = FALSE))
 as.binmat(c("000", "100", "101", "111"))
 as.binmat(set(set(), set("a"), set("a", "c"), set("a", "b", "c")))
 as.binmat(c("000", "100", "101", "111"), as.logical = TRUE)
+
+## Subset relation incidence matrix
+is.subset(DoignonFalmagne7$K)
 }
 \keyword{models}
