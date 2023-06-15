@@ -154,7 +154,7 @@ slmEM <- function(beta, eta, g, K, Ko, R, N.R, N, nitems, i.RK, PRKfun,
     mat.RK <- i.RK^md * P.K.R^em
     m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R)*N(R)
 
-    ## Careless error, guessing, and learning parameters
+    ## Careless error, guessing, and solvability parameters
     for(j in seq_len(nitems)) {
       beta.num[j]   <- sum(m.RK[R[, j] == 0,  K[, j] == 1])
       beta.denom[j] <- sum(m.RK[           ,  K[, j] == 1])
@@ -264,7 +264,7 @@ print.slm <- function(x, P.Kshow = FALSE, parshow = TRUE,
       zap.ind=1)
   }
   if(parshow){
-    cat("\nError, guessing, and learning parameters\n")
+    cat("\nError, guessing, and solvability parameters\n")
     printCoefmat(cbind(beta=x$beta, eta=x$eta, g=x$g), digits=digits,
                  cs.ind=1:2, tst.ind=NULL, zap.ind=1:2)
   }

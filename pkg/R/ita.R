@@ -53,7 +53,7 @@ ita <- function(R, L = NULL, makeK = FALSE,
   search <- match.arg(search)
   if(is.null(L)) {
     L <- getoptimalL(bb, R, transitiveL = tL, search = search)
-    searchL = search
+    searchL <- search
   }
 
   ## Define relation according to threshold

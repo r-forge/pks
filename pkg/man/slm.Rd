@@ -34,7 +34,7 @@ getSlmPK(g, K, Ko)
   \item{R}{a person-by-problem indicator matrix of unique response patterns.
     Per default inferred from the names of \code{N.R}.}
   \item{beta, eta, g}{vectors of initial values for the error, guessing, and
-    learning parameters.}
+    solvability parameters.}
   \item{betafix, etafix}{vectors of fixed error and guessing parameter values;
     \code{NA} indicates a free parameter.}
   \item{betaequal, etaequal}{lists of vectors of problem indices; each vector
@@ -57,7 +57,7 @@ getSlmPK(g, K, Ko)
   \item{P.Kshow}{logical, should the estimated distribution of knowledge
     states be printed?}
   \item{parshow}{logical, should the estimates of error, guessing, and
-    learning parameters be printed?}
+    solvability parameters be printed?}
   \item{digits}{a non-null value for \code{digits} specifies the minimum
     number of significant digits to be printed in values.}
   \item{\dots}{additional arguments passed to other methods.}
@@ -76,7 +76,7 @@ getSlmPK(g, K, Ko)
 \value{
   An object of class \code{slm} and \code{blim}.  It contains all components
   of a \code{blim} object.  In addition, it includes:
-  \item{g}{the vector of estimates of the learning parameters.}
+  \item{g}{the vector of estimates of the solvability parameters.}
 }
 
 \references{
