@@ -12,6 +12,7 @@ Authors@R: c(person(given = "Florian", family = "Wickelmaier",
              person(given = "Luca", family = "Stefanutti", role = "ctb"))
 Depends: R (>= 3.5.0), stats, sets
 Imports: graphics
+Suggests: relations, Rgraphviz
 Description: Fitting and testing probabilistic knowledge structures,
   especially the basic local independence model (BLIM, Doignon & Flamagne,
   1999), using the minimum discrepancy maximum likelihood (MDML) method

@@ -1,5 +1,7 @@
 Changes in 0.6-0
 
+  * DESCRIPTION: suggests relations and Rgraphviz for plotting knowledge
+    structures and precedence relations
   * New function: slm(), fitting and testing simple learning models
   * New function: getKFringe(), outer and inner fringes of a knowledge
     structure

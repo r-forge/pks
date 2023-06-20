@@ -66,5 +66,11 @@ as.binmat(c("000", "100", "101", "111"), as.logical = TRUE)
 
 ## Subset relation incidence matrix
 is.subset(DoignonFalmagne7$K)
+
+## Plotting the knowledge structure
+if(requireNamespace("relations") &&
+   requireNamespace("Rgraphviz")) {
+  plot(relations::as.relation(is.subset(DoignonFalmagne7$K)), main = "")
+}
 }
 \keyword{models}
