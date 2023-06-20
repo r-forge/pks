@@ -1,11 +1,13 @@
 # Mar/30/2022 as.binmat() gains as.logical arg
 # Jun/02/2023 useNames argument for as.pattern()
-# Jun/06/2023 is.subset
+# Jun/06/2023 is.subset()
 
 
 ## Subset relation incidence matrix
 is.subset <- function(R) {
-  t(apply(R, 1, function(r) apply(r * t(R) == r, 2, all)))
+  I <- t(apply(R, 1, function(r) apply(r * t(R) == r, 2, all)))
+  names(dimnames(I)) <- c("<", ">")
+  I
 }
 
 
