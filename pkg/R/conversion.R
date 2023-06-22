@@ -6,7 +6,7 @@
 ## Subset relation incidence matrix
 is.subset <- function(R) {
   I <- t(apply(R, 1, function(r) apply(r * t(R) == r, 2, all)))
-  names(dimnames(I)) <- c("<", ">")
+  if(!is.null(dimnames(I))) names(dimnames(I)) <- c("<", ">")
   I
 }
 

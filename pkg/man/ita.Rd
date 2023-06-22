@@ -65,5 +65,11 @@ ita(chess$R)  # find (locally) optimal threshold L
 i <- ita(chess$R, L = 6, makeK = TRUE)
 identical(sort(as.pattern(i$K)),
           sort(as.pattern(chess$dst1)))
+
+## Plotting the precedence relation
+if(requireNamespace("relations") &&
+   requireNamespace("Rgraphviz")) {
+  plot(relations::as.relation(i$I))
+}
 }
 \keyword{models}

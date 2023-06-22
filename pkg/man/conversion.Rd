@@ -51,13 +51,15 @@ is.subset(R)
 }
 \examples{
 data(DoignonFalmagne7)
-as.pattern(DoignonFalmagne7$K, freq = TRUE)
-as.pattern(DoignonFalmagne7$K)
-as.pattern(DoignonFalmagne7$K, useNames = TRUE)
-as.pattern(DoignonFalmagne7$K, as.set = TRUE)
+K <- DoignonFalmagne7$K
+as.pattern(K, freq = TRUE)
+as.pattern(K)
+as.pattern(K, useNames = TRUE)
+as.pattern(K, as.set = TRUE)
 
-dim(as.binmat(DoignonFalmagne7$N.R))
-dim(as.binmat(DoignonFalmagne7$N.R, uniq = FALSE))
+N.R <- DoignonFalmagne7$N.R
+dim(as.binmat(N.R))
+dim(as.binmat(N.R, uniq = FALSE))
 
 ## Knowledge structure as binary matrix
 as.binmat(c("000", "100", "101", "111"))
@@ -65,12 +67,13 @@ as.binmat(set(set(), set("a"), set("a", "c"), set("a", "b", "c")))
 as.binmat(c("000", "100", "101", "111"), as.logical = TRUE)
 
 ## Subset relation incidence matrix
-is.subset(DoignonFalmagne7$K)
+is.subset(K)
 
 ## Plotting the knowledge structure
 if(requireNamespace("relations") &&
    requireNamespace("Rgraphviz")) {
-  plot(relations::as.relation(is.subset(DoignonFalmagne7$K)), main = "")
+  rownames(K) <- as.pattern(K, useNames = TRUE)
+  plot(relations::as.relation(is.subset(K)), main = "")
 }
 }
 \keyword{models}
