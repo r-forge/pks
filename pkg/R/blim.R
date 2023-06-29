@@ -127,17 +127,17 @@ blimEM <- function(P.K, beta, eta, K, R, N.R, N, nitems, i.RK, PRKfun,
   em      <- c(MD = 0, ML = 1, MDML = 1)[method]
   md      <- c(MD = 1, ML = 0, MDML = 1)[method]
   beta.num <- beta.denom <- eta.num <- eta.denom <- beta
-  while ((maxdiff > tol) && (iter < maxiter) &&
-         ((md*(1 - em) != 1) || (iter == 0))) {
+  while((maxdiff > tol) && (iter < maxiter) &&
+        ((md*(1 - em) != 1) || (iter == 0))) {
     pi.old   <- P.K
     beta.old <- beta
     eta.old  <- eta
 
-    P.R.K  <- do.call(PRKfun, list(beta, eta, K, R))  # P(R|K)
-    P.R    <- as.numeric(P.R.K %*% P.K)
-    P.K.R  <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
-    mat.RK <- i.RK^md * P.K.R^em
-    m.RK   <- (mat.RK / rowSums(mat.RK)) * N.R  # m.RK = E(M.RK) = P(K|R)*N(R)
+    P.R.K <- do.call(PRKfun, list(beta, eta, K, R))  # P(R|K)
+    P.R   <- as.numeric(P.R.K %*% P.K)
+    P.K.R <- P.R.K * outer(1/P.R, P.K)         # prediction of P(K|R)
+    m.RK  <- i.RK^md * P.K.R^em
+    m.RK  <- (m.RK / rowSums(m.RK)) * N.R      # m.RK = E(M.RK) = P(K|R)*N(R)
 
     ## Distribution of knowledge states
     P.K <- colSums(m.RK) / N
