@@ -61,8 +61,9 @@ is.downgradable(K)
 }
 \examples{
 K <- as.binmat(c("0000", "1000", "1100", "1010", "0110", "1110", "1111"))
-is.forward.graded(K)   # forward-graded in a
-is.backward.graded(K)  # not backward-graded in a
-is.downgradable(K)     # not downgradable
+is.forward.graded(K)                  # forward-graded in a
+is.backward.graded(K)                 # not backward-graded in a
+is.downgradable(K)                    # not downgradable
+all(K[, "a"] | getKFringe(K)[, "a"])  # every K or outer fringe contains a
 }
 \keyword{models}
