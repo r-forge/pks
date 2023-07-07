@@ -74,24 +74,24 @@ Let $M_{RK}$ denote the unobservable frequency of pattern $R$ resulting from
 state $K$. Then the likelihood simplifies to
 \begin{align}
   L(\theta) &= \prod_R \prod_K P(R, K)^{M_{RK}}\\
-            &= \prod_R \prod_K \big(P(R \mid K) \cdot P(K)\big)^{M_{RK}}\\
-            &= \prod_R \prod_K \big(
-                 \!\!\prod_{q \in K \setminus R}        \!\!\beta_q
-                 \!\!\prod_{q \in K \cap R}             \!\!(1 - \beta_q)
-                 \!\!\prod_{q \in R \setminus K}        \!\!\eta_q
-                 \!\!\prod_{q \in \bar{R} \cap \bar{K}} \!\!(1 - \eta_q)
-               \big)^{M_{RK}} \cdot
-               \big(\pi_K\big)^{M_{RK}}
+            &= \prod_R \prod_K \bigl(P(R \mid K) \cdot P(K)\bigr)^{M_{RK}}\\
+            &= \prod_R \prod_K \biggl(
+                   \prod_{q \in K \setminus R}        \!\!\beta_q
+                 \!\prod_{q \in K \cap R}             \!\!(1 - \beta_q)
+                 \!\prod_{q \in R \setminus K}        \!\!\eta_q
+                 \!\prod_{q \in \bar{R} \cap \bar{K}} \!\!(1 - \eta_q)
+               \biggr)^{M_{RK}} \!\cdot
+               \bigl(\pi_K\bigr)^{M_{RK}}
 \end{align}
 and the log-likelihood becomes
 \begin{align}
   \ell(\theta)
-    &= \sum_R \sum_K M_{RK} \big(
-      \!\!\sum_{q \in K \setminus R}        \!\!\log\beta_q +
+    &= \sum_R \sum_K M_{RK} \biggl(
+          \sum_{q \in K \setminus R}        \!\!\log\beta_q +
       \!\!\sum_{q \in K \cap R}             \!\!\log(1 - \beta_q) +
       \!\!\sum_{q \in R \setminus K}        \!\!\log\eta_q +
       \!\!\sum_{q \in \bar{R} \cap \bar{K}} \!\!\log(1 - \eta_q)
-      \big)\nonumber\\
+      \biggr)\nonumber\\
     &+ \sum_R \sum_K M_{RK} \log\pi_K.
 \end{align}
 
@@ -104,10 +104,10 @@ states that contain and do not contain $q$, respectively. Then the partial
 derivative of the log-likelihood with respect to $\beta_q$ is
 \begin{align}
   \frac{\partial\ell(\theta)}{\partial\beta_q}
-    &= \sum_R \sum_K \big(
-      \!\sum_{q \in K \setminus R} \!\frac{M_{RK}}{\beta_q} -
+    &= \sum_R \sum_K \biggl(
+        \sum_{q \in K \setminus R} \!\frac{M_{RK}}{\beta_q} -
       \!\sum_{q \in K \cap R}      \!\frac{M_{RK}}{1 - \beta_q}
-      \big)\\
+      \biggr)\\
     &= \sum_{R \in \mathcal{R}_{\bar{q}}} \sum_{K \in \mathcal{K}_q}
          \!\frac{M_{RK}}{\beta_q} -
        \sum_{R \in \mathcal{R}_q}         \sum_{K \in \mathcal{K}_q}
@@ -142,10 +142,10 @@ derivative to zero yields
 The partial derivative of the log-likelihood with respect to $\eta_q$ is
 \begin{align}
   \frac{\partial\ell(\theta)}{\partial\eta_q}
-    &= \sum_R \sum_K \big(
-      \!\sum_{q \in R \setminus K}        \!\frac{M_{RK}}{\eta_q} -
+    &= \sum_R \sum_K \biggl(
+        \sum_{q \in R \setminus K}        \!\frac{M_{RK}}{\eta_q} -
       \!\sum_{q \in \bar{R} \cap \bar{K}} \!\frac{M_{RK}}{1 - \eta_q}
-      \big)\\
+      \biggr)\\
     &= \sum_{R \in \mathcal{R}_q}         \sum_{K \in \mathcal{K}_{\bar{q}}}
          \!\frac{M_{RK}}{\eta_q} -
        \sum_{R \in \mathcal{R}_{\bar{q}}} \sum_{K \in \mathcal{K}_{\bar{q}}}
@@ -183,7 +183,7 @@ Including the constraint $\sum_K \pi_K = 1$ into the log-likelihood using the
 Lagrange multiplier $\lambda$ leads to the function
 \begin{equation}
   \ell(\pi, \lambda) = \sum_R \sum_K M_{RK} \log\pi_K
-                     + \lambda\big(\sum_K \pi_K - 1\big)
+                     + \lambda\biggl(\sum_K \pi_K - 1\biggr)
 \end{equation}
 to be maximized with respect to $\pi_K$ and $\lambda$. Thus,
 \begin{align}
@@ -196,11 +196,12 @@ Setting (\ref{eq:dpi}) to zero and solving for $\pi_K$ gives
 \begin{equation}
   \pi_K = -\frac{\sum_R M_{RK}}{\lambda}\label{eq:pihat-part}.
 \end{equation}
-Setting (\ref{eq:dlambda}) to zero and solving for $\lambda$ gives
+Setting (\ref{eq:dlambda}) to zero, substituting $\pi_K$ by
+(\ref{eq:pihat-part}), and solving for $\lambda$ gives
 \begin{equation}
   \hat{\lambda} = -\sum_R \sum_K M_{RK} = -N,
 \end{equation}
-which, when substituted into (\ref{eq:pihat-part}) again, leads to
+which, when substituted back into (\ref{eq:pihat-part}), leads to
 \begin{equation}
   \hat{\pi}_K = \frac{\sum_R M_{RK}}{N}\label{eq:pihat}.
 \end{equation}
@@ -216,7 +217,7 @@ The expectation of the unobservable frequencies $M_{RK}$ is
 where, in each iteration, $P(R | K)$ and $P(K)$ are calculated from the
 current values of $\hat{\beta}_q$, $\hat{\eta}_q$, and $\hat{\pi}_K$. These
 values are iteratively updated when substituting the $M_{RK}$ by their
-expectation in (\ref{eq:betahat}), (\ref{eq:etahat}), and (\ref{eq:pihat}).
+expectations in (\ref{eq:betahat}), (\ref{eq:etahat}), and (\ref{eq:pihat}).
 
 \subsection{Minimum-discrepancy maximum likelihood}
 
@@ -236,7 +237,7 @@ smallest possible value,
   \end{cases}
 \end{equation}
 Under this assumption of minimum discrepancy, the conditional probability $P(K
-| R)$ is estimated by $i_{RK}/i_{R+}$, where $i_{R+} = \sum_K i(R, K)$.
+| R)$ is estimated by $i_{RK}/i_{R+}$, where $i_{R+} = \sum_K i_{RK}$.
 Consequently,
 \begin{equation}
   \hat{P}(R, K) = \hat{P}(K | R) \cdot \hat{P}(R)
@@ -296,11 +297,11 @@ solvability parameters $g_q$. Thus, the parameter vector $\theta = (\beta,
 solvability probabilities. With the unobservable frequency $M_{RK}$ as defined
 above, the likelihood becomes
 \begin{align}
-  L(\theta) &= \prod_R \prod_K \big(P(R \mid K) \cdot P(K)\big)^{M_{RK}}\\
+  L(\theta) &= \prod_R \prod_K \bigl(P(R \mid K) \cdot P(K)\bigr)^{M_{RK}}\\
             &= \prod_R \prod_K P(R \mid K)^{M_{RK}}
-              \cdot \big(\prod_{q \in K} g_q \!
-                         \prod_{q \in K^\mathcal{O}} \! (1 - g_{q})
-                    \big)^{M_{RK}},
+               \cdot \biggl(\prod_{q \in K} g_q \!
+                            \prod_{q \in K^\mathcal{O}} \! (1 - g_{q})
+                     \biggr)^{M_{RK}},
 \end{align}
 where
 \begin{equation}
@@ -313,9 +314,9 @@ $K$, $1 - g_q$. The log-likelihood then becomes
 \begin{align}
   \ell(\theta)
     &= \sum_R \sum_K M_{RK} \log P(R \mid K)\nonumber\\
-    &+ \sum_R \sum_K M_{RK} \big(
-      \!\sum_{q \in K}              \!\log g_q +
-      \!\sum_{q \in K^\mathcal{O}} \!\log(1 - g_{q})\big).
+    &+ \sum_R \sum_K M_{RK} \biggl(
+        \sum_{q \in K}              \!\log g_q +
+      \!\sum_{q \in K^\mathcal{O}} \!\log(1 - g_{q})\biggr).
 \end{align}
 
 \subsection{Careless errors and lucky guesses}
@@ -328,10 +329,10 @@ in the SLM are the same as for the BLIM.
 The partial derivative of the log-likelihood with respect to $g_q$ is
 \begin{align}
   \frac{\partial\ell(\theta)}{\partial g_q}
-    &= \sum_R \sum_K \big(
-      \!\sum_{q \in K}             \!\frac{M_{RK}}{g_q} -
+    &= \sum_R \sum_K \biggl(
+        \sum_{q \in K}             \!\frac{M_{RK}}{g_q} -
       \!\sum_{q \in K^\mathcal{O}} \!\frac{M_{RK}}{1 - g_q}
-      \big)\\
+      \biggr)\\
     &= \sum_R \sum_{K \in \mathcal{K}_q}
          \!\frac{M_{RK}}{g_q} -
        \sum_R \sum_{K \in \mathcal{K}^\mathcal{O}_q}
@@ -366,10 +367,10 @@ contains $q$. Setting the derivative to zero yields
   \sum_R \sum_K M_{RK} i
     &= \sum_R \sum_K  \hat{g}_q (M_{RK} i + M_{RK} j)\\
   \sum_R \!\sum_{K \in \mathcal{K}_q} M_{RK}
-    &= \hat{g}_q \big(
+    &= \hat{g}_q \biggl(
       \sum_R \!\sum_{K \in \mathcal{K}_q}             \!M_{RK} +
       \sum_R \!\sum_{K \in \mathcal{K}^\mathcal{O}_q} \!M_{RK}
-      \big)\\
+      \biggr)\\
   \hat{g}_q &=
     \frac{\displaystyle
           \sum_R \!\sum_{K \in \mathcal{K}_q} M_{RK}}
@@ -416,8 +417,8 @@ are obtained from augmenting the E step as in (\ref{eq:estep_mdml}).
 
 \section*{Acknowledgments}
 
-F.W.\ would like to thank Alice Maurer for discussing the derivation of the
-estimators.
+F.W.\ would like to thank Alice Maurer for her thoughtful comments on the
+derivation of the estimators.
 
 \bibliography{pks}
 
