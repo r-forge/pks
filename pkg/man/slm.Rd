@@ -15,7 +15,8 @@ slm(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
     betafix = rep(NA, nitems), etafix = rep(NA, nitems),
     betaequal = NULL, etaequal = NULL,
     randinit = FALSE, incradius = 0,
-    tol = 1e-07, maxiter = 10000, zeropad = 16)
+    tol = 1e-07, maxiter = 10000, zeropad = 16,
+    checkK = TRUE)
 
 getSlmPK(g, K, Ko)
 
@@ -49,6 +50,7 @@ getSlmPK(g, K, Ko)
   \item{maxiter}{the maximum number of iterations.}
   \item{zeropad}{the maximum number of items for which an incomplete
     \code{N.R} vector is completed and padded with zeros.}
+  \item{checkK}{logical, if \code{TRUE} K is checked for well-gradedness.}
   \item{Ko}{a state-by-problem indicator matrix representing the outer fringe
     for each knowledge state in \code{K}; typically the result of a call to
     \code{getKFringe}.}
@@ -85,7 +87,8 @@ getSlmPK(g, K, Ko)
 }
 
 \seealso{
-  \code{\link{blim}}, \code{\link{simulate.blim}}, \code{\link{getKFringe}}
+  \code{\link{blim}}, \code{\link{simulate.blim}}, \code{\link{getKFringe}},
+  \code{\link{is.downgradable}}
 }
 
 \examples{

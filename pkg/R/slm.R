@@ -5,7 +5,8 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
                 betafix = rep(NA, nitems), etafix = rep(NA, nitems),
                 betaequal = NULL, etaequal = NULL,
                 randinit = FALSE, incradius = 0,
-                tol = 1e-07, maxiter = 10000, zeropad = 16) {
+                tol = 1e-07, maxiter = 10000, zeropad = 16,
+                checkK = TRUE) {
 
   K       <- as.matrix(K)
   N.R     <- setNames(as.integer(N.R), names(N.R))  # convert to named int
@@ -17,10 +18,7 @@ slm <- function(K, N.R, method = c("MD", "ML", "MDML"), R = as.binmat(N.R),
   # Doignon & Falmagne (2015, p. 8)
   # Def. 5: "A downgradable, finite knowledge space is called an antimatroid."
   # Theorem 7: An antimatroid is a well-graded knowledge space.
-  stopifnot(
-    is.knowledgespace(K),
-    is.downgradable(K)
-  )
+  if(checkK) stopifnot(is.knowledgespace(K), is.downgradable(K))
 
   Ko <- getKFringe(K, nstates, nitems)  # matrix of outer-fringe states
 

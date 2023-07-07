@@ -21,7 +21,7 @@ getKFringe(K, nstates = nrow(K), nitems = ncol(K), outer = TRUE)
   learned from that state, such that adding an outer-fringe item to the state
   results in another state in \code{K},
 
-  \deqn{K^O = \{q \in Q - K | K \cup \{q\} \in \mathcal{K}\}.}
+  \deqn{K^O = \{q \notin K | K \cup \{q\} \in \mathcal{K}\}.}
 
   The inner fringe of a knowledge state is the set of all items that have been
   learned most recently to reach that state, such that deleting an
