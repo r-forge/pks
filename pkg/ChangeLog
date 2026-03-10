@@ -6,6 +6,7 @@ Changes in 0.7-0
     probabilities given a response pattern; works for class slm by inheritance
     (prompted by Paul Doerrbecker)
   * blim(): more modularization and vectorization and fewer calls to apply()
+  * New data set: hsgeometry (Lakshminarayan, 1995, 1996)
 
 Changes in 0.6-1
 
