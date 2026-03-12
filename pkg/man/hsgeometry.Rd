@@ -4,7 +4,7 @@
 \alias{circles}
 \title{Responses to Geometry Problems and Knowledge Structures}
 \description{
-  Lakshminarayan (1995, 1996) presented high-school geometry problems to 959
+  Lakshminarayan (1995, 1996) presented high school geometry problems to 959
   undergraduate students before and after a lesson. The problems deal with
   basic concepts in geometry, such as angles, lengths, circles, and polygons.
   Doignon and Falmagne (1999, chap. 8) refer to a subset of these data.
@@ -15,13 +15,12 @@
   \describe{
     \item{\code{angles}}{a list with components \code{K}, \code{N.R}, and
       \code{changescore} for five problems mostly about angles.}
-    \item{\code{angles}}{a list with components \code{K}, \code{N.R}, and
+    \item{\code{circles}}{a list with components \code{K}, \code{N.R}, and
       \code{changescore} for four problems mostly about circles.}
     \item{\code{K}}{a state-by-problem indicator matrix representing the
       knowledge structure in Lakshminarayan (1995, 1996).}
-    \item{\code{N.R}}{a data frame.  The row names denote response
-      patterns, the column entries their frequencies before and after the
-      lesson.}
+    \item{\code{N.R}}{a matrix. The row names denote response patterns, the
+      column entries their frequencies before and after the lesson.}
     \item{\code{changescore}}{a 3d table. For each problem, it contains the
       number of students who solved or did not solve the problem at pre- and
       posttest.}
@@ -50,10 +49,10 @@
 }
 \examples{
 data(hsgeometry)
-dotchart(angles$N.R$posttest, labels = rownames(angles$N.R), pch = 4,
-         main = "High-school geometry problems",
+dotchart(angles$N.R[, "posttest"], pch = 4,
+         main = "High school geometry problems",
          xlab = "Response frequency (pre- [o] and posttest [x])")
-points(angles$N.R$pretest, 1:32)
+points(angles$N.R[, "pretest"], 1:32)
 mtext("Lakshminarayan (1995)", side = 3, line = 0.5)
 }
 \keyword{datasets}

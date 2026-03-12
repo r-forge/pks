@@ -15,7 +15,8 @@
 \arguments{
   \item{object}{an object of class \code{blim}, typically the result of a
     call to \code{\link{blim}}.}
-  \item{newdata}{a character vector of response patterns.}
+  \item{newdata}{a character vector of response patterns with which to
+    predict.}
   \item{type}{for each pattern, predict a knowledge state or the state
     probabilities.}
   \item{method}{how to compute the posterior state probabilities.
@@ -62,7 +63,7 @@
   If \code{type = "probs"}, a matrix of posterior state probabilities.
 }
 \seealso{
-  \code{\link{blim}}.
+  \code{\link{blim}}, \code{\link{slm}}.
 }
 \examples{
 data(DoignonFalmagne7)
