@@ -1,6 +1,6 @@
 Package: pks
 Version: 0.7-0
-Date: 2026-03-10
+Date: 2026-03-20
 Title: Probabilistic Knowledge Structures
 Authors@R: c(person(given = "Florian", family = "Wickelmaier",
                     role = c("aut", "cre"), email = "wickelmaier@web.de"),
