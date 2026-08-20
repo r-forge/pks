@@ -1,16 +1,16 @@
 Package: pks
-Version: 0.7-0
-Date: 2026-03-20
+Version: 0.8-0
+Date: 2026-08-17
 Title: Probabilistic Knowledge Structures
 Authors@R: c(person(given = "Florian", family = "Wickelmaier",
                     role = c("aut", "cre"), email = "wickelmaier@web.de"),
              person(given = "Juergen", family = "Heller", role = "aut"),
              person(given = "Julian", family = "Mollenhauer", role = "aut"),
+             person(given = "Paul", family = "Doerrbecker", role = "aut"),
              person(given = "Pasquale", family = "Anselmi", role = "ctb"),
              person(given = "Debora", family = "de Chiusole", role = "ctb"),
              person(given = "Andrea", family = "Brancaccio", role = "ctb"),
-             person(given = "Luca", family = "Stefanutti", role = "ctb"),
-             person(given = "Paul", family = "Doerrbecker", role = "ctb"))
+             person(given = "Luca", family = "Stefanutti", role = "ctb"))
 Depends: R (>= 4.1.0), stats, sets
 Imports: graphics
 Suggests: relations, Rgraphviz

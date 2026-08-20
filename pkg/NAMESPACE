@@ -18,7 +18,8 @@ export(
   "jacobian",
   "ita",
   "getKFringe",
-  "blimit"
+  "blimit",
+  "cdp"
 )
 
 S3method("anova", "blim")
@@ -36,4 +37,8 @@ S3method("coef", "slm")
 S3method("print", "slm")
 
 S3method("print", "ita")
+
+S3method("print", "cdp")
+
+S3method("print", "DeletionRule")
 

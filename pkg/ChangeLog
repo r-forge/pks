@@ -1,3 +1,9 @@
+Changes in 0.8-0
+
+  * New function: cdp(), competency deletion procedure (CDP) to reduce
+    a set of competencies defined on a set of skills down to one of
+    its possible reducts (drafted by Paul Doerrbecker)
+
 Changes in 0.7-0
 
   * BUG FIX: as.pattern(R, useNames = TRUE) works better when R consists of
